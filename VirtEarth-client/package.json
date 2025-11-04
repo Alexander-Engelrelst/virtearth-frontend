@@ -14,7 +14,7 @@
     "lint": "eslint",
     "format": "prettier --write 'src/**/*.{js,ts,vue,json}'",
     "format:check": "prettier --check 'src/**/*.{js,ts,vue,json}'",
-    "sonar-ci": "node_modules/sonar-scanner/bin/sonar-scanner"
+    "sonar-ci": "node_modules/sonar-scanner/bin/sonar-scanner -Dsonar.qualitygate.wait=true"
   },
   "dependencies": {
     "sonar-scanner": "^3.1.0",
