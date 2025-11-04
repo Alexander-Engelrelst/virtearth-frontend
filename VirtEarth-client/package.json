@@ -1,5 +1,6 @@
 {
-  "name": "virtearth-client",
+  "name": "2025-adria-client",
+  "license": "UNLICENSED",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -12,9 +13,11 @@
     "preview": "vite preview",
     "lint": "eslint",
     "format": "prettier --write 'src/**/*.{js,ts,vue,json}'",
-    "format:check": "prettier --check 'src/**/*.{js,ts,vue,json}'"
+    "format:check": "prettier --check 'src/**/*.{js,ts,vue,json}'",
+    "sonar-ci": "node_modules/sonar-scanner/bin/sonar-scanner"
   },
   "dependencies": {
+    "sonar-scanner": "^3.1.0",
     "vue": "^3.5.22"
   },
   "devDependencies": {
