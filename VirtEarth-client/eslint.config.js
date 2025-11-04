@@ -5,7 +5,11 @@ import ImportPlugin from 'eslint-plugin-import'
 import pluginVue from 'eslint-plugin-vue'
 import globals from 'globals'
 
-export default defineConfig([{
+export default defineConfig([
+  {
+    ignores: ["dist/**"],
+  },
+{
   files: ["**/*.{js,mjs,cjs}"],
   languageOptions: {
     globals: globals.browser,
