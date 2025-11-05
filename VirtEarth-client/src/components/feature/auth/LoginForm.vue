@@ -14,11 +14,6 @@ function validateForm() {
         return false;
     }
 
-    if (username.value.trim().length < 3) {
-        errors.value.username = 'Username must be at least 3 characters';
-        return false;
-    }
-
     return true;
 }
 

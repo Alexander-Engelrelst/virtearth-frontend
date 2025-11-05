@@ -1,10 +1,18 @@
 <script setup>
+import { useRouter } from 'vue-router';
 import LogoImage from '@/components/base/LogoImage.vue';
 import LoginForm from '@/components/feature/auth/LoginForm.vue';
+
+const router = useRouter();
 
 function handleLogin(username) {
     // TODO: Add API call logic here
     console.log('Login attempted with username:', username);
+
+    // Navigate to dashboard if authentication is successful
+    if (true) {  // Placeholder condition
+        router.push({ name: 'dashboard' });
+    }
 }
 </script>
 
