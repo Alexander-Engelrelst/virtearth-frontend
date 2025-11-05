@@ -1,18 +1,28 @@
 <script setup>
+import LogoImage from '@/components/base/LogoImage.vue';
+import LoginForm from '@/components/feature/auth/LoginForm.vue';
 
+function handleLogin(username) {
+    // TODO: Add API call logic here
+    console.log('Login attempted with username:', username);
+}
 </script>
 
 <template>
-    <div class="card bg-base-100 w-96 shadow-sm">
-        <figure>
-            <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Shoes" />
-        </figure>
-        <div class="card-body">
-            <h2 class="card-title">Card Title</h2>
-            <p>A card component has a figure, a body part, and inside body there are title and actions parts</p>
-            <div class="card-actions justify-end">
-                <button class="btn btn-primary">Buy Now</button>
+    <div class="min-h-screen flex flex-col items-center justify-center p-4 bg-brand-background">
+
+        <LogoImage />
+
+        <div class="hero">
+            <div class="hero-content text-center">
+                <div class="max-w-md">
+                    <h1 class="text-5xl font-bold text-brand-primary">Virtearth</h1>
+                    <p class="py-6 text-brand-secondary">Travel time through culture</p>
+                </div>
             </div>
         </div>
+
+        <LoginForm @submit="handleLogin" />
+
     </div>
 </template>

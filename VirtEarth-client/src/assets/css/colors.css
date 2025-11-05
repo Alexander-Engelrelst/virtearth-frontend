@@ -1,0 +1,23 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.text-brand-primary {
+    color: #C07353;
+}
+
+.text-brand-secondary {
+    color: #6b7280;
+}
+
+.bg-brand-primary {
+    background-color: #C07353;
+}
+
+.hover\:bg-brand-primary-dark:hover {
+    background-color: #a96346;
+}
+
+.bg-brand-background {
+    background-color: #fcfaf8;
+}

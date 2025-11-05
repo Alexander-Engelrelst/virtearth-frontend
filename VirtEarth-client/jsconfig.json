@@ -9,7 +9,8 @@
     "forceConsistentCasingInFileNames": true
   },
   "vueCompilerOptions": {
-    "target": 3
+    "target": 3,
+    "globalTypesPath": "./node_modules/.vue-global-types"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
