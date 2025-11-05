@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import LogoImage from '@/components/base/LogoImage.vue';
+import BrandTitle from '@/components/base/BrandTitle.vue';
 import LoginForm from '@/components/feature/auth/LoginForm.vue';
 
 const router = useRouter();
@@ -19,12 +20,14 @@ function handleLogin(username) {
 <template>
     <div class="min-h-screen flex flex-col items-center justify-center p-4 bg-brand-background">
 
-        <LogoImage />
+        <div class="mb-4">
+            <LogoImage />
+        </div>
 
         <div class="hero">
             <div class="hero-content text-center">
                 <div class="max-w-md">
-                    <h1 class="text-5xl font-bold text-brand-primary">Virtearth</h1>
+                    <BrandTitle :size="48" />
                     <p class="py-6 text-brand-secondary">Travel time through culture</p>
                 </div>
             </div>
