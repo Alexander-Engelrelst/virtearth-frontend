@@ -47,7 +47,7 @@ function handleLogin() {
                     :class="{ 'input-error': errors.inputUsername }"
                     placeholder="Type here"
                 />
-                <label v-if="errors.inputUsername" class="label">
+                <label v-if="errors.inputUsername" class="label" >
                     <span class="label-text-alt text-error">{{ errors.inputUsername }}</span>
                 </label>
 
