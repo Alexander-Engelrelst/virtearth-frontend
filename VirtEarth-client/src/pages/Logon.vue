@@ -1,47 +1,53 @@
 <script setup>
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 import LogoImage from '@/components/base/LogoImage.vue';
 import BrandTitle from '@/components/base/BrandTitle.vue';
 import LoginForm from '@/components/feature/auth/LoginForm.vue';
-import { ref } from 'vue';
-import { checkUserExists } from '@/services/api/users.js';
+import CreateUserForm from '@/components/feature/auth/CreateUserForm.vue';
+import { checkUserExists as apiCheckUserExists } from '@/services/api/users.js';
+import router from '@/router';
 
-const router = useRouter();
+const activeMode = ref('login'); // 'login' or 'create'
+const userStatus = ref({ status: null, message: '' });
 
-async function handleLogin(username) {
-    console.log('Login attempted with username:', username);
+function switchMode(mode) {
+    activeMode.value = mode;
+    // Clear status when switching modes
+    userStatus.value = { status: null, message: '' };
+}
+
+async function handleUsernameChange(username) {
+    console.log('Checking username:', username);
 
     try {
-        const result = await checkUserExists(username);
-
+        const result = await apiCheckUserExists(username);
         console.log('API result:', result);
 
-        // Handle different status codes
-        if (result.status === 409) {
-            // User exists, proceed to dashboard
-            console.log('User exists, logging in...');
-            router.push({ name: 'dashboard' });
-        } else if (result.status === 204) {
-            // User does not exist
-            console.log('User does not exist');
-            alert('User does not exist. Please create an account first.');
-        } else if (result.status === 400) {
-            // Invalid username
-            console.log('Invalid username');
-            alert('Invalid username: ' + result.message);
-        }
+        // Store the status to pass to CreateUserForm
+        userStatus.value = {
+            status: result.status,
+            message: result.message || ''
+        };
     } catch (error) {
         console.error('Error checking user:', error);
-        alert('An error occurred. Please try again.');
+        userStatus.value = {
+            status: 500,
+            message: 'An error occurred'
+        };
+    }
+}
+
+function handleLogin(username) {
+    console.log('Login attempted with username:', username);
+    // TODO: Call /login endpoint
+    if (true){
+        router.push({ name: "dashboard"})
     }
 }
 
 function handleCreateUser(username) {
-    console.log('create attempted with username:', username);
-
-    if (true) {
-        router.push({ name: 'dashboard' });
-    }
+    console.log('Create user attempted with username:', username);
+    // TODO: Call POST / endpoint
 }
 </script>
 
@@ -61,7 +67,40 @@ function handleCreateUser(username) {
             </div>
         </div>
 
-        <LoginForm @login="handleLogin" @createUser="handleCreateUser" />
+        <!-- Tab Switching UI -->
+        <div class="mb-6 bg-white rounded-xl shadow-md p-1 border border-gray-200">
+            <div class="flex gap-1">
+                <button
+                    class="flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200"
+                    :class="activeMode === 'login'
+                        ? 'bg-brand-primary text-white shadow-md'
+                        : 'bg-transparent text-gray-600 hover:bg-gray-100'"
+                    @click="switchMode('login')">
+                    Login
+                </button>
+                <button
+                    class="flex-1 px-6 py-3 rounded-lg font-medium transition-all duration-200"
+                    :class="activeMode === 'create'
+                        ? 'bg-brand-primary text-white shadow-md'
+                        : 'bg-transparent text-gray-600 hover:bg-gray-100'"
+                    @click="switchMode('create')">
+                    Create
+                </button>
+            </div>
+        </div>
+
+        <!-- Show appropriate form based on active mode -->
+        <LoginForm
+            v-if="activeMode === 'login'"
+            @login="handleLogin"
+        />
+
+        <CreateUserForm
+            v-else-if="activeMode === 'create'"
+            :user-status="userStatus"
+            @create-user="handleCreateUser"
+            @username-change="handleUsernameChange"
+        />
 
     </div>
 </template>

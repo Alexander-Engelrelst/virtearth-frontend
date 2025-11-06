@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue';
+import AdrianIdBadge from '@/components/base/AdrianIdBadge.vue';
 
-const emit = defineEmits(['createUser', 'login']);
+const emit = defineEmits(['login']);
 
 const inputUsername = ref('');
 const errors = ref({});
@@ -17,12 +18,6 @@ function validateForm() {
     return true;
 }
 
-function handleCreateUser() {
-    if (validateForm()) {
-        emit('createUser', inputUsername.value.trim());
-    }
-}
-
 function handleLogin() {
     if (validateForm()) {
         emit('login', inputUsername.value.trim());
@@ -31,36 +26,30 @@ function handleLogin() {
 </script>
 
 <template>
-    <div class="card w-full max-w-sm bg-base-100 shadow-xl rounded-lg">
-        <div class="card-body items-center text-center">
-            <p class="text-sm text-brand-secondary">Authenticated via</p>
-            <h2 class="card-title text-xl font-semibold">AdrianID</h2>
-            <form class="form-control w-full text-left" autocomplete="off">
+    <div class="card w-full max-w-sm bg-white shadow-2xl rounded-2xl border border-gray-100">
+        <div class="card-body items-center text-center p-8">
+            <AdrianIdBadge />
+            <h3 class="text-xl font-semibold mb-6 text-gray-800">Login to Your Account</h3>
 
+            <form class="form-control w-full text-left" autocomplete="off">
                 <label class="label">
-                    <span class="label-text">What is your username?</span>
+                    <span class="label-text text-gray-700 font-medium">Username</span>
                 </label>
                 <input
                     v-model="inputUsername"
                     type="text"
-                    class="input input-bordered w-full"
-                    :class="{ 'input-error': errors.inputUsername }"
-                    placeholder="Type here"
+                    class="input input-bordered w-full bg-gray-50 focus:bg-white focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 transition-all rounded-lg"
+                    :class="{ 'input-error border-red-500 focus:border-red-500 focus:ring-red-200': errors.inputUsername }"
+                    placeholder="Enter your username"
                 />
-                <label v-if="errors.inputUsername" class="label" >
-                    <span class="label-text-alt text-error">{{ errors.inputUsername }}</span>
+                <label v-if="errors.inputUsername" class="label">
+                    <span class="label-text-alt text-red-600 font-medium">{{ errors.inputUsername }}</span>
                 </label>
 
                 <button
                     type="button"
-                    @click="handleCreateUser"
-                    class="btn w-full mt-4 text-white text-brand-secondary border-none rounded-lg">
-                    Create user
-                </button>
-                <button
-                    type="button"
                     @click="handleLogin"
-                    class="btn w-full mt-4 text-white bg-brand-primary hover:bg-brand-primary-dark border-none rounded-lg">
+                    class="btn w-full mt-6 text-white bg-brand-primary hover:bg-brand-primary-dark border-none rounded-lg shadow-md hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200 font-medium text-base py-3">
                     Enter Dashboard
                 </button>
             </form>
