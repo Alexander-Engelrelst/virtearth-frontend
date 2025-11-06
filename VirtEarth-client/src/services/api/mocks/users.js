@@ -1,6 +1,5 @@
-
 export function mockCheckUserExists(username) {
-  if (username === 'exists') {
+  if (username === 'john doe') {
     return Promise.resolve({
       status: 409,
       exists: true,

@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.16",
+    "leaflet": "^1.9.4",
     "sonar-scanner": "^3.1.0",
     "tailwindcss": "^4.1.16",
     "vue": "^3.5.22",
