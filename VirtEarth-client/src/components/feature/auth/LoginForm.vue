@@ -1,25 +1,31 @@
 <script setup>
 import { ref } from 'vue';
 
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['createUser', 'login']);
 
-const username = ref('');
+const inputUsername = ref('');
 const errors = ref({});
 
 function validateForm() {
     errors.value = {};
 
-    if (!username.value.trim()) {
-        errors.value.username = 'Username is required';
+    if (!inputUsername.value.trim()) {
+        errors.value.inputUsername = 'Username is required';
         return false;
     }
 
     return true;
 }
 
-function handleSubmit() {
+function handleCreateUser() {
     if (validateForm()) {
-        emit('submit', username.value.trim());
+        emit('createUser', inputUsername.value.trim());
+    }
+}
+
+function handleLogin() {
+    if (validateForm()) {
+        emit('login', inputUsername.value.trim());
     }
 }
 </script>
@@ -29,22 +35,31 @@ function handleSubmit() {
         <div class="card-body items-center text-center">
             <p class="text-sm text-brand-secondary">Authenticated via</p>
             <h2 class="card-title text-xl font-semibold">AdrianID</h2>
-            <form class="form-control w-full text-left" @submit.prevent="handleSubmit" autocomplete="off">
+            <form class="form-control w-full text-left" autocomplete="off">
+
                 <label class="label">
                     <span class="label-text">What is your username?</span>
                 </label>
                 <input
-                    v-model="username"
+                    v-model="inputUsername"
                     type="text"
                     class="input input-bordered w-full"
-                    :class="{ 'input-error': errors.username }"
+                    :class="{ 'input-error': errors.inputUsername }"
                     placeholder="Type here"
                 />
-                <label v-if="errors.username" class="label">
-                    <span class="label-text-alt text-error">{{ errors.username }}</span>
+                <label v-if="errors.inputUsername" class="label">
+                    <span class="label-text-alt text-error">{{ errors.inputUsername }}</span>
                 </label>
+
                 <button
-                    type="submit"
+                    type="button"
+                    @click="handleCreateUser"
+                    class="btn w-full mt-4 text-white text-brand-secondary border-none rounded-lg">
+                    Create user
+                </button>
+                <button
+                    type="button"
+                    @click="handleLogin"
                     class="btn w-full mt-4 text-white bg-brand-primary hover:bg-brand-primary-dark border-none rounded-lg">
                     Enter Dashboard
                 </button>

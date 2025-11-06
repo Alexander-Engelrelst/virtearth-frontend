@@ -14,8 +14,8 @@ defineProps({
 <template>
     <nav class="navbar bg-base-100 px-6 border-b border-base-200">
         <div class="navbar-start flex items-center gap-3">
-            <LogoImage :size="48" />
-            <BrandTitle :size="24" />
+            <LogoImage :size=48 />
+            <BrandTitle :size=24 />
         </div>
 
         <div class="navbar-center w-full max-w-lg">
