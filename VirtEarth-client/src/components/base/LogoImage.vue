@@ -12,14 +12,14 @@ const props = defineProps({
 const sizeClass = computed(() => {
     switch (props.size) {
         case 'sm':
-            return 'h-24 w-24';
+            return 'h-16 w-16';
         case 'lg':
-            return 'h-48 w-48';
+            return 'h-32 w-32';
         case 'xl':
-            return 'h-82 w-82';
+            return 'h-48 w-48';
         case 'base':
         default:
-            return 'h-12 w-12';
+            return 'h-22 w-22';
     }
 });
 </script>
@@ -27,6 +27,6 @@ const sizeClass = computed(() => {
 <template>
     <div>
         <!-- TODO: logo image goes here !-->
-        <img src="../../assets/images/logo.webp" :class="sizeClass"></img>
+        <img src="../../assets/images/logo.png" :class="sizeClass"></img>
     </div>
 </template>
