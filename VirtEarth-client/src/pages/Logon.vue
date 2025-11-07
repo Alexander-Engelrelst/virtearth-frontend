@@ -4,21 +4,25 @@ import LogoImage from "@/components/base/LogoImage.vue";
 import BrandTitle from "@/components/base/BrandTitle.vue";
 import LoginForm from "@/components/feature/auth/LoginForm.vue";
 import router from "@/router";
-import { clearAuthData, getUserId, getUsername, saveAuthData } from "@/services/auth.js";
+import { clearAuthData, getUserId, getUsername, saveAuthData, hasFullAuth, hasPartialAuth } from "@/services/auth.js";
 import { loginWithUserId, createUser } from "@/services/api/users.js";
 
 const isLoading = ref(false);
 const error = ref(null);
 
-// Check for existing userId on mount and auto-login
+// Check for existing auth data on mount and handle auto-login
 onMounted(async () => {
-  const userId = getUserId();
+  if (hasFullAuth()) {
+    router.push({ name: "dashboard" });
+    return;
+  }
 
-  if (userId) {
+  if (hasPartialAuth()) {
     isLoading.value = true;
     error.value = null;
 
     try {
+      const userId = getUserId();
       const response = await loginWithUserId(userId);
 
       const username = getUsername();
@@ -26,9 +30,9 @@ onMounted(async () => {
 
       router.push({ name: "dashboard" });
     } catch (err) {
-      error.value = "Auto-login failed. Please login again.";
-
+      // Auto-login failed - clear storage and show LoginForm
       clearAuthData();
+      error.value = "Auto-login failed. Please login again.";
     } finally {
       isLoading.value = false;
     }
@@ -40,9 +44,17 @@ async function handleLogin(username) {
   error.value = null;
 
   try {
-    const response = await createUser(username);
+    let response = await createUser(username);
 
-    saveAuthData(response.userId, response.username, response.jwtToken);
+    saveAuthData(response.id);
+
+    response = await loginWithUserId(response.id);
+
+    saveAuthData(response.id, response.username, response.jwtToken);
+
+    const userId = getUserId();
+    const storedUsername = getUsername();
+    saveAuthData(userId, storedUsername, response.jwtToken);
 
     router.push({ name: "dashboard" });
   } catch (err) {
@@ -71,7 +83,7 @@ async function handleLogin(username) {
     <!-- Loading spinner -->
     <div v-if="isLoading" class="text-center py-4">
       <span class="loading loading-spinner loading-lg text-brand-primary"></span>
-      <p class="mt-2 text-brand-secondary">Logging in...</p>
+      <p class="mt-2 text-brand-secondary">Logging you back in...</p>
     </div>
 
     <!-- Error message -->
