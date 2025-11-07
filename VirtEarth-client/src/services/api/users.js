@@ -1,5 +1,5 @@
-import { USE_MOCK_API, getApiUrl } from './config.js';
-import { mockLoginWithUserId, mockCreateUser } from './mocks/users.js';
+import { USE_MOCK_API, getApiUrl } from "./config.js";
+import { mockLoginWithUserId, mockCreateUser } from "./mocks/users.js";
 
 export async function loginWithUserId(userId) {
   if (USE_MOCK_API) {
@@ -7,9 +7,9 @@ export async function loginWithUserId(userId) {
   }
 
   const response = await fetch(getApiUrl(`/api/users/login/${userId}`), {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
 
@@ -25,10 +25,10 @@ export async function createUser(username) {
     return mockCreateUser(username);
   }
 
-  const response = await fetch(getApiUrl('/api/users/'), {
-    method: 'POST',
+  const response = await fetch(getApiUrl("/api/users/"), {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({ username }),
   });

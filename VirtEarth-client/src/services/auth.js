@@ -1,7 +1,7 @@
 const STORAGE_KEYS = {
-  USER_ID: 'userId',
-  USERNAME: 'username',
-  JWT_TOKEN: 'jwtToken'
+  USER_ID: "userId",
+  USERNAME: "username",
+  JWT_TOKEN: "jwtToken",
 };
 
 export function getUserId() {
