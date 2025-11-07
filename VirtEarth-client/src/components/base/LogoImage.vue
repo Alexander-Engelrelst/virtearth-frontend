@@ -1,9 +1,25 @@
 <script setup>
+import { computed } from 'vue';
+
 // Logo component - Virtearth globe logo
-defineProps({
+const props = defineProps({
     size: {
-        type: Number,
-        default: 64
+        type: String,
+        default: 'base'
+    }
+});
+
+const sizeClass = computed(() => {
+    switch (props.size) {
+        case 'sm':
+            return 'h-24 w-24';
+        case 'lg':
+            return 'h-48 w-48';
+        case 'xl':
+            return 'h-82 w-82';
+        case 'base':
+        default:
+            return 'h-12 w-12';
     }
 });
 </script>
@@ -11,12 +27,6 @@ defineProps({
 <template>
     <div>
         <!-- TODO: logo image goes here !-->
-        <svg :width="size" :height="size" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <g stroke="#C07353" stroke-width="7.5" fill="none" stroke-linecap="round">
-                <circle cx="50" cy="50" r="40" />
-                <line x1="10" y1="50" x2="90" y2="50" />
-                <ellipse cx="50" cy="50" rx="20" ry="40" />
-            </g>
-        </svg>
+        <img src="../../assets/images/logo.webp" :class="sizeClass"></img>
     </div>
 </template>
