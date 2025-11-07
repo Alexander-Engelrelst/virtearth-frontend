@@ -31,7 +31,7 @@ function handleLogin() {
             <AdrianIdBadge />
             <h3 class="text-xl font-semibold mb-6 text-gray-800">Login to Your Account</h3>
 
-            <form class="form-control w-full text-left" autocomplete="off">
+            <form class="form-control w-full text-left" autocomplete="off" @submit.prevent="handleLogin">
                 <label class="label">
                     <span class="label-text text-gray-700 font-medium">Username</span>
                 </label>
@@ -47,8 +47,7 @@ function handleLogin() {
                 </label>
 
                 <button
-                    type="button"
-                    @click="handleLogin"
+                    type="submit"
                     class="btn w-full mt-6 text-white bg-brand-primary hover:bg-brand-primary-dark border-none rounded-lg shadow-md hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200 font-medium text-base py-3">
                     Enter Dashboard
                 </button>

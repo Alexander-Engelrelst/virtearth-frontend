@@ -1,14 +1,27 @@
 <script setup>
-defineProps({
+import { computed } from 'vue';
+
+const props = defineProps({
     size: {
-        type: Number,
-        default: 48 
+        type: String,
+        default: 'base',
+        validator: (value) => ['sm', 'base', 'lg', 'xl'].includes(value)
     }
+});
+
+const sizeClass = computed(() => {
+    const sizes = {
+        sm: 'text-2xl',
+        base: 'text-4xl',
+        lg: 'text-5xl',
+        xl: 'text-6xl'
+    };
+    return sizes[props.size];
 });
 </script>
 
 <template>
-    <h1 class="font-bold text-brand-primary" :style="{ fontSize: size + 'px', fontFamily: 'var(--font-primary)' }">
+    <h1 class="font-bold text-brand-primary font-primary" :class="sizeClass">
         Virtearth
     </h1>
 </template>

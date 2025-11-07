@@ -27,6 +27,6 @@ const sizeClass = computed(() => {
 <template>
     <div>
         <!-- TODO: logo image goes here !-->
-        <img src="../../assets/images/logo.png" :class="sizeClass"></img>
+        <img src="../../assets/images/logo.png" :class="sizeClass" alt="VirtEarth Logo">
     </div>
 </template>
