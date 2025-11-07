@@ -63,7 +63,7 @@ async function handleLogin(username) {
         <div class="hero">
             <div class="hero-content text-center">
                 <div class="max-w-md">
-                    <BrandTitle :size=48 />
+                    <BrandTitle size="lg" />
                     <p class="py-2 text-brand-secondary">Travel time through culture</p>
                 </div>
             </div>

@@ -10,13 +10,17 @@ const props = defineProps({
 });
 
 const sizeClass = computed(() => {
-    const sizes = {
-        sm: 'text-2xl',
-        base: 'text-4xl',
-        lg: 'text-5xl',
-        xl: 'text-6xl'
-    };
-    return sizes[props.size];
+    switch (props.size) {
+        case 'sm':
+            return 'text-2xl';
+        case 'lg':
+            return 'text-5xl';
+        case 'xl':
+            return 'text-6xl';
+        case 'base':
+        default:
+            return 'text-4xl';
+    }
 });
 </script>
 
