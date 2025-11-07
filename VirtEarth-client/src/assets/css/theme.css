@@ -1,0 +1,38 @@
+@theme {
+    /* Font Families */
+    --font-primary: 'Outfit', sans-serif;
+    --font-secondary: 'Inter', sans-serif;
+    --font-sans: 'Inter', sans-serif;
+
+    /* Brand Colors */
+    --color-brand-primary: #C07353;
+    --color-brand-primary-dark: #a96346;
+    --color-brand-secondary: #6b7280;
+    --color-brand-background: #fcfaf8;
+}
+
+/* Body uses Inter (secondary font) by default */
+body {
+    font-family: var(--font-secondary);
+}
+
+/* Custom utility classes for brand colors */
+.text-brand-primary {
+    color: var(--color-brand-primary);
+}
+
+.text-brand-secondary {
+    color: var(--color-brand-secondary);
+}
+
+.bg-brand-primary {
+    background-color: var(--color-brand-primary);
+}
+
+.hover\:bg-brand-primary-dark:hover {
+    background-color: var(--color-brand-primary-dark);
+}
+
+.bg-brand-background {
+    background-color: var(--color-brand-background);
+}

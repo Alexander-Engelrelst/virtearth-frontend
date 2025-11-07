@@ -1,8 +1,17 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "forceConsistentCasingInFileNames": true
   },
+  "vueCompilerOptions": {
+    "target": 3,
+    "globalTypesPath": "./node_modules/.vue-global-types"
+  },
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
