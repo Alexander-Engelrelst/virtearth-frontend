@@ -23,12 +23,16 @@ const emit = defineEmits(['update:timeRange']);
 const handleTimeRangeUpdate = (newTimeRange) => {
   emit('update:timeRange', newTimeRange);
 };
+
+const handleResetFilters = () => {
+  timeRange.value = { from: props.min, to: props.max };
+};
 </script>
 
 <template>
   <aside class="w-70 min-w-65 bg-white h-full border-r border-gray-300 p-4">
     <h3 class="text-xl font-bold text-gray-800 mb-2">Filters</h3>
-    <ResetFiltersBtn class="mb-6"></ResetFiltersBtn>
+    <ResetFiltersBtn class="mb-6" @reset:filters="handleResetFilters"></ResetFiltersBtn>
     <label class="block text-sm font-medium text-gray-700 mb-2">Time Period</label>
     <TimeRangeFilter
       :min="min"

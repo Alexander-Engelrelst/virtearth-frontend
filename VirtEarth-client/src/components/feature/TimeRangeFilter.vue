@@ -33,6 +33,14 @@ watch([() => props.min, () => props.max], ([newMin, newMax]) => {
     }
 });
 
+watch(() => props.modelValue, (newValue) => {
+    if (newValue) {
+        from.value = newValue.from;
+        to.value = newValue.to;
+        emitChange();
+    }
+}, { deep: true });
+
 // Prevent sliders from crossing each other
 const onFromInput = () => {
     if (from.value > to.value) {
