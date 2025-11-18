@@ -23,14 +23,18 @@ const props = defineProps({
 const from = ref(props.min);
 const to = ref(props.max);
 
+const emit = defineEmits(["update:modelValue"]);
+
+const emitChange = () => {
+  emit("update:modelValue", { from: from.value, to: to.value });
+};
+
 //on landmarks fetch, props update, from & to should be defaulted to those.
 watch([() => props.min, () => props.max], ([newMin, newMax]) => {
-  if (newMin !== 0 || newMax !== 0) {
-    from.value = newMin;
-    to.value = newMax;
-    emitChange();
-  }
-});
+  from.value = newMin;
+  to.value = newMax;
+  emitChange();
+}, { immediate: true });
 
 // Prevent sliders from crossing each other
 const onFromInput = () => {
@@ -44,12 +48,6 @@ const onToInput = () => {
     to.value = from.value;
   }
   emitChange();
-};
-
-const emit = defineEmits(["update:modelValue"]);
-
-const emitChange = () => {
-  emit("update:modelValue", { from: from.value, to: to.value });
 };
 
 // Calculate the progress bar position and width
@@ -106,7 +104,7 @@ defineExpose({ reset });
       :min="min"
       :max="max"
       :step="step"
-      v-model.number="from"
+      v-model.number="from" 
       @input="onFromInput"
       class="slider-input"
     />

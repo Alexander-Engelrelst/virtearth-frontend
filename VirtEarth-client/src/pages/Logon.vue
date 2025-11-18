@@ -82,7 +82,7 @@ async function handleLogin(username) {
       <div class="hero-content text-center">
         <div class="max-w-md">
           <BrandTitle size="lg" />
-          <p class="py-2 text-brand-secondary">Travel time through culture</p>
+          <p class="py-2 text-brand-secondary">Explore history, live culture</p>
         </div>
       </div>
     </div>

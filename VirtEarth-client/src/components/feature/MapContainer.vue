@@ -23,6 +23,7 @@ onMounted(() => {
       minZoom: 1,
       maxZoom: 16,
       ext: "jpg",
+      noWrap: true,
     }
   );
   Stadia_StamenWatercolor.addTo(mapInstance.value);

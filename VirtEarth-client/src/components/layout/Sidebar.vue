@@ -9,7 +9,6 @@ const props = defineProps({
 });
 
 const timeRange = ref({ from: props.min, to: props.max });
-const step = computed(() => Math.round((Math.abs(props.min) + Math.abs(props.max)) / 50));
 const timeRangeFilterRef = ref(null);
 
 const emit = defineEmits(["update:timeRange"]);
@@ -32,7 +31,6 @@ const handleResetFilters = () => {
       ref="timeRangeFilterRef"
       :min="min"
       :max="max"
-      :step="step"
       :modelValue="timeRange"
       @update:modelValue="handleTimeRangeUpdate"
     ></TimeRangeFilter>
