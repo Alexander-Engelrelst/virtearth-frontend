@@ -15,8 +15,6 @@ onMounted(() => {
     {
       minZoom: 1,
       maxZoom: 16,
-      attribution:
-        '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       ext: "jpg",
     }
   );
@@ -28,10 +26,10 @@ onMounted(() => {
     const icon = L.icon({
       iconUrl: markerIcon,
       iconSize: [50, 50],
-      iconAnchor: [25, 50]
+      iconAnchor: [25, 50]  
     })
 
-    const markers = landmarks.value.map(({latitude, longitude, name}) => L.marker([latitude, longitude], { icon }).bindPopup(name));
+    const markers = landmarks.value.map(({latitude, longitude, year, name}) => L.marker([latitude, longitude], { icon }).bindPopup(year + " " + name));
     const markersGroup = L.featureGroup(markers).addTo(mapInstance.value);
     mapInstance.value.fitBounds(markersGroup.getBounds());
   })
