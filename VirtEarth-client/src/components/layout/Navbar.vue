@@ -6,7 +6,7 @@ import SearchBar from "@/components/feature/SearchBar.vue";
 defineProps({
   username: {
     type: String,
-    required: true
+    required: true,
   },
 });
 </script>

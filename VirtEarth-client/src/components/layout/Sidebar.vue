@@ -1,21 +1,21 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
-import TimeRangeFilter from '../feature/TimeRangeFilter.vue';
-import ResetFiltersBtn from '../feature/ResetFiltersBtn.vue';
+import { computed, ref, watch } from "vue";
+import TimeRangeFilter from "../feature/TimeRangeFilter.vue";
+import ResetFiltersBtn from "../feature/ResetFiltersBtn.vue";
 
 const props = defineProps({
-  min: {type: Number, required: true},
-  max: {type: Number, required: true}
+  min: { type: Number, required: true },
+  max: { type: Number, required: true },
 });
 
-const timeRange = ref({"from": props.min, "to": props.max})
-const step = computed(() => Math.round((Math.abs(props.min) + Math.abs(props.max)) / 50))
+const timeRange = ref({ from: props.min, to: props.max });
+const step = computed(() => Math.round((Math.abs(props.min) + Math.abs(props.max)) / 50));
 const timeRangeFilterRef = ref(null);
 
-const emit = defineEmits(['update:timeRange']);
+const emit = defineEmits(["update:timeRange"]);
 
 const handleTimeRangeUpdate = (newTimeRange) => {
-  emit('update:timeRange', newTimeRange);
+  emit("update:timeRange", newTimeRange);
 };
 
 const handleResetFilters = () => {

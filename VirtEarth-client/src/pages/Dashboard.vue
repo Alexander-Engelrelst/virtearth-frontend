@@ -12,12 +12,12 @@ const timeRange = ref({});
 
 const minYear = computed(() => {
   if (landmarks.value.length === 0) return 0;
-  return Math.min(...landmarks.value.map(l => l.year));
+  return Math.min(...landmarks.value.map((l) => l.year));
 });
 
 const maxYear = computed(() => {
   if (landmarks.value.length === 0) return 0;
-  return Math.max(...landmarks.value.map(l => l.year));
+  return Math.max(...landmarks.value.map((l) => l.year));
 });
 
 const filteredLandmarks = computed(() => {

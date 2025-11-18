@@ -4,7 +4,14 @@ import LogoImage from "@/components/base/LogoImage.vue";
 import BrandTitle from "@/components/base/BrandTitle.vue";
 import LoginForm from "@/components/feature/auth/LoginForm.vue";
 import router from "@/router";
-import { clearAuthData, getUserId, getUsername, saveAuthData, hasFullAuth, hasPartialAuth } from "@/services/auth.js";
+import {
+  clearAuthData,
+  getUserId,
+  getUsername,
+  saveAuthData,
+  hasFullAuth,
+  hasPartialAuth,
+} from "@/services/auth.js";
 import { loginWithUserId, createUser } from "@/services/api/users.js";
 
 const isLoading = ref(false);
