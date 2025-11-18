@@ -20,11 +20,10 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['update:modelValue']);
-
 const from = ref(props.min);
 const to = ref(props.max);
 
+//on landmarks fetch, props update, from & to should be defaulted to those.
 watch([() => props.min, () => props.max], ([newMin, newMax]) => {
     if (newMin !== 0 || newMax !== 0) {
         from.value = newMin;
@@ -33,14 +32,6 @@ watch([() => props.min, () => props.max], ([newMin, newMax]) => {
     }
 });
 
-watch(() => props.modelValue, (newValue) => {
-    if (newValue) {
-        from.value = newValue.from;
-        to.value = newValue.to;
-        emitChange();
-    }
-}, { deep: true });
-
 // Prevent sliders from crossing each other
 const onFromInput = () => {
     if (from.value > to.value) {
@@ -48,13 +39,14 @@ const onFromInput = () => {
     }
     emitChange();
 };
-
 const onToInput = () => {
     if (to.value < from.value) {
         to.value = from.value;
     }
     emitChange();
 };
+
+const emit = defineEmits(['update:modelValue']);
 
 const emitChange = () => {
     emit('update:modelValue', { from: from.value, to: to.value });
@@ -81,6 +73,15 @@ const formatYear = (year) => {
 
 const fromDisplay = computed(() => formatYear(from.value));
 const toDisplay = computed(() => formatYear(to.value));
+
+//expose reset func for parent to call
+const reset = () => {
+    from.value = props.min;
+    to.value = props.max;
+    emitChange();
+};
+
+defineExpose({ reset });
 
 </script>
 

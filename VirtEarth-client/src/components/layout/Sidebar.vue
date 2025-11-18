@@ -10,13 +10,7 @@ const props = defineProps({
 
 const timeRange = ref({"from": props.min, "to": props.max})
 const step = computed(() => Math.round((Math.abs(props.min) + Math.abs(props.max)) / 50))
-
-// Update timeRange when min/max props change (e.g., when landmarks are loaded)
-watch([() => props.min, () => props.max], ([newMin, newMax]) => {
-  if (newMin !== 0 || newMax !== 0) {
-    timeRange.value = { from: newMin, to: newMax };
-  }
-});
+const timeRangeFilterRef = ref(null);
 
 const emit = defineEmits(['update:timeRange']);
 
@@ -25,7 +19,7 @@ const handleTimeRangeUpdate = (newTimeRange) => {
 };
 
 const handleResetFilters = () => {
-  timeRange.value = { from: props.min, to: props.max };
+  timeRangeFilterRef.value?.reset();
 };
 </script>
 
@@ -35,6 +29,7 @@ const handleResetFilters = () => {
     <ResetFiltersBtn class="mb-6" @reset:filters="handleResetFilters"></ResetFiltersBtn>
     <label class="block text-sm font-medium text-gray-700 mb-2">Time Period</label>
     <TimeRangeFilter
+      ref="timeRangeFilterRef"
       :min="min"
       :max="max"
       :step="step"
