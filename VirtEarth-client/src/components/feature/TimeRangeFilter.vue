@@ -22,8 +22,8 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue']);
 
-const from = ref(props.modelValue.from || props.min);
-const to = ref(props.modelValue.to || props.max);
+const from = ref(props.min);
+const to = ref(props.max);
 
 // Prevent sliders from crossing each other
 const onFromInput = () => {
@@ -53,13 +53,24 @@ const progressWidth = computed(() => {
     return ((to.value - from.value) / (props.max - props.min)) * 100;
 });
 
+const formatYear = (year) => {
+    if (year < 0) {
+        return `${Math.abs(year)} BC`;
+    } else {
+        return `${year} AD`;
+    }
+};
+
+const fromDisplay = computed(() => formatYear(from.value));
+const toDisplay = computed(() => formatYear(to.value));
+
 </script>
 
 <template>
     <div class="relative">
         <div class="flex justify-between mb-2 text-sm text-brand-secondary">
-            <span>{{ from }}</span>
-            <span>{{ to }}</span>
+            <span>{{ fromDisplay }}</span>
+            <span>{{ toDisplay }}</span>
         </div>
 
         <div class="absolute w-full h-1.5 bg-slate-300 rounded top-[2rem]"></div>
