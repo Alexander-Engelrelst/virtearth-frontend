@@ -1,13 +1,20 @@
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { getLandmarks } from "@/services/api/landmarks.js"
-import markerIcon from "@/assets/images/adria_landmark_marker.png"
+import markerIcon from "@/assets/images/adria_landmark_marker.png";
+
+const props = defineProps({
+  landmarks: {
+    type: Array,
+    required: true,
+  },
+});
 
 const mapInstance = ref(null);
-const landmarks = ref([])
+const markersGroup = ref(null);
 
+// Initialize map
 onMounted(() => {
   mapInstance.value = L.map("map").setView([0, 0], 3);
   var Stadia_StamenWatercolor = L.tileLayer(
@@ -19,23 +26,42 @@ onMounted(() => {
     }
   );
   Stadia_StamenWatercolor.addTo(mapInstance.value);
-  
-  getLandmarks()
-  .then(res => landmarks.value = res.landmarks)
-  .then(() => {
+});
+
+const updateMarkers = () => {
+  if (!mapInstance.value) return;
+
+  if (markersGroup.value) {
+    markersGroup.value.clearLayers();
+  }
+
+  if (props.landmarks.length > 0) {
     const icon = L.icon({
       iconUrl: markerIcon,
       iconSize: [50, 50],
-      iconAnchor: [25, 50]  
-    })
+      iconAnchor: [25, 50],
+    });
 
-    const markers = landmarks.value.map(({latitude, longitude, year, name}) => L.marker([latitude, longitude], { icon }).bindPopup(year + " " + name));
-    const markersGroup = L.featureGroup(markers).addTo(mapInstance.value);
-    mapInstance.value.fitBounds(markersGroup.getBounds());
-  })
+    const markers = props.landmarks.map(({ latitude, longitude, year, name }) =>
+      L.marker([latitude, longitude], { icon }).bindPopup(year + " " + name)
+    );
 
-  
-});
+    if (!markersGroup.value) {
+      markersGroup.value = L.featureGroup(markers).addTo(mapInstance.value);
+    } else {
+      markers.forEach((marker) => markersGroup.value.addLayer(marker));
+    }
+  }
+};
+
+watch(
+  () => props.landmarks,
+  () => {
+    updateMarkers();
+  },
+  { immediate: true }
+);
+
 onBeforeUnmount(() => {
   if (mapInstance.value) {
     mapInstance.value.remove();

@@ -25,6 +25,14 @@ const emit = defineEmits(['update:modelValue']);
 const from = ref(props.min);
 const to = ref(props.max);
 
+watch([() => props.min, () => props.max], ([newMin, newMax]) => {
+    if (newMin !== 0 || newMax !== 0) {
+        from.value = newMin;
+        to.value = newMax;
+        emitChange();
+    }
+});
+
 // Prevent sliders from crossing each other
 const onFromInput = () => {
     if (from.value > to.value) {
@@ -46,11 +54,13 @@ const emitChange = () => {
 
 // Calculate the progress bar position and width
 const progressLeft = computed(() => {
-    return ((from.value - props.min) / (props.max - props.min)) * 100;
+    const range = props.max - props.min;
+    return ((from.value - props.min) / range) * 100;
 });
 
 const progressWidth = computed(() => {
-    return ((to.value - from.value) / (props.max - props.min)) * 100;
+    const range = props.max - props.min;
+    return ((to.value - from.value) / range) * 100;
 });
 
 const formatYear = (year) => {
