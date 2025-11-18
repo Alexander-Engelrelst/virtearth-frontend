@@ -9,7 +9,7 @@ const props = defineProps({
 });
 
 const timeRange = ref({"from": props.min, "to": props.max})
-const step = computed(() => {(Math.abs(props.min) + Math.abs(props.max))/ 100})
+const step = computed(() => Math.round((Math.abs(props.min) + Math.abs(props.max)) / 50))
 
 // Update timeRange when min/max props change (e.g., when landmarks are loaded)
 watch([() => props.min, () => props.max], ([newMin, newMax]) => {
