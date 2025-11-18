@@ -56,41 +56,23 @@ const progressWidth = computed(() => {
 </script>
 
 <template>
-    <div class="relative h-[50px] pt-2.5">
-        <div class="absolute w-full h-1.5 bg-slate-300 rounded top-2.5"></div>
-
-        <div
-            class="absolute h-1.5 bg-blue-500 rounded top-2.5"
-            :style="{
-                left: progressLeft + '%',
-                width: progressWidth + '%'
-            }"
-        ></div>
-
-        <!-- Range inputs -->
-        <input
-            type="range"
-            :min="min"
-            :max="max"
-            :step="step"
-            v-model.number="from"
-            @input="onFromInput"
-            class="slider-input"
-        />
-        <input
-            type="range"
-            :min="min"
-            :max="max"
-            :step="step"
-            v-model.number="to"
-            @input="onToInput"
-            class="slider-input"
-        />
-
-        <div class="flex justify-between mt-2.5 text-sm text-slate-500">
+    <div class="relative">
+        <div class="flex justify-between mb-2 text-sm text-brand-secondary">
             <span>{{ from }}</span>
             <span>{{ to }}</span>
         </div>
+
+        <div class="absolute w-full h-1.5 bg-slate-300 rounded top-[2rem]"></div>
+
+        <div class="absolute h-1.5 bg-brand-primary rounded top-[2rem]" :style="{
+            left: progressLeft + '%',
+            width: progressWidth + '%'
+        }"></div>
+
+        <input type="range" :min="min" :max="max" :step="step" v-model.number="from" @input="onFromInput"
+            class="slider-input" />
+        <input type="range" :min="min" :max="max" :step="step" v-model.number="to" @input="onToInput"
+            class="slider-input" />
     </div>
 </template>
 
@@ -103,11 +85,19 @@ const progressWidth = computed(() => {
     pointer-events: none;
     -webkit-appearance: none;
     appearance: none;
-    top: 10px;
+    top: 2rem;
 }
 
 .slider-input::-webkit-slider-thumb {
+    width: 1.25rem;
+    height: 1.25rem;
+    background: var(--color-brand-primary);
+    border: 0.15rem solid #eeeeee;
+    border-radius: 50%;
     cursor: pointer;
     pointer-events: all;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
+    -webkit-appearance: none;
+    appearance: none;
 }
 </style>
