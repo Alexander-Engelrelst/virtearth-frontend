@@ -9,7 +9,7 @@ import {
   getUserId,
   getUsername,
   saveAuthData,
-  hasFullAuth,
+  isAuthenticated,
   hasPartialAuth,
 } from "@/services/auth.js";
 import { loginWithUserId, createUser } from "@/services/api/users.js";
@@ -19,7 +19,7 @@ const error = ref(null);
 
 // Check for existing auth data on mount and handle auto-login
 onMounted(async () => {
-  if (hasFullAuth()) {
+  if (isAuthenticated()) {
     router.push({ name: "dashboard" });
     return;
   }
@@ -37,7 +37,7 @@ onMounted(async () => {
 
       router.push({ name: "dashboard" });
     } catch (err) {
-      // Auto-login failed - clear storage and show LoginForm
+      // Auto-login failed clear storage and show LoginForm
       clearAuthData();
       error.value = "Auto-login failed. Please login again.";
     } finally {

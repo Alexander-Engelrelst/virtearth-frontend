@@ -24,13 +24,16 @@ const maxYear = computed(() => {
 
 const filteredLandmarks = computed(() => {
   return landmarks.value.filter((landmark) => {
-    const isWithinTimeRange = landmark.year >= timeRange.value.from && landmark.year <= timeRange.value.to;
-    const isSelectedContinent = selectedContinents.value.length === 0 || selectedContinents.value.includes(landmark.continent);
+    const isWithinTimeRange =
+      landmark.year >= timeRange.value.from && landmark.year <= timeRange.value.to;
+    const isSelectedContinent =
+      selectedContinents.value.length === 0 ||
+      selectedContinents.value.includes(landmark.continent);
     return isWithinTimeRange && isSelectedContinent;
   });
 });
 
-// Fetch landmarks on component mount
+// Fetch landmarks & continents on component mount
 onMounted(async () => {
   try {
     const response = await getLandmarks();
@@ -41,7 +44,6 @@ onMounted(async () => {
   try {
     const response = await getContinents();
     continents.value = response.continents;
-    
   } catch (error) {
     console.error("Failed to fetch continents:", error);
   }
@@ -52,7 +54,13 @@ onMounted(async () => {
   <div class="w-full h-screen flex flex-col">
     <Navbar :username="username" />
     <div class="flex flex-1 overflow-hidden">
-      <Sidebar v-model:timeRange="timeRange" v-model:continents="selectedContinents" :min="minYear" :max="maxYear" :allContinents="continents" />
+      <Sidebar
+        v-model:timeRange="timeRange"
+        v-model:continents="selectedContinents"
+        :min="minYear"
+        :max="maxYear"
+        :allContinents="continents"
+      />
       <MapContainer :landmarks="filteredLandmarks" />
     </div>
   </div>

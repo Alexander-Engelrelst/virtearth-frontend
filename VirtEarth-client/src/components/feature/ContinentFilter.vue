@@ -9,13 +9,16 @@ const props = defineProps({
   modelValue: {
     type: Array,
     default: () => [],
-  }
+  },
 });
 const selectedContinents = ref([...props.modelValue]);
 
-watch(() => props.modelValue, (newValue) => {
-  selectedContinents.value = [...newValue];
-});
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    selectedContinents.value = [...newValue];
+  }
+);
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -43,7 +46,6 @@ defineExpose({ reset });
 </script>
 
 <template>
-
   <div class="flex flex-wrap gap-2">
     <button
       v-for="continent in allContinents"
@@ -53,7 +55,7 @@ defineExpose({ reset });
         'px-4 py-2 rounded-lg font-medium transition-colors',
         isSelected(continent)
           ? 'bg-brand-primary text-white hover:bg-brand-primary-dark'
-          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          : 'bg-gray-200 text-gray-700 hover:bg-gray-300',
       ]"
     >
       {{ continent }}

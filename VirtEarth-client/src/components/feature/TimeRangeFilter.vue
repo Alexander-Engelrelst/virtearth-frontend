@@ -30,11 +30,15 @@ const emitChange = () => {
 };
 
 //on landmarks fetch, props update, from & to should be defaulted to those.
-watch([() => props.min, () => props.max], ([newMin, newMax]) => {
-  from.value = newMin;
-  to.value = newMax;
-  emitChange();
-}, { immediate: true });
+watch(
+  [() => props.min, () => props.max],
+  ([newMin, newMax]) => {
+    from.value = newMin;
+    to.value = newMax;
+    emitChange();
+  },
+  { immediate: true }
+);
 
 // Prevent sliders from crossing each other
 const onFromInput = () => {
@@ -104,7 +108,7 @@ defineExpose({ reset });
       :min="min"
       :max="max"
       :step="step"
-      v-model.number="from" 
+      v-model.number="from"
       @input="onFromInput"
       class="slider-input"
     />

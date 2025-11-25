@@ -24,8 +24,8 @@ const handleTimeRangeUpdate = (newTimeRange) => {
 };
 
 const handleUpdateContinents = (newContinents) => {
-  emit("update:continents", newContinents)
-}
+  emit("update:continents", newContinents);
+};
 
 const handleResetFilters = () => {
   timeRangeFilterRef.value?.reset();
@@ -47,9 +47,9 @@ const handleResetFilters = () => {
       @update:modelValue="handleTimeRangeUpdate"
     ></TimeRangeFilter>
     <label class="block text-m font-medium text-gray-700 mb-2">Continent</label>
-    <ContinentFilter 
-      ref="continentFilterRef" 
-      :allContinents="allContinents" 
+    <ContinentFilter
+      ref="continentFilterRef"
+      :allContinents="allContinents"
       :modelValue="continents"
       @update:modelValue="handleUpdateContinents"
     ></ContinentFilter>

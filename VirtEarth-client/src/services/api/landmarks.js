@@ -5,6 +5,6 @@ export async function getLandmarks() {
   if (USE_MOCK_API) return mockGetLandmarks();
 }
 
-export async function getContinents(){
-  if(USE_MOCK_API) return mockGetContinents();
+export async function getContinents() {
+  if (USE_MOCK_API) return mockGetContinents();
 }
