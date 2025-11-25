@@ -41,13 +41,10 @@ const localSearchString = computed({
     <div class="navbar-end flex items-center gap-3">
       <div class="avatar">
         <div class="w-14 rounded-full">
-          <img
-            src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp"
-          />
+          <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
         </div>
       </div>
       <span class="font-semibold text-gray-700">{{ username }}</span>
     </div>
   </nav>
 </template>
-
