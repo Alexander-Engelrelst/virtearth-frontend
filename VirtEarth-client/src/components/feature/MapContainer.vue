@@ -17,16 +17,13 @@ const markersGroup = ref(null);
 // Initialize map
 onMounted(() => {
   mapInstance.value = L.map("map").setView([0, 0], 3);
-  var Stadia_StamenWatercolor = L.tileLayer(
-    "https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.{ext}",
-    {
-      minZoom: 1,
-      maxZoom: 16,
-      ext: "jpg",
-      noWrap: true,
-    }
-  );
-  Stadia_StamenWatercolor.addTo(mapInstance.value);
+  L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.png", {
+    minZoom: 1,
+    maxZoom: 16,
+    noWrap: true,
+  }).addTo(mapInstance.value);
+
+  updateMarkers();
 });
 
 const updateMarkers = () => {
@@ -59,8 +56,7 @@ watch(
   () => props.landmarks,
   () => {
     updateMarkers();
-  },
-  { immediate: true }
+  }
 );
 
 onBeforeUnmount(() => {
