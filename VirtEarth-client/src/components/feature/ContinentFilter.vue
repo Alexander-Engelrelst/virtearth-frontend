@@ -1,45 +1,35 @@
 <script setup>
-import { ref, watch } from "vue";
+const modelValue = defineModel({
+  type: Array,
+  default: () => [],
+});
 
-const props = defineProps({
+defineProps({
   allContinents: {
     type: Array,
     default: () => [],
   },
-  modelValue: {
-    type: Array,
-    default: () => [],
-  },
 });
-const selectedContinents = ref([...props.modelValue]);
-
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    selectedContinents.value = [...newValue];
-  }
-);
-
-const emit = defineEmits(["update:modelValue"]);
 
 const toggleContinent = (continent) => {
-  const index = selectedContinents.value.indexOf(continent);
-  if (index > -1) {
-    selectedContinents.value.splice(index, 1);
-  } else {
-    selectedContinents.value.push(continent);
+  if (!modelValue.value) {
+    modelValue.value = [];
   }
-  emit("update:modelValue", selectedContinents.value);
+  const index = modelValue.value.indexOf(continent);
+  if (index > -1) {
+    modelValue.value.splice(index, 1);
+  } else {
+    modelValue.value.push(continent);
+  }
 };
 
 const isSelected = (continent) => {
-  return selectedContinents.value.includes(continent);
+  return modelValue.value.includes(continent);
 };
 
 // Expose reset function for parent to call
 const reset = () => {
-  selectedContinents.value = [];
-  emit("update:modelValue", []);
+  modelValue.value = [];
 };
 
 defineExpose({ reset });

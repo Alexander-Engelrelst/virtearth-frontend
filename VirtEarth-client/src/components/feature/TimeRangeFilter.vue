@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from "vue";
+import { computed, watch } from "vue";
 
 const props = defineProps({
   min: {
@@ -14,54 +14,49 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
-  modelValue: {
-    type: Object,
-    default: () => ({ from: 0, to: 100 }),
-  },
 });
 
-const from = ref(props.min);
-const to = ref(props.max);
-
-const emit = defineEmits(["update:modelValue"]);
-
-const emitChange = () => {
-  emit("update:modelValue", { from: from.value, to: to.value });
-};
+const model = defineModel({
+  type: Object,
+  default: () => ({ from: 0, to: 100 }),
+});
 
 //on landmarks fetch, props update, from & to should be defaulted to those.
 watch(
   [() => props.min, () => props.max],
   ([newMin, newMax]) => {
-    from.value = newMin;
-    to.value = newMax;
-    emitChange();
+    model.value = { from: newMin, to: newMax };
   },
   { immediate: true }
 );
 
 // Prevent sliders from crossing each other
-const onFromInput = () => {
-  if (from.value > to.value) {
-    from.value = to.value;
-  }
-  emitChange();
-};
-const onToInput = () => {
-  if (to.value < from.value) {
-    to.value = from.value;
-  }
-  emitChange();
-};
+const from = computed({
+  get: () => model.value.from,
+  set: (val) => {
+    const newFrom = val > model.value.to ? model.value.to : val;
+    model.value = { ...model.value, from: newFrom };
+  },
+});
+
+const to = computed({
+  get: () => model.value.to,
+  set: (val) => {
+    const newTo = val < model.value.from ? model.value.from : val;
+    model.value = { ...model.value, to: newTo };
+  },
+});
 
 // Calculate the progress bar position and width
 const progressLeft = computed(() => {
   const range = props.max - props.min;
+  if (range === 0) return 0;
   return ((from.value - props.min) / range) * 100;
 });
 
 const progressWidth = computed(() => {
   const range = props.max - props.min;
+  if (range === 0) return 0;
   return ((to.value - from.value) / range) * 100;
 });
 
@@ -78,9 +73,7 @@ const toDisplay = computed(() => formatYear(to.value));
 
 //expose reset func for parent to call
 const reset = () => {
-  from.value = props.min;
-  to.value = props.max;
-  emitChange();
+  model.value = { from: props.min, to: props.max };
 };
 
 defineExpose({ reset });
@@ -109,7 +102,6 @@ defineExpose({ reset });
       :max="max"
       :step="step"
       v-model.number="from"
-      @input="onFromInput"
       class="slider-input"
     />
     <input
@@ -118,7 +110,6 @@ defineExpose({ reset });
       :max="max"
       :step="step"
       v-model.number="to"
-      @input="onToInput"
       class="slider-input"
     />
   </div>
