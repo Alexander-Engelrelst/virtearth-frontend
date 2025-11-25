@@ -11,6 +11,7 @@ const landmarks = ref([]);
 const continents = ref([]);
 const timeRange = ref({});
 const selectedContinents = ref([]);
+const searchString = ref("");
 
 const minYear = computed(() => {
   if (landmarks.value.length === 0) return 0;
@@ -25,11 +26,16 @@ const maxYear = computed(() => {
 const filteredLandmarks = computed(() => {
   return landmarks.value.filter((landmark) => {
     const isWithinTimeRange =
-      landmark.year >= timeRange.value.from && landmark.year <= timeRange.value.to;
+      !timeRange.value.from ||
+      (landmark.year >= timeRange.value.from && landmark.year <= timeRange.value.to);
     const isSelectedContinent =
       selectedContinents.value.length === 0 ||
       selectedContinents.value.includes(landmark.continent);
-    return isWithinTimeRange && isSelectedContinent;
+    const matchesSearch =
+      searchString.value === "" ||
+      landmark.name.toLowerCase().includes(searchString.value.toLowerCase()) ||
+      landmark.continent.toLowerCase().includes(searchString.value.toLowerCase());
+    return isWithinTimeRange && isSelectedContinent && matchesSearch;
   });
 });
 
@@ -52,7 +58,7 @@ onMounted(async () => {
 
 <template>
   <div class="w-full h-screen flex flex-col">
-    <Navbar :username="username" />
+    <Navbar :username="username" v-model:searchString="searchString" />
     <div class="flex flex-1 overflow-hidden">
       <Sidebar
         v-model:timeRange="timeRange"

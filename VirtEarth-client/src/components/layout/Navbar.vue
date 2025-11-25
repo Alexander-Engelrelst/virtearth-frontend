@@ -1,12 +1,28 @@
 <script setup>
+import { computed } from "vue";
 import LogoImage from "@/components/base/LogoImage.vue";
 import BrandTitle from "@/components/base/BrandTitle.vue";
 import SearchBar from "@/components/feature/SearchBar.vue";
 
-defineProps({
+const props = defineProps({
   username: {
     type: String,
     required: true,
+  },
+  searchString: {
+    type: String,
+    default: "",
+  },
+});
+
+const emit = defineEmits(["update:searchString"]);
+
+const localSearchString = computed({
+  get() {
+    return props.searchString;
+  },
+  set(value) {
+    emit("update:searchString", value);
   },
 });
 </script>
@@ -19,16 +35,19 @@ defineProps({
     </div>
 
     <div class="navbar-center w-full max-w-lg">
-      <SearchBar />
+      <SearchBar v-model="localSearchString" />
     </div>
 
     <div class="navbar-end flex items-center gap-3">
       <div class="avatar">
         <div class="w-14 rounded-full">
-          <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
+          <img
+            src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp"
+          />
         </div>
       </div>
       <span class="font-semibold text-gray-700">{{ username }}</span>
     </div>
   </nav>
 </template>
+
