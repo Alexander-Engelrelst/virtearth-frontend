@@ -17,7 +17,10 @@ const props = defineProps({
 
 const emit = defineEmits(["update:searchString"]);
 
-const localSearchString = computed({
+/* * Computed property acting as a proxy for v-model. 
+ * Get retrieves the prop; Set emits the update event to the parent.
+ */
+const SearchString = computed({
   get() {
     return props.searchString;
   },
@@ -35,7 +38,8 @@ const localSearchString = computed({
     </div>
 
     <div class="navbar-center w-full max-w-lg">
-      <SearchBar v-model="localSearchString" />
+      <!-- v-model is shorthand for :modelValue="SearchString" & @update:modelValue=-->
+      <SearchBar v-model="SearchString" />
     </div>
 
     <div class="navbar-end flex items-center gap-3">
