@@ -4,11 +4,13 @@ import Navbar from "@/components/layout/Navbar.vue";
 import Sidebar from "@/components/layout/Sidebar.vue";
 import MapContainer from "@/components/feature/MapContainer.vue";
 import { getUsername } from "@/services/auth.js";
-import { getLandmarks } from "@/services/api/landmarks.js";
+import { getContinents, getLandmarks } from "@/services/api/landmarks.js";
 
 const username = getUsername();
 const landmarks = ref([]);
+const continents = ref([]);
 const timeRange = ref({});
+const selectedContinents = ref([]);
 
 const minYear = computed(() => {
   if (landmarks.value.length === 0) return 0;
@@ -22,7 +24,9 @@ const maxYear = computed(() => {
 
 const filteredLandmarks = computed(() => {
   return landmarks.value.filter((landmark) => {
-    return landmark.year >= timeRange.value.from && landmark.year <= timeRange.value.to;
+    const isWithinTimeRange = landmark.year >= timeRange.value.from && landmark.year <= timeRange.value.to;
+    const isSelectedContinent = selectedContinents.value.length === 0 || selectedContinents.value.includes(landmark.continent);
+    return isWithinTimeRange && isSelectedContinent;
   });
 });
 
@@ -34,6 +38,13 @@ onMounted(async () => {
   } catch (error) {
     console.error("Failed to fetch landmarks:", error);
   }
+  try {
+    const response = await getContinents();
+    continents.value = response.continents;
+    
+  } catch (error) {
+    console.error("Failed to fetch continents:", error);
+  }
 });
 </script>
 
@@ -41,7 +52,7 @@ onMounted(async () => {
   <div class="w-full h-screen flex flex-col">
     <Navbar :username="username" />
     <div class="flex flex-1 overflow-hidden">
-      <Sidebar v-model:timeRange="timeRange" :min="minYear" :max="maxYear" />
+      <Sidebar v-model:timeRange="timeRange" v-model:continents="selectedContinents" :min="minYear" :max="maxYear" :allContinents="continents" />
       <MapContainer :landmarks="filteredLandmarks" />
     </div>
   </div>
