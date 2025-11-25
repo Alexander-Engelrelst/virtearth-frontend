@@ -17,7 +17,7 @@ const markersGroup = ref(null);
 // Initialize map
 onMounted(() => {
   mapInstance.value = L.map("map").setView([0, 0], 3);
-  L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.png", {
+  L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg", {
     minZoom: 1,
     maxZoom: 16,
     noWrap: true,
@@ -30,7 +30,7 @@ const updateMarkers = () => {
   if (!mapInstance.value) return;
 
   if (markersGroup.value) {
-    markersGroup.value.clearLayers();
+    markersGroup.value.remove();
   }
 
   if (props.landmarks.length > 0) {
@@ -44,11 +44,7 @@ const updateMarkers = () => {
       L.marker([latitude, longitude], { icon }).bindPopup(year + " " + name)
     );
 
-    if (!markersGroup.value) {
-      markersGroup.value = L.featureGroup(markers).addTo(mapInstance.value);
-    } else {
-      markers.forEach((marker) => markersGroup.value.addLayer(marker));
-    }
+    markersGroup.value = L.featureGroup(markers).addTo(mapInstance.value);
   }
 };
 

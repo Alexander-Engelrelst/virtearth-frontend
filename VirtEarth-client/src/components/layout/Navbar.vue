@@ -17,7 +17,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:searchString"]);
 
-/* * Computed property acting as a proxy for v-model. 
+/* * Computed property acting as a proxy for v-model.
  * Get retrieves the prop; Set emits the update event to the parent.
  */
 const SearchString = computed({
