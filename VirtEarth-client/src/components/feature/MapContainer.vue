@@ -29,7 +29,7 @@ const onFullscreenChange = () => {
 
 // Initialize map
 onMounted(() => {
-  mapInstance.value = L.map("map").setView([0, 0], 3);
+  mapInstance.value = L.map(mapRef.value).setView([0, 0], 3);
   L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg", {
     minZoom: 1,
     maxZoom: 16,
@@ -89,7 +89,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex-1 relative" ref="mapContainerRef">
-    <div id="map" class="w-full h-full"></div>
+    <div ref="mapRef" class="w-full h-full"></div>
     <div
       @click="toggleFullscreen"
       class="material-icons absolute top-2.5 right-2.5 z-1000 cursor-pointer p-2.5 bg-white rounded shadow-md"
