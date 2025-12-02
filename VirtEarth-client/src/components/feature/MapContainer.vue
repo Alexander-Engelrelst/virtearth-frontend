@@ -14,10 +14,17 @@ const props = defineProps({
 const mapInstance = ref(null);
 const markersGroup = ref(null);
 const mapContainerRef = ref(null);
+const mapRef = ref(null);
 const isFullscreen = ref(false);
 
 const onFullscreenChange = () => {
   isFullscreen.value = !!document.fullscreenElement;
+  
+  if (mapInstance.value) {
+    setTimeout(() => {
+      mapInstance.value.invalidateSize();
+    }, 50);
+  }
 };
 
 // Initialize map
