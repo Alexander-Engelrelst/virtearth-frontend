@@ -165,16 +165,6 @@ export async function mockGetLandmarks() {
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   return {
-    landmarks,
-  };
-}
-
-export async function mockGetContinents() {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  const continents = [...new Set(landmarks.map((landmark) => landmark.continent))];
-
-  return {
-    continents: continents,
+   landmarks,
   };
 }

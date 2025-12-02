@@ -4,11 +4,10 @@ import Navbar from "@/components/layout/Navbar.vue";
 import Sidebar from "@/components/layout/Sidebar.vue";
 import MapContainer from "@/components/feature/MapContainer.vue";
 import { getUsername } from "@/services/auth.js";
-import { getContinents, getLandmarks } from "@/services/api/landmarks.js";
+import { getLandmarks } from "@/services/api/landmarks.js";
 
 const username = getUsername();
 const landmarks = ref([]);
-const continents = ref([]);
 const timeRange = ref({});
 const selectedContinents = ref([]);
 const searchString = ref("");
@@ -22,6 +21,12 @@ const maxYear = computed(() => {
   if (landmarks.value.length === 0) return 0;
   return Math.max(...landmarks.value.map((l) => l.year));
 });
+
+const continents = computed(() => {
+  if (landmarks.value.length === 0) return [];
+  return [...new Set(landmarks.value.map((landmark) => landmark.continent))];
+
+})
 
 const filteredLandmarks = computed(() => {
   return landmarks.value.filter((landmark) => {
@@ -39,19 +44,13 @@ const filteredLandmarks = computed(() => {
   });
 });
 
-// Fetch landmarks & continents on component mount
+// Fetch landmarks on component mount
 onMounted(async () => {
   try {
     const response = await getLandmarks();
-    landmarks.value = response;
+    landmarks.value = response.landmarks || response;
   } catch (error) {
     console.error("Failed to fetch landmarks:", error);
-  }
-  try {
-    const response = await getContinents();
-    continents.value = response.continents;
-  } catch (error) {
-    console.error("Failed to fetch continents:", error);
   }
 });
 </script>
