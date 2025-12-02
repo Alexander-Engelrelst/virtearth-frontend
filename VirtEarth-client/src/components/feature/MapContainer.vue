@@ -48,7 +48,7 @@ const updateMarkers = () => {
     });
 
     const markers = props.landmarks.map(({ latitude, longitude, year, gameName }) =>
-      L.marker([latitude, longitude], { icon }).bindPopup(year + " " + gameName)
+      L.marker([latitude, longitude], { icon }).bindPopup(year + " " + gameName, {offset: [0, -25]})
     );
 
     markersGroup.value = L.featureGroup(markers).addTo(mapInstance.value);
