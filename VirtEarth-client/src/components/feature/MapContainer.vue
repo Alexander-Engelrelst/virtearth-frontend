@@ -13,6 +13,12 @@ const props = defineProps({
 
 const mapInstance = ref(null);
 const markersGroup = ref(null);
+const mapContainerRef = ref(null);
+const isFullscreen = ref(false);
+
+const onFullscreenChange = () => {
+  isFullscreen.value = !!document.fullscreenElement;
+};
 
 // Initialize map
 onMounted(() => {
@@ -24,6 +30,7 @@ onMounted(() => {
   }).addTo(mapInstance.value);
 
   updateMarkers();
+  document.addEventListener("fullscreenchange", onFullscreenChange);
 });
 
 const updateMarkers = () => {
@@ -55,15 +62,32 @@ watch(
   }
 );
 
+const toggleFullscreen = () => {
+  if (!document.fullscreenElement) {
+    mapContainerRef.value.requestFullscreen();
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+};
+
 onBeforeUnmount(() => {
   if (mapInstance.value) {
     mapInstance.value.remove();
   }
+  document.removeEventListener("fullscreenchange", onFullscreenChange);
 });
 </script>
 
 <template>
-  <div class="flex-1 relative">
+  <div class="flex-1 relative" ref="mapContainerRef">
     <div id="map" class="w-full h-full"></div>
+    <div
+      @click="toggleFullscreen"
+      class="material-icons absolute top-2.5 right-2.5 z-1000 cursor-pointer p-2.5 bg-white rounded shadow-md"
+    >
+      {{ isFullscreen ? "fullscreen_exit" : "fullscreen" }}
+    </div>
   </div>
 </template>
