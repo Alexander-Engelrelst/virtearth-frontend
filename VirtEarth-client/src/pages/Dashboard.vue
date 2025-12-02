@@ -33,7 +33,7 @@ const filteredLandmarks = computed(() => {
       selectedContinents.value.includes(landmark.continent);
     const matchesSearch =
       searchString.value === "" ||
-      landmark.name.toLowerCase().includes(searchString.value.toLowerCase()) ||
+      landmark.gameName.toLowerCase().includes(searchString.value.toLowerCase()) ||
       landmark.continent.toLowerCase().includes(searchString.value.toLowerCase());
     return isWithinTimeRange && isSelectedContinent && matchesSearch;
   });
@@ -43,7 +43,7 @@ const filteredLandmarks = computed(() => {
 onMounted(async () => {
   try {
     const response = await getLandmarks();
-    landmarks.value = response.landmarks;
+    landmarks.value = response;
   } catch (error) {
     console.error("Failed to fetch landmarks:", error);
   }
