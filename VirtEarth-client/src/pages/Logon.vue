@@ -41,7 +41,6 @@ onMounted(async () => {
 
       router.push({ name: "dashboard" });
     } catch (err) {
-
       clearAuthData();
       error.value = "Auto-login failed. Please login again.";
     } finally {
@@ -57,27 +56,25 @@ async function handleLogin(username) {
   try {
     const response = await checkUserExists(username);
 
-    if (response.status === 204) { //user doesn't exist yet
+    if (response.status === 204) {
+      //user doesn't exist yet
 
       const newUser = await createUser(username);
       saveAuthData(newUser.id, newUser.username, newUser.jwtToken);
-    } else if (response.status === 409) { // User exists, display an error
+    } else if (response.status === 409) {
+      // User exists, display an error
 
       error.value = "User already exists.";
-      isLoading.value = false; 
-      return; 
-    } else if (response.status === 400){
-
+      isLoading.value = false;
+      return;
+    } else if (response.status === 400) {
       error.value = "Invalid username";
-      isLoading.value = false; 
-      return; 
+      isLoading.value = false;
+      return;
     } else {
-      throw new Error(
-        `Unexpected response status: ${response.status} ${response.statusText}`
-      );
+      throw new Error(`Unexpected response status: ${response.status} ${response.statusText}`);
     }
     router.push({ name: "dashboard" });
-
   } catch (err) {
     error.value = "Login failed. Please try again.";
     console.error(err);

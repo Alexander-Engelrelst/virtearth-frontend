@@ -25,6 +25,7 @@ export async function mockCheckUserExists(username) {
   if (username === "existinguser") {
     return new Response(null, { status: 409 });
   }
+
   return new Response(null, { status: 204 });
 }
 
@@ -40,5 +41,6 @@ export async function mockGetUserByUsername(username) {
       },
     ];
   }
+
   return [];
 }

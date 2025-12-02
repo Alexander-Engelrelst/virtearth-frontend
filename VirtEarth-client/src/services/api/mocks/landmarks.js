@@ -165,6 +165,6 @@ export async function mockGetLandmarks() {
   await new Promise((resolve) => setTimeout(resolve, 500));
 
   return {
-   landmarks,
+    landmarks,
   };
 }

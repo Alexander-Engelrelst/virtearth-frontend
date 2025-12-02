@@ -64,7 +64,7 @@ export async function getUserByUsername(username) {
   if (USE_MOCK_API) {
     return mockGetUserByUsername(username);
   }
-  
+
   const response = await fetch(getApiUrl(`/api/users?newUsername=${username}`), {
     method: "PATCH",
     headers: {

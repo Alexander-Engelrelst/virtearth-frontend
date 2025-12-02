@@ -25,8 +25,7 @@ const maxYear = computed(() => {
 const continents = computed(() => {
   if (landmarks.value.length === 0) return [];
   return [...new Set(landmarks.value.map((landmark) => landmark.continent))];
-
-})
+});
 
 const filteredLandmarks = computed(() => {
   return landmarks.value.filter((landmark) => {
