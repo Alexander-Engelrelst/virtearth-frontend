@@ -32,10 +32,6 @@ export function isAuthenticated() {
   return !!getToken() && !!getUserId();
 }
 
-export function hasFullAuth() {
-  return !!getUserId() && !!getToken();
-}
-
 export function hasPartialAuth() {
   return !!getUserId() && !getToken();
 }

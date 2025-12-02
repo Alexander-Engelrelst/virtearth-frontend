@@ -4,15 +4,27 @@ import LogoImage from "@/components/base/LogoImage.vue";
 import BrandTitle from "@/components/base/BrandTitle.vue";
 import LoginForm from "@/components/feature/auth/LoginForm.vue";
 import router from "@/router";
-import { clearAuthData, getUserId, getUsername, saveAuthData, hasFullAuth, hasPartialAuth } from "@/services/auth.js";
-import { loginWithUserId, createUser } from "@/services/api/users.js";
+import {
+  clearAuthData,
+  getUserId,
+  getUsername,
+  saveAuthData,
+  isAuthenticated,
+  hasPartialAuth,
+} from "@/services/auth.js";
+import {
+  loginWithUserId,
+  createUser,
+  checkUserExists,
+  getUserByUsername,
+} from "@/services/api/users.js";
 
 const isLoading = ref(false);
 const error = ref(null);
 
 // Check for existing auth data on mount and handle auto-login
 onMounted(async () => {
-  if (hasFullAuth()) {
+  if (isAuthenticated()) {
     router.push({ name: "dashboard" });
     return;
   }
@@ -25,12 +37,11 @@ onMounted(async () => {
       const userId = getUserId();
       const response = await loginWithUserId(userId);
 
-      const username = getUsername();
-      saveAuthData(userId, username, response.jwtToken);
+      saveAuthData(response.id, response.username, response.jwtToken);
 
       router.push({ name: "dashboard" });
     } catch (err) {
-      // Auto-login failed - clear storage and show LoginForm
+
       clearAuthData();
       error.value = "Auto-login failed. Please login again.";
     } finally {
@@ -44,21 +55,32 @@ async function handleLogin(username) {
   error.value = null;
 
   try {
-    let response = await createUser(username);
+    const response = await checkUserExists(username);
 
-    saveAuthData(response.id);
+    if (response.status === 204) { //user doesn't exist yet
 
-    response = await loginWithUserId(response.id);
+      const newUser = await createUser(username);
+      saveAuthData(newUser.id, newUser.username, newUser.jwtToken);
+    } else if (response.status === 409) { // User exists, display an error
 
-    saveAuthData(response.id, response.username, response.jwtToken);
+      error.value = "User already exists.";
+      isLoading.value = false; 
+      return; 
+    } else if (response.status === 400){
 
-    const userId = getUserId();
-    const storedUsername = getUsername();
-    saveAuthData(userId, storedUsername, response.jwtToken);
-
+      error.value = "Invalid username";
+      isLoading.value = false; 
+      return; 
+    } else {
+      throw new Error(
+        `Unexpected response status: ${response.status} ${response.statusText}`
+      );
+    }
     router.push({ name: "dashboard" });
+
   } catch (err) {
     error.value = "Login failed. Please try again.";
+    console.error(err);
   } finally {
     isLoading.value = false;
   }
@@ -75,7 +97,7 @@ async function handleLogin(username) {
       <div class="hero-content text-center">
         <div class="max-w-md">
           <BrandTitle size="lg" />
-          <p class="py-2 text-brand-secondary">Travel time through culture</p>
+          <p class="py-2 text-brand-secondary">Explore history, live culture</p>
         </div>
       </div>
     </div>

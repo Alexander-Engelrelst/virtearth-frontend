@@ -1,5 +1,17 @@
 <script setup>
-// Search bar component for landmarks, eras, and regions
+import { computed } from "vue";
+
+const props = defineProps(["modelValue"]);
+const emit = defineEmits(["update:modelValue"]);
+
+const searchString = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emit("update:modelValue", value);
+  },
+});
 </script>
 
 <template>
@@ -22,6 +34,7 @@
       type="text"
       class="grow bg-transparent"
       placeholder="Search landmarks, eras, or regions..."
+      v-model="searchString"
     />
   </label>
 </template>

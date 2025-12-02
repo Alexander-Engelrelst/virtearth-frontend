@@ -1,24 +1,60 @@
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import markerIcon from "@/assets/images/adria_landmark_marker.png";
+
+const props = defineProps({
+  landmarks: {
+    type: Array,
+    required: true,
+  },
+});
 
 const mapInstance = ref(null);
+const markersGroup = ref(null);
 
+// Initialize map
 onMounted(() => {
   mapInstance.value = L.map("map").setView([0, 0], 3);
-  var Stadia_StamenWatercolor = L.tileLayer(
-    "https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.{ext}",
-    {
-      minZoom: 1,
-      maxZoom: 16,
-      attribution:
-        '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      ext: "jpg",
-    }
-  );
-  Stadia_StamenWatercolor.addTo(mapInstance.value);
+  L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg", {
+    minZoom: 1,
+    maxZoom: 16,
+    noWrap: true,
+  }).addTo(mapInstance.value);
+
+  updateMarkers();
 });
+
+const updateMarkers = () => {
+  if (!mapInstance.value) return;
+
+  if (markersGroup.value) {
+    markersGroup.value.remove();
+  }
+
+  if (props.landmarks.length > 0) {
+    const icon = L.icon({
+      iconUrl: markerIcon,
+      iconSize: [50, 50],
+      iconAnchor: [25, 50],
+    });
+
+    const markers = props.landmarks.map(({ latitude, longitude, year, gameName }) =>
+      L.marker([latitude, longitude], { icon }).bindPopup(year + " " + gameName)
+    );
+
+    markersGroup.value = L.featureGroup(markers).addTo(mapInstance.value);
+  }
+};
+
+watch(
+  () => props.landmarks,
+  () => {
+    updateMarkers();
+  }
+);
+
 onBeforeUnmount(() => {
   if (mapInstance.value) {
     mapInstance.value.remove();

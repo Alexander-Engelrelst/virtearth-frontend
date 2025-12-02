@@ -1,12 +1,31 @@
 <script setup>
+import { computed } from "vue";
 import LogoImage from "@/components/base/LogoImage.vue";
 import BrandTitle from "@/components/base/BrandTitle.vue";
 import SearchBar from "@/components/feature/SearchBar.vue";
 
-defineProps({
+const props = defineProps({
   username: {
     type: String,
-    required: true
+    required: true,
+  },
+  searchString: {
+    type: String,
+    default: "",
+  },
+});
+
+const emit = defineEmits(["update:searchString"]);
+
+/* * Computed property acting as a proxy for v-model.
+ * Get retrieves the prop; Set emits the update event to the parent.
+ */
+const SearchString = computed({
+  get() {
+    return props.searchString;
+  },
+  set(value) {
+    emit("update:searchString", value);
   },
 });
 </script>
@@ -19,7 +38,8 @@ defineProps({
     </div>
 
     <div class="navbar-center w-full max-w-lg">
-      <SearchBar />
+      <!-- v-model is shorthand for :modelValue="SearchString" & @update:modelValue=-->
+      <SearchBar v-model="SearchString" />
     </div>
 
     <div class="navbar-end flex items-center gap-3">
