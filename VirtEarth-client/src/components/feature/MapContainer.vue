@@ -2,7 +2,7 @@
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import markerIcon from "@/assets/images/adria_landmark_marker.png";
+import markerIcon from "@/assets/images/adria_landmark_marker_purple.png";
 
 const props = defineProps({
   landmarks: {
@@ -50,12 +50,12 @@ const updateMarkers = () => {
   if (props.landmarks.length > 0) {
     const icon = L.icon({
       iconUrl: markerIcon,
-      iconSize: [50, 50],
-      iconAnchor: [25, 50],
+      iconSize: [60, 60],
+      iconAnchor: [30, 60],
     });
 
     const markers = props.landmarks.map(({ latitude, longitude, year, gameName }) =>
-      L.marker([latitude, longitude], { icon }).bindPopup(year + " " + gameName, {offset: [0, -25]})
+      L.marker([latitude, longitude], { icon }).bindPopup(year + " " + gameName, {offset: [0, -40]})
     );
 
     markersGroup.value = L.featureGroup(markers).addTo(mapInstance.value);
