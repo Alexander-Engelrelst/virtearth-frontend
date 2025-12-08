@@ -27,19 +27,35 @@ const continents = computed(() => {
   return [...new Set(landmarks.value.map((landmark) => landmark.continent))];
 });
 
+const filterByTimeRange = (landmark) => {
+  return (
+    !timeRange.value.from ||
+    (landmark.year >= timeRange.value.from && landmark.year <= timeRange.value.to)
+  );
+};
+
+const filterByContinent = (landmark) => {
+  return (
+    selectedContinents.value.length === 0 ||
+    selectedContinents.value.includes(landmark.continent)
+  );
+};
+
+const filterBySearch = (landmark) => {
+  return (
+    searchString.value === "" ||
+    landmark.gameName.toLowerCase().includes(searchString.value.toLowerCase()) ||
+    landmark.continent.toLowerCase().includes(searchString.value.toLowerCase())
+  );
+};
+
 const filteredLandmarks = computed(() => {
   return landmarks.value.filter((landmark) => {
-    const isWithinTimeRange =
-      !timeRange.value.from ||
-      (landmark.year >= timeRange.value.from && landmark.year <= timeRange.value.to);
-    const isSelectedContinent =
-      selectedContinents.value.length === 0 ||
-      selectedContinents.value.includes(landmark.continent);
-    const matchesSearch =
-      searchString.value === "" ||
-      landmark.gameName.toLowerCase().includes(searchString.value.toLowerCase()) ||
-      landmark.continent.toLowerCase().includes(searchString.value.toLowerCase());
-    return isWithinTimeRange && isSelectedContinent && matchesSearch;
+    return (
+      filterByTimeRange(landmark) &&
+      filterByContinent(landmark) &&
+      filterBySearch(landmark)
+    );
   });
 });
 
