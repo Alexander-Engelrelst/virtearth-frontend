@@ -21,7 +21,7 @@ const model = defineModel({
   default: () => ({ from: 0, to: 100 }),
 });
 
-//on landmarks fetch, props update, from & to should be defaulted to those.
+// on landmarks fetch, props update, from & to should be updated to those.
 watch(
   [() => props.min, () => props.max],
   ([newMin, newMax]) => {
@@ -47,7 +47,6 @@ const to = computed({
   },
 });
 
-// Calculate the progress bar position and width
 const progressLeft = computed(() => {
   const range = props.max - props.min;
   if (range === 0) return 0;

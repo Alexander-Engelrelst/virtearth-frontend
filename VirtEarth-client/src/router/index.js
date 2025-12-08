@@ -20,19 +20,18 @@ const router = createRouter({
   ],
 });
 
-// Navigation guard to enforce authentication
+// Authentication on each route
 router.beforeEach((to, from, next) => {
   const authenticated = isAuthenticated();
 
-  // Check if route requires authentication
   if (to.meta.requiresAuth && !authenticated) {
     next({ name: "logon" });
   }
-  // Check if route requires guest (unauthenticated user)
+
   else if (to.meta.requiresGuest && authenticated) {
     next({ name: "dashboard" });
   }
-  // Allow navigation
+
   else {
     next();
   }
