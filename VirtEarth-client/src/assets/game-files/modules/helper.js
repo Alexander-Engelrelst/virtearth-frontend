@@ -1,6 +1,6 @@
 import { canvasContext } from "../rayCaster.js";
-import { screen, projection } from "./screenConfig.js";
 import { map } from "./map.js"
+import { screen, projection } from "./screenConfig.js";
 
 function degreeToRadians(degree) {
     return degree * Math.PI / 180;

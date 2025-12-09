@@ -24,4 +24,4 @@ projection.halfWidth = projection.width / 2;
 projection.halfHeight = projection.height / 2;
 
 
-export { screen, projection, updateScreen }
+export { screen, projection }

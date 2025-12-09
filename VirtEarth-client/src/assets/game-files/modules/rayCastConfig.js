@@ -1,5 +1,5 @@
-import { screen, projection } from "./screenConfig.js"
 import { player } from "./player.js"
+import { screen, projection } from "./screenConfig.js"
 
 const rayCastingConfig = {
     incrementAngle: null,

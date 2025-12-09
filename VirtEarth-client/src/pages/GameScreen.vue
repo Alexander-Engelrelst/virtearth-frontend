@@ -1,26 +1,78 @@
 <script setup>
-import { onMounted } from "vue"
+import {onMounted, ref} from "vue"
 import { screen } from "../assets/game-files/modules/screenConfig.js"
+import { loadGame, initCanvas } from "../assets/game-files/rayCaster.js"
+import { Color } from "../assets/game-files/modules/renderer.js";
+import { textures, floorTextures, loadWallTextureData, loadFloorTextureData } from "../assets/game-files/modules/texture.js"
 
+const gameCanvas = ref(null);
+const wallCanvas = ref(null);
+const floorCanvas = ref(null);
 
-function createGameScreen() {
-  const canvas = document.createElement('canvas');
-  canvas.id = 'gameScreen';
-  canvas.width = screen.width;
-  canvas.height = screen.height;
-  document.body.appendChild(canvas);
+const wallImage = ref(null)
+const floorImage = ref(null)
+
+function configureScreen() {
+  gameCanvas.value.width = screen.width;
+  gameCanvas.value.height = screen.height;
 }
 
-onMounted( async () => {
-  createGameScreen();
+function loadTextures () {
+  loadWallTextureData(getWallTextureData());
+  loadFloorTextureData(getFloorTextureData());
+}
+
+function getWallTextureData() {
+  const canvas = wallCanvas.value;
+  const image = wallImage.value;
+  const texture = textures[0];
+  return getTextureData(canvas, image, texture);
+}
+
+function getFloorTextureData() {
+  const canvas = floorCanvas.value;
+  const image = floorImage.value;
+  const texture = floorTextures[0];
+  return getTextureData(canvas, image, texture);
+}
+
+function getTextureData(canvas, image, texture) {
+  canvas.width = texture.width;
+  canvas.height = texture.height;
+
+  const canvasContext = canvas.getContext("2d");
+  canvasContext.drawImage(image, 0, 0, texture.width, texture.height);
+  const imageData = canvasContext.getImageData(0, 0, texture.width, texture.height).data;
+
+  return parseImageData(imageData);
+}
+
+function parseImageData(imageData) {
+  const colorArray = [];
+  for (let i = 0; i < imageData.length; i+=4) {
+    colorArray.push(new Color(imageData[i], imageData[i + 1], imageData[i + 2], 255));
+  }
+  return colorArray;
+}
+
+onMounted( () => {
+  configureScreen();
+  initCanvas(gameCanvas.value);
+  loadTextures();
+  loadGame();
 })
 </script>
 
 <template>
-  <img id="wallTexture" src="../assets/game-files/mossy_wall.png" alt="wall">
-  <img id="floorTexture" src="../assets/game-files/floor.png" alt="floor">
 
-  <script src="../assets/game-files/rayCaster.js" type="module"></script>
+  <canvas ref="wallCanvas" class="hidden"/>
+  <canvas ref="floorCanvas" class="hidden"/>
+
+  <img ref="wallImage" src="../assets/game-files/mossy_wall.png" alt="wall">
+  <img ref="floorImage" src="../assets/game-files/floor.png" alt="floor">
+
+  <canvas ref="gameCanvas"/>
+
 </template>
 
 <style scoped>
@@ -38,6 +90,10 @@ canvas {
 }
 
 img {
+  display: none;
+}
+
+.hidden {
   display: none;
 }
 </style>
