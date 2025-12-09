@@ -5,10 +5,11 @@
     --font-sans: 'Inter', sans-serif;
 
     /* Brand Colors */
-    --color-brand-primary: #C07353;
-    --color-brand-primary-dark: #a96346;
-    --color-brand-secondary: #6b7280;
-    --color-brand-background: #fcfaf8;
+    --color-brand-primary: #8A63D2;
+    --color-brand-primary-dark: #734FBB;
+    --color-brand-secondary: #7C7F9A;
+    --color-brand-background: #F8F5FF;
+
 }
 
 /* Body uses Inter (secondary font) by default */
