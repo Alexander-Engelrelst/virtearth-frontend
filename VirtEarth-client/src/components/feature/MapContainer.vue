@@ -81,6 +81,63 @@ const toggleFullscreen = () => {
   }
 };
 
+//AI function to get distance between two
+const getDistance = (lat1, lon1, lat2, lon2) => {
+  const R = 6371; // Radius of Earth in kilometers
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+};
+
+const findNearestLandmark = (userLat, userLon, landmarks) => {
+  if (!landmarks || landmarks.length === 0) {
+    return null;
+  }
+
+  let nearest = landmarks[0];
+  let minDistance = getDistance(userLat, userLon, nearest.latitude, nearest.longitude);
+
+  for (let i = 1; i < landmarks.length; i++) {
+    const landmark = landmarks[i];
+    const distance = getDistance(userLat, userLon, landmark.latitude, landmark.longitude);
+    if (distance < minDistance) {
+      minDistance = distance;
+      nearest = landmark;
+    }
+  }
+  return nearest;
+};
+
+const centerOnUser = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLon = position.coords.longitude;
+
+        const nearestLandmark = findNearestLandmark(userLat, userLon, props.landmarks);
+
+        if (mapInstance.value && nearestLandmark) {
+          mapInstance.value.setView([nearestLandmark.latitude, nearestLandmark.longitude], 7);
+        } else if (mapInstance.value) {
+          mapInstance.value.setView([userLat, userLon], 7);
+        }
+      },
+      (error) => {
+        alert("Error: Unable to retrieve location. " + error.message);
+      }
+    );
+  } else {
+    alert("Error: Geolocation is not working");
+  }
+};
+
+
 onBeforeUnmount(() => {
   if (mapInstance.value) {
     mapInstance.value.remove();
@@ -97,6 +154,12 @@ onBeforeUnmount(() => {
       class="material-icons absolute top-2.5 right-2.5 z-1000 cursor-pointer p-2.5 bg-white rounded shadow-md"
     >
       {{ isFullscreen ? "fullscreen_exit" : "fullscreen" }}
+    </div>
+    <div
+      @click="centerOnUser"
+      class="material-icons absolute top-2.5 right-14 z-1000 cursor-pointer p-2.5 bg-white rounded shadow-md"
+    >
+      my_location
     </div>
   </div>
 </template>
