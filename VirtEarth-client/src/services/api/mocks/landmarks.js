@@ -6,6 +6,7 @@ const landmarks = [
     longitude: 12.4922,
     year: 80,
     continent: "Europe",
+    completed: true,
   },
   {
     gameId: "lm-002",
@@ -22,6 +23,7 @@ const landmarks = [
     longitude: -72.545,
     year: 1450,
     continent: "South America",
+    completed: true,
   },
   {
     gameId: "lm-004",
