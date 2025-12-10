@@ -5,8 +5,8 @@ const player = {
     y: 2,
     angle: 90,
     radius: 5, // allows for smoother collision detection (sliding sideways when walking into a wall)
-    moveSpeed: 0.075,
-    turnSpeed: 1.5
+    moveSpeed: 0.1,
+    turnSpeed: 2.5
 }
 
 player.halfFov = player.fov / 2;

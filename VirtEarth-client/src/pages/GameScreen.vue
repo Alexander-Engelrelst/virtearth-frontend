@@ -22,6 +22,20 @@ function loadTextures () {
   loadFloorTextureData(getFloorTextureData());
 }
 
+function waitForImageLoading() {
+  const images = Array.from(document.querySelectorAll("img"));
+  const promises = images.map(img =>
+  new Promise((resolve, reject) => {
+    if (img.complete && img.naturalWidth !== 0) {
+      resolve();
+    } else {
+      img.onload = () => resolve();
+      img.onerror = () => reject(new Error(`Failed to load image: ${img.src}`));
+    }
+  }));
+  return Promise.all(promises);
+}
+
 function getWallTextureData() {
   const canvas = wallCanvas.value;
   const image = wallImage.value;
@@ -55,9 +69,10 @@ function parseImageData(imageData) {
   return colorArray;
 }
 
-onMounted( () => {
+onMounted( async() => {
   configureScreen();
   initCanvas(gameCanvas.value);
+  await waitForImageLoading();
   loadTextures();
   loadGame();
 })

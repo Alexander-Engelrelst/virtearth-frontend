@@ -1,6 +1,6 @@
 const screen = {
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: document.documentElement.clientWidth,
+    height: document.documentElement.clientHeight,
     halfWidth: null,
     halfHeight: null,
     scale: 4
@@ -22,6 +22,5 @@ projection.width = screen.width / screen.scale;
 projection.height = screen.height / screen.scale;
 projection.halfWidth = projection.width / 2;
 projection.halfHeight = projection.height / 2;
-
 
 export { screen, projection }
