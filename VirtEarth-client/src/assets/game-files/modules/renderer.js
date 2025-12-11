@@ -4,116 +4,117 @@ import { player } from "./player.js";
 import { rayCastingConfig } from "./rayCastConfig.js";
 import { projection } from "./screenConfig.js";
 import { canvasContext } from "../rayCaster.js";
-import { textures, floorTextures } from "./texture.js"
+import { textures, floorTextures } from "./texture.js";
 
-function Color(r, g ,b, a) {
-    this.r = r;
-    this.g = g;
-    this.b = b;
-    this.a = a;
+function Color(r, g, b, a) {
+  this.r = r;
+  this.g = g;
+  this.b = b;
+  this.a = a;
 }
 
 function drawLine(x, y1, y2, color) {
-    for (let y = y1; y < y2; y++) {
-        drawPixel(x, y, color);
-    }
+  for (let y = y1; y < y2; y++) {
+    drawPixel(x, y, color);
+  }
 }
 
 function drawTexture(x, wallHeight, texturePositionX, texture) {
-    const yIncrementer = (wallHeight * 2) / texture.height;
-    let y = projection.halfHeight - wallHeight;
+  const yIncrementer = (wallHeight * 2) / texture.height;
+  let y = projection.halfHeight - wallHeight;
 
-    let color = null;
+  let color = null;
 
-    for (let i = 0; i < texture.height; i++) {
-        if (texture.id) { // check if texture is in memory or not
-            color = texture.data[texturePositionX + i * texture.width];
-        } else {
-            color = texture.colors[texture.bitmap[i][texturePositionX]];
-        }
-
-        drawLine(x, y, Math.floor(y + (yIncrementer + 2)), color);
-        y += yIncrementer;
+  for (let i = 0; i < texture.height; i++) {
+    if (texture.id) {
+      // check if texture is in memory or not
+      color = texture.data[texturePositionX + i * texture.width];
+    } else {
+      color = texture.colors[texture.bitmap[i][texturePositionX]];
     }
+
+    drawLine(x, y, Math.floor(y + (yIncrementer + 2)), color);
+    y += yIncrementer;
+  }
 }
 
 function drawPixel(x, y, color) {
-    const offset = 4 * (Math.floor(x) + Math.floor(y) * projection.width);
-    projection.buffer[offset    ] = color.r;
-    projection.buffer[offset + 1] = color.g;
-    projection.buffer[offset + 2] = color.b;
-    projection.buffer[offset + 3] = color.a;
+  const offset = 4 * (Math.floor(x) + Math.floor(y) * projection.width);
+  projection.buffer[offset] = color.r;
+  projection.buffer[offset + 1] = color.g;
+  projection.buffer[offset + 2] = color.b;
+  projection.buffer[offset + 3] = color.a;
 }
 
 function rayCast() {
-    let rayAngle = player.angle - player.halfFov;
+  let rayAngle = player.angle - player.halfFov;
 
-    for (let rayCount = 0; rayCount < projection.width; rayCount++) { // cast a ray for each pixel horizontally
+  for (let rayCount = 0; rayCount < projection.width; rayCount++) {
+    // cast a ray for each pixel horizontally
 
-        const ray = {x: player.x, y: player.y};
+    const ray = { x: player.x, y: player.y };
 
-        const rayCos = Math.cos(degreeToRadians(rayAngle)) / rayCastingConfig.precision; // precision determines amount of collision checks for ray
-        const raySin = Math.sin(degreeToRadians(rayAngle)) / rayCastingConfig.precision;
+    const rayCos = Math.cos(degreeToRadians(rayAngle)) / rayCastingConfig.precision; // precision determines amount of collision checks for ray
+    const raySin = Math.sin(degreeToRadians(rayAngle)) / rayCastingConfig.precision;
 
-        let wall = 0;
-        while (wall === 0) {
-            ray.x += rayCos;
-            ray.y += raySin;
-            wall = checkCollision(ray.x, ray.y) ? 0 : 1;
-        }
-
-        let distance = Math.sqrt(Math.pow(player.x - ray.x, 2) + Math.pow(player.y - ray.y, 2)); // Pythagoras baby
-        distance = distance * Math.cos(degreeToRadians(rayAngle - player.angle)); // fix fisheye lens effect
-        const wallHeight = Math.floor(projection.halfHeight / distance);
-        const texture = textures[wall - 1];
-        const texturePositionX = Math.floor((texture.width * (ray.x + ray.y)) % texture.width);
-
-        drawLine(rayCount, 0, projection.halfHeight - wallHeight, new Color(128, 128, 128, 255)) // draw ceiling/sky
-        drawTexture(rayCount, wallHeight, texturePositionX, texture) // draw walls
-        drawFloor(rayCount, wallHeight, rayAngle);
-
-        rayAngle += rayCastingConfig.incrementAngle;
+    let wall = 0;
+    while (wall === 0) {
+      ray.x += rayCos;
+      ray.y += raySin;
+      wall = checkCollision(ray.x, ray.y) ? 0 : 1;
     }
+
+    let distance = Math.sqrt(Math.pow(player.x - ray.x, 2) + Math.pow(player.y - ray.y, 2)); // Pythagoras baby
+    distance = distance * Math.cos(degreeToRadians(rayAngle - player.angle)); // fix fisheye lens effect
+    const wallHeight = Math.floor(projection.halfHeight / distance);
+    const texture = textures[wall - 1];
+    const texturePositionX = Math.floor((texture.width * (ray.x + ray.y)) % texture.width);
+
+    drawLine(rayCount, 0, projection.halfHeight - wallHeight, new Color(128, 128, 128, 255)); // draw ceiling/sky
+    drawTexture(rayCount, wallHeight, texturePositionX, texture); // draw walls
+    drawFloor(rayCount, wallHeight, rayAngle);
+
+    rayAngle += rayCastingConfig.incrementAngle;
+  }
 }
 
 function drawFloor(x, wallHeight, rayAngle) {
-    const directionCos = Math.cos(degreeToRadians(rayAngle));
-    const directionSin = Math.sin(degreeToRadians(rayAngle));
+  const directionCos = Math.cos(degreeToRadians(rayAngle));
+  const directionSin = Math.sin(degreeToRadians(rayAngle));
 
-    const start = projection.halfHeight + wallHeight + 1;
+  const start = projection.halfHeight + wallHeight + 1;
 
-    for (let y = start; y < projection.height; y++) {
+  for (let y = start; y < projection.height; y++) {
+    let distance = projection.height / (2 * y - projection.height);
+    distance = distance / Math.cos(degreeToRadians(player.angle) - degreeToRadians(rayAngle)); // fisheye effect fix
 
-        let distance = projection.height / (2 * y - projection.height);
-        distance = distance / Math.cos(degreeToRadians(player.angle) - degreeToRadians(rayAngle)); // fisheye effect fix
+    let tileX = distance * directionCos;
+    let tileY = distance * directionSin;
+    tileX += player.x; // get position relative to player
+    tileY += player.y;
 
-        let tileX = distance * directionCos;
-        let tileY = distance * directionSin;
-        tileX += player.x; // get position relative to player
-        tileY += player.y;
+    const tile = map[Math.floor(tileY)][Math.floor(tileX)];
 
-        const tile = map[Math.floor(tileY)][Math.floor(tileX)];
+    const texture = floorTextures[tile];
 
-        const texture = floorTextures[tile];
-
-        if (!texture) {
-            continue
-        }
-
-        const textureX = (Math.floor(tileX * texture.width)) % texture.width;
-        const textureY = (Math.floor(tileY * texture.height)) % texture.height;
-
-        const color = texture.data[textureX + textureY * texture.width];
-        drawPixel(x, y, color);
+    if (!texture) {
+      continue;
     }
+
+    const textureX = Math.floor(tileX * texture.width) % texture.width;
+    const textureY = Math.floor(tileY * texture.height) % texture.height;
+
+    const color = texture.data[textureX + textureY * texture.width];
+    drawPixel(x, y, color);
+  }
 }
 
 function renderBuffer() {
-    const canvas = document.createElement("canvas");
-    canvas.width = projection.width;
-    canvas.height = projection.height;
-    canvas.getContext("2d").putImageData(projection.imageData, 0, 0);
-    canvasContext.drawImage(canvas, 0, 0);
+  const canvas = document.createElement("canvas");
+  canvas.width = projection.width;
+  canvas.height = projection.height;
+  canvas.getContext("2d").putImageData(projection.imageData, 0, 0);
+  canvasContext.drawImage(canvas, 0, 0);
 }
 
-export { rayCast, Color, renderBuffer, drawLine }
+export { rayCast, Color, renderBuffer, drawLine };

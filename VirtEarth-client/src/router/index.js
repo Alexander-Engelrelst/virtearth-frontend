@@ -22,7 +22,7 @@ const router = createRouter({
       name: "game",
       component: () => import("@/pages/GameScreen.vue"),
       meta: { requiresAuth: false }, // TODO change auth
-    }
+    },
   ],
 });
 
@@ -32,13 +32,9 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta.requiresAuth && !authenticated) {
     next({ name: "logon" });
-  }
-
-  else if (to.meta.requiresGuest && authenticated) {
+  } else if (to.meta.requiresGuest && authenticated) {
     next({ name: "dashboard" });
-  }
-
-  else {
+  } else {
     next();
   }
 });

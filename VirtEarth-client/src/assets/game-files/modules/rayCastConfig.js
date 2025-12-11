@@ -1,11 +1,11 @@
-import { player } from "./player.js"
-import { screen, projection } from "./screenConfig.js"
+import { player } from "./player.js";
+import { projection } from "./screenConfig.js";
 
 const rayCastingConfig = {
-    incrementAngle: null,
-    precision: 64
-}
+  incrementAngle: null,
+  precision: 64,
+};
 
 rayCastingConfig.incrementAngle = player.fov / projection.width;
 
-export { rayCastingConfig }
+export { rayCastingConfig };

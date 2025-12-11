@@ -1,38 +1,45 @@
 <script setup>
-import {onMounted, ref} from "vue"
-import { screen } from "../assets/game-files/modules/screenConfig.js"
-import { loadGame, initCanvas } from "../assets/game-files/rayCaster.js"
+import { onMounted, ref } from "vue";
+import { screen } from "../assets/game-files/modules/screenConfig.js";
+import { loadGame, initCanvas } from "../assets/game-files/rayCaster.js";
 import { Color } from "../assets/game-files/modules/renderer.js";
-import { textures, floorTextures, loadWallTextureData, loadFloorTextureData } from "../assets/game-files/modules/texture.js"
+import {
+  textures,
+  floorTextures,
+  loadWallTextureData,
+  loadFloorTextureData,
+} from "../assets/game-files/modules/texture.js";
 
 const gameCanvas = ref(null);
 const wallCanvas = ref(null);
 const floorCanvas = ref(null);
 
-const wallImage = ref(null)
-const floorImage = ref(null)
+const wallImage = ref(null);
+const floorImage = ref(null);
 
 function configureScreen() {
   gameCanvas.value.width = screen.width;
   gameCanvas.value.height = screen.height;
 }
 
-function loadTextures () {
+function loadTextures() {
   loadWallTextureData(getWallTextureData());
   loadFloorTextureData(getFloorTextureData());
 }
 
 function waitForImageLoading() {
   const images = Array.from(document.querySelectorAll("img"));
-  const promises = images.map(img =>
-  new Promise((resolve, reject) => {
-    if (img.complete && img.naturalWidth !== 0) {
-      resolve();
-    } else {
-      img.onload = () => resolve();
-      img.onerror = () => reject(new Error(`Failed to load image: ${img.src}`));
-    }
-  }));
+  const promises = images.map(
+    (img) =>
+      new Promise((resolve, reject) => {
+        if (img.complete && img.naturalWidth !== 0) {
+          resolve();
+        } else {
+          img.onload = () => resolve();
+          img.onerror = () => reject(new Error(`Failed to load image: ${img.src}`));
+        }
+      })
+  );
   return Promise.all(promises);
 }
 
@@ -63,38 +70,36 @@ function getTextureData(canvas, image, texture) {
 
 function parseImageData(imageData) {
   const colorArray = [];
-  for (let i = 0; i < imageData.length; i+=4) {
+  for (let i = 0; i < imageData.length; i += 4) {
     colorArray.push(new Color(imageData[i], imageData[i + 1], imageData[i + 2], 255));
   }
   return colorArray;
 }
 
-onMounted( async() => {
+onMounted(async () => {
   configureScreen();
   initCanvas(gameCanvas.value);
   await waitForImageLoading();
   loadTextures();
   loadGame();
-})
+});
 </script>
 
 <template>
+  <canvas ref="wallCanvas" class="hidden" />
+  <canvas ref="floorCanvas" class="hidden" />
 
-  <canvas ref="wallCanvas" class="hidden"/>
-  <canvas ref="floorCanvas" class="hidden"/>
+  <img ref="wallImage" src="../assets/game-files/mossy_wall.png" alt="wall" />
+  <img ref="floorImage" src="../assets/game-files/floor.png" alt="floor" />
 
-  <img ref="wallImage" src="../assets/game-files/mossy_wall.png" alt="wall">
-  <img ref="floorImage" src="../assets/game-files/floor.png" alt="floor">
-
-  <canvas ref="gameCanvas"/>
-
+  <canvas ref="gameCanvas" />
 </template>
 
 <style scoped>
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: clip;
   background: #808080;
 }
 

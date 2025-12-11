@@ -20,7 +20,7 @@ const isFullscreen = ref(false);
 
 const onFullscreenChange = () => {
   isFullscreen.value = !!document.fullscreenElement;
-  
+
   if (mapInstance.value) {
     setTimeout(() => {
       mapInstance.value.invalidateSize();
@@ -49,7 +49,6 @@ const updateMarkers = () => {
   }
 
   if (props.landmarks.length > 0) {
-
     const markers = props.landmarks.map(({ latitude, longitude, year, gameName, completed }) => {
       const currentIcon = completed ? markerIconPurple : markerIcon;
       const icon = L.icon({
@@ -57,7 +56,9 @@ const updateMarkers = () => {
         iconSize: [60, 60],
         iconAnchor: [30, 60],
       });
-      return L.marker([latitude, longitude], { icon }).bindPopup(year + " " + gameName, {offset: [0, -40]});
+      return L.marker([latitude, longitude], { icon }).bindPopup(year + " " + gameName, {
+        offset: [0, -40],
+      });
     });
 
     markersGroup.value = L.featureGroup(markers).addTo(mapInstance.value);

@@ -36,8 +36,7 @@ const filterByTimeRange = (landmark) => {
 
 const filterByContinent = (landmark) => {
   return (
-    selectedContinents.value.length === 0 ||
-    selectedContinents.value.includes(landmark.continent)
+    selectedContinents.value.length === 0 || selectedContinents.value.includes(landmark.continent)
   );
 };
 
@@ -51,11 +50,7 @@ const filterBySearch = (landmark) => {
 
 const filteredLandmarks = computed(() => {
   return landmarks.value.filter((landmark) => {
-    return (
-      filterByTimeRange(landmark) &&
-      filterByContinent(landmark) &&
-      filterBySearch(landmark)
-    );
+    return filterByTimeRange(landmark) && filterByContinent(landmark) && filterBySearch(landmark);
   });
 });
 
