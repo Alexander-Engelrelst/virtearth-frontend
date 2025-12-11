@@ -1,0 +1,124 @@
+import { radiansToDegrees } from "./helper.js";
+import { player } from "./player.js";
+import { drawLine } from "./renderer.js";
+import { projection } from "./screenConfig.js";
+import { getTextureData } from "./texture.js";
+
+const sprites = [
+  {
+    id: "artifact",
+    x: 7,
+    y: 2,
+    width: 10,
+    height: 6,
+    active: false,
+    data: null,
+  },
+];
+
+function enableSprites(x, y) {
+  for (let i = 0; i < sprites.length; i++) {
+    if (sprites[i].x === Math.floor(x) && sprites[i].y === Math.floor(y)) {
+      sprites[i].active = true;
+    }
+  }
+}
+
+function disableSprites() {
+  for (let i = 0; i < sprites.length; i++) {
+    sprites[i].active = false;
+  }
+}
+
+function loadSprites() {
+  for (let i = 0; i < sprites.length; i++) {
+    if (sprites[i].id) {
+      sprites[i].data = getTextureData(sprites[i]);
+    }
+  }
+}
+
+function drawSprites() {
+  for (let i = 0; i < sprites.length; i++) {
+    if (sprites[i].active) {
+      const sprite = sprites[i];
+
+      // Get X and Y coords in relation of the player coords
+      const spriteXRelative = sprite.x + 0.5 - player.x;
+      const spriteYRelative = sprite.y + 0.5 - player.y;
+
+      // Get angle of the sprite in relation of the player angle
+      const spriteAngleRadians = Math.atan2(spriteYRelative, spriteXRelative);
+      let spriteAngle =
+        radiansToDegrees(spriteAngleRadians) - Math.floor(player.angle - player.fov / 2);
+
+      // Sprite angle checking
+      if (spriteAngle > 360) spriteAngle -= 360;
+
+      if (spriteAngle < 0) spriteAngle += 360;
+
+      // Three rule to discover the x position of the script
+      let spriteX = Math.floor((spriteAngle * projection.width) / player.fov);
+
+      // SpriteX right position fix
+      if (spriteX > projection.width) {
+        spriteX %= projection.width;
+        spriteX -= projection.width;
+      }
+
+      // Get the distance of the sprite (Pythagoras theorem)
+      const distance = Math.sqrt(
+        Math.pow(player.x - sprite.x, 2) + Math.pow(player.y - sprite.y, 2)
+      );
+
+      // Calc sprite width and height
+      const spriteHeight = Math.floor(projection.halfHeight / distance);
+      const spriteWidth = Math.floor(projection.halfWidth / distance);
+
+      // Draw the sprite
+      drawSprite(spriteX, spriteWidth, spriteHeight, sprite);
+    }
+  }
+}
+
+function drawSprite(xProjection, spriteWidth, spriteHeight, sprite) {
+  // Decrement halfwidth of the sprite to consider the middle of the sprite to draw
+  xProjection = xProjection - sprite.width;
+
+  // Define the projection incrementers for draw
+  const xIncrementer = spriteWidth / sprite.width;
+  const yIncrementer = (spriteHeight * 2) / sprite.height;
+
+  // Iterate sprite width and height
+  for (let spriteX = 0; spriteX < sprite.width; spriteX += 1) {
+    // Define the Y cursor to draw
+    let yProjection = projection.halfHeight - spriteHeight;
+
+    for (let spriteY = 0; spriteY < sprite.height; spriteY++) {
+      const color = sprite.data[spriteX + spriteY * sprite.width];
+      drawRect(
+        xProjection,
+        xProjection + xIncrementer,
+        yProjection,
+        yProjection + yIncrementer,
+        color
+      );
+
+      // Increment Y
+      yProjection += yIncrementer;
+    }
+
+    // Increment X
+    xProjection += xIncrementer;
+  }
+}
+
+function drawRect(x1, x2, y1, y2, color) {
+  for (let x = x1; x < x2; x++) {
+    if (x < 0) continue;
+
+    if (x > projection.width) continue;
+
+    drawLine(x, y1, y2, color);
+  }
+}
