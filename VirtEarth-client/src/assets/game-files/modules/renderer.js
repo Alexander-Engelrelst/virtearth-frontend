@@ -4,14 +4,7 @@ import { player } from "./player.js";
 import { rayCastingConfig } from "./rayCastConfig.js";
 import { projection } from "./screenConfig.js";
 import { canvasContext } from "../rayCaster.js";
-import { textures, floorTextures } from "./texture.js";
-
-function Color(r, g, b, a) {
-  this.r = r;
-  this.g = g;
-  this.b = b;
-  this.a = a;
-}
+import { Color, textures, floorTextures, ceilColor } from "./texture.js";
 
 function drawLine(x, y1, y2, color) {
   for (let y = y1; y < y2; y++) {
@@ -27,7 +20,7 @@ function drawTexture(x, wallHeight, texturePositionX, texture) {
 
   for (let i = 0; i < texture.height; i++) {
     if (texture.id) {
-      // check if texture is in memory or not
+      // check if texture is an image or a bitmap
       color = texture.data[texturePositionX + i * texture.width];
     } else {
       color = texture.colors[texture.bitmap[i][texturePositionX]];
@@ -47,7 +40,7 @@ function drawPixel(x, y, color) {
 }
 
 function rayCast() {
-  let rayAngle = player.angle - player.halfFov;
+  let rayAngle = player.angle - player.fov / 2;
 
   for (let rayCount = 0; rayCount < projection.width; rayCount++) {
     // cast a ray for each pixel horizontally
@@ -57,11 +50,11 @@ function rayCast() {
     const rayCos = Math.cos(degreeToRadians(rayAngle)) / rayCastingConfig.precision; // precision determines amount of collision checks for ray
     const raySin = Math.sin(degreeToRadians(rayAngle)) / rayCastingConfig.precision;
 
-    let wall = 0;
-    while (wall === 0) {
+    let wall = false;
+    while (!wall) {
       ray.x += rayCos;
       ray.y += raySin;
-      wall = checkCollision(ray.x, ray.y) ? 0 : 1;
+      wall = !checkCollision(ray.x, ray.y); // if ray is not on a 0 -> collision is true
     }
 
     let distance = Math.sqrt(Math.pow(player.x - ray.x, 2) + Math.pow(player.y - ray.y, 2)); // Pythagoras baby
@@ -70,7 +63,7 @@ function rayCast() {
     const texture = textures[wall - 1];
     const texturePositionX = Math.floor((texture.width * (ray.x + ray.y)) % texture.width);
 
-    drawLine(rayCount, 0, projection.halfHeight - wallHeight, new Color(128, 128, 128, 255)); // draw ceiling/sky
+    drawLine(rayCount, 0, projection.halfHeight - wallHeight, ceilColor); // draw ceiling/sky
     drawTexture(rayCount, wallHeight, texturePositionX, texture); // draw walls
     drawFloor(rayCount, wallHeight, rayAngle);
 

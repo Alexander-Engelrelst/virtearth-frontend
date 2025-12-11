@@ -1,5 +1,6 @@
 // created following this tutorial: https://github.com/vinibiavatti1/RayCastingTutorial/wiki and partially rewrote to use modules and be more readable
 
+import { fpsCount, drawFps } from "./modules/fpsCounter.js";
 import { clearScreen } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
 import { rayCast, renderBuffer } from "./modules/renderer.js";
@@ -7,6 +8,8 @@ import { screen, projection } from "./modules/screenConfig.js";
 
 let canvas = null;
 let canvasContext = null;
+const fps = 60; // refresh rate of the screen
+const renderDelay = 1000 / fps;
 
 function initCanvas(vueCanvas) {
   canvas = vueCanvas;
@@ -18,12 +21,6 @@ function initCanvas(vueCanvas) {
   projection.imageData = canvasContext.createImageData(projection.width, projection.height);
   projection.buffer = projection.imageData.data;
 }
-
-export { canvas, canvasContext };
-// I have to initialize the canvas in this file for some reason
-
-const fps = 60; // refresh rate of the screen
-const renderDelay = 1000 / fps;
 
 function loadGame() {
   renderLoop();
@@ -38,30 +35,6 @@ function renderLoop() {
     fpsCount();
     drawFps();
   }, renderDelay);
-}
-
-let lastTime = performance.now();
-let fpsCounter = 0;
-let frameCount = 0;
-let fpsTimer = 0;
-
-function fpsCount() {
-  const now = performance.now();
-  const delta = now - lastTime;
-  lastTime = now;
-  frameCount++;
-  fpsTimer += delta;
-  if (fpsTimer >= 1000) {
-    fpsCounter = frameCount;
-    frameCount = 0;
-    fpsTimer = 0;
-  }
-}
-
-function drawFps() {
-  canvasContext.fillStyle = "white";
-  canvasContext.font = "16px monospace";
-  canvasContext.fillText(`FPS: ${fpsCounter}`, 10, 20);
 }
 
 document.addEventListener("keydown", (event) => {
@@ -105,4 +78,4 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-export { loadGame, initCanvas };
+export { loadGame, initCanvas, canvas, canvasContext };

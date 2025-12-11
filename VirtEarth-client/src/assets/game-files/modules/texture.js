@@ -1,3 +1,10 @@
+function Color(r, g, b, a) {
+  this.r = r;
+  this.g = g;
+  this.b = b;
+  this.a = a;
+}
+
 const textures = [
   {
     // image file texture
@@ -17,6 +24,8 @@ const floorTextures = [
   },
 ];
 
+const ceilColor = new Color(128, 128, 128, 255);
+
 function loadWallTextureData(wallTextureData) {
   textures[0].data = wallTextureData;
 }
@@ -25,4 +34,4 @@ function loadFloorTextureData(floorTextureData) {
   floorTextures[0].data = floorTextureData;
 }
 
-export { textures, floorTextures, loadWallTextureData, loadFloorTextureData };
+export { Color, textures, floorTextures, loadWallTextureData, loadFloorTextureData, ceilColor };

@@ -44,10 +44,7 @@ function waitForImageLoading() {
 }
 
 function getWallTextureData() {
-  const canvas = wallCanvas.value;
-  const image = wallImage.value;
-  const texture = textures[0];
-  return getTextureData(canvas, image, texture);
+  return getTextureData(wallCanvas.value, wallImage.value, textures[0]);
 }
 
 function getFloorTextureData() {

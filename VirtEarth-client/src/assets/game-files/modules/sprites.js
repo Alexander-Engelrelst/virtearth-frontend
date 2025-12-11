@@ -50,7 +50,7 @@ function drawSprites() {
       // Get angle of the sprite in relation of the player angle
       const spriteAngleRadians = Math.atan2(spriteYRelative, spriteXRelative);
       let spriteAngle =
-        radiansToDegrees(spriteAngleRadians) - Math.floor(player.angle - player.halfFov);
+        radiansToDegrees(spriteAngleRadians) - Math.floor(player.angle - player.fov / 2);
 
       // Sprite angle checking
       if (spriteAngle > 360) spriteAngle -= 360;
