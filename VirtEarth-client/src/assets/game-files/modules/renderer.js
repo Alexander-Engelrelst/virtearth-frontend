@@ -3,7 +3,7 @@ import { player } from "./player.js";
 import { rayCastingConfig } from "./rayCastConfig.js";
 import { projection } from "./screenConfig.js";
 import { canvasContext } from "../rayCaster.js";
-import { Color, textureIndices, textures, floorTexture, ceilColor } from "./texture.js";
+import { Color, textures, floorTexture, ceilColor } from "./texture.js";
 
 function drawLine(x, y1, y2, color) {
   for (let y = y1; y < y2; y++) {
@@ -41,7 +41,8 @@ function drawPixel(x, y, color) {
 function rayCast() {
   let rayAngle = player.angle - player.fov / 2;
 
-  for (let rayCount = 0; rayCount < projection.width; rayCount++) { // cast a ray for each pixel horizontally
+  for (let rayCount = 0; rayCount < projection.width; rayCount++) {
+    // cast a ray for each pixel horizontally
     const ray = { x: player.x, y: player.y };
 
     const rayCos = Math.cos(degreeToRadians(rayAngle)) / rayCastingConfig.precision; // precision determines amount of collision checks for ray
