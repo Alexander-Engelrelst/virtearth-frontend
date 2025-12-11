@@ -22,4 +22,11 @@ function getTextureIndex(x, y) {
   return map[Math.floor(y)][Math.floor(x)] - 1;
 }
 
-export { degreeToRadians, radiansToDegrees, clearScreen, checkCollision, getTextureIndex };
+function correct (input, max) {
+  input = input % max;
+  if (input < 0)  input += max;
+
+  return input;
+}
+
+export { degreeToRadians, radiansToDegrees, clearScreen, checkCollision, getTextureIndex, correct };

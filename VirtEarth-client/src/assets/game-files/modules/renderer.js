@@ -1,4 +1,4 @@
-import { checkCollision, degreeToRadians, getTextureIndex } from "./helper.js";
+import { checkCollision, degreeToRadians, getTextureIndex, correct } from "./helper.js";
 import { player } from "./player.js";
 import { rayCastingConfig } from "./rayCastConfig.js";
 import { projection } from "./screenConfig.js";
@@ -61,11 +61,32 @@ function rayCast() {
     const texture = textures[getTextureIndex(ray.x, ray.y)];
     const texturePositionX = Math.floor((texture.width * (ray.x + ray.y)) % texture.width);
 
-    drawLine(rayCount, 0, projection.halfHeight - wallHeight, ceilColor); // draw ceiling/sky
+    drawCeiling(rayCount, rayAngle);
     drawTexture(rayCount, wallHeight, texturePositionX, texture); // draw walls
     drawFloor(rayCount, wallHeight, rayAngle);
 
     rayAngle += rayCastingConfig.incrementAngle;
+  }
+}
+
+function drawCeiling(x, rayAngle) {
+  const directionCos = Math.cos(degreeToRadians(rayAngle));
+  const directionSin = Math.sin(degreeToRadians(rayAngle));
+
+  for (let y = 0; y < projection.halfHeight; y++) {
+    let distance = projection.height / (projection.height - 2 * y);
+    distance = distance / Math.cos(degreeToRadians(player.angle) - degreeToRadians(rayAngle)); // fisheye effect fix
+
+    const tileX = player.x + distance * directionCos;
+    const tileY = player.x + distance * directionSin;
+
+    if (!floorTexture) continue;
+
+    const floorTextureX = correct(Math.floor(tileX * floorTexture.width), floorTexture.width);
+    const floorTextureY = correct(Math.floor(tileY * floorTexture.height), floorTexture.height);
+
+    const color = floorTexture.data[floorTextureX + floorTextureY * floorTexture.width];
+    drawPixel(x, y, color);
   }
 }
 
@@ -79,14 +100,10 @@ function drawFloor(x, wallHeight, rayAngle) {
     let distance = projection.height / (2 * y - projection.height);
     distance = distance / Math.cos(degreeToRadians(player.angle) - degreeToRadians(rayAngle)); // fisheye effect fix
 
-    let tileX = distance * directionCos;
-    let tileY = distance * directionSin;
-    tileX += player.x; // get position relative to player
-    tileY += player.y;
+    const tileX = player.x + distance * directionCos;
+    const tileY = player.y + distance * directionSin;
 
-    if (!floorTexture) {
-      continue;
-    }
+    if (!floorTexture) continue;
 
     const floorTextureX = Math.floor(tileX * floorTexture.width) % floorTexture.width;
     const floorTextureY = Math.floor(tileY * floorTexture.height) % floorTexture.height;
