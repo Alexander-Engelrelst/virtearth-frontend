@@ -5,7 +5,7 @@ import { loadGame, initCanvas } from "../assets/game-files/rayCaster.js";
 import { Color } from "../assets/game-files/modules/renderer.js";
 import {
   textures,
-  floorTextures,
+  floorTexture,
   loadWallTextureData,
   loadFloorTextureData,
 } from "../assets/game-files/modules/texture.js";
@@ -48,10 +48,7 @@ function getWallTextureData() {
 }
 
 function getFloorTextureData() {
-  const canvas = floorCanvas.value;
-  const image = floorImage.value;
-  const texture = floorTextures[0];
-  return getTextureData(canvas, image, texture);
+  return getTextureData(floorCanvas.value, floorImage.value, floorTexture);
 }
 
 function getTextureData(canvas, image, texture) {

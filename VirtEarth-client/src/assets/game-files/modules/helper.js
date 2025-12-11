@@ -18,4 +18,8 @@ function checkCollision(x, y) {
   return map[Math.floor(y)][Math.floor(x)] === 0; // y = main array (vertical), x = subarray (horizontal)
 }
 
-export { degreeToRadians, radiansToDegrees, clearScreen, checkCollision };
+function getTextureIndex(x, y) {
+  return map[Math.floor(y)][Math.floor(x)] - 1;
+}
+
+export { degreeToRadians, radiansToDegrees, clearScreen, checkCollision, getTextureIndex };

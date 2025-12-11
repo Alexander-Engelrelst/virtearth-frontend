@@ -1,10 +1,9 @@
-import { checkCollision, degreeToRadians } from "./helper.js";
-import { map } from "./map.js";
+import { checkCollision, degreeToRadians, getTextureIndex } from "./helper.js";
 import { player } from "./player.js";
 import { rayCastingConfig } from "./rayCastConfig.js";
 import { projection } from "./screenConfig.js";
 import { canvasContext } from "../rayCaster.js";
-import { Color, textures, floorTextures, ceilColor } from "./texture.js";
+import { Color, textureIndices, textures, floorTexture, ceilColor } from "./texture.js";
 
 function drawLine(x, y1, y2, color) {
   for (let y = y1; y < y2; y++) {
@@ -42,25 +41,23 @@ function drawPixel(x, y, color) {
 function rayCast() {
   let rayAngle = player.angle - player.fov / 2;
 
-  for (let rayCount = 0; rayCount < projection.width; rayCount++) {
-    // cast a ray for each pixel horizontally
-
+  for (let rayCount = 0; rayCount < projection.width; rayCount++) { // cast a ray for each pixel horizontally
     const ray = { x: player.x, y: player.y };
 
     const rayCos = Math.cos(degreeToRadians(rayAngle)) / rayCastingConfig.precision; // precision determines amount of collision checks for ray
     const raySin = Math.sin(degreeToRadians(rayAngle)) / rayCastingConfig.precision;
 
-    let wall = false;
-    while (!wall) {
+    let collided = false;
+    while (!collided) {
       ray.x += rayCos;
       ray.y += raySin;
-      wall = !checkCollision(ray.x, ray.y); // if ray is not on a 0 -> collision is true
+      collided = !checkCollision(ray.x, ray.y); // if ray is not on a 0 -> collision is true
     }
 
     let distance = Math.sqrt(Math.pow(player.x - ray.x, 2) + Math.pow(player.y - ray.y, 2)); // Pythagoras baby
     distance = distance * Math.cos(degreeToRadians(rayAngle - player.angle)); // fix fisheye lens effect
     const wallHeight = Math.floor(projection.halfHeight / distance);
-    const texture = textures[wall - 1];
+    const texture = textures[getTextureIndex(ray.x, ray.y)];
     const texturePositionX = Math.floor((texture.width * (ray.x + ray.y)) % texture.width);
 
     drawLine(rayCount, 0, projection.halfHeight - wallHeight, ceilColor); // draw ceiling/sky
@@ -75,7 +72,7 @@ function drawFloor(x, wallHeight, rayAngle) {
   const directionCos = Math.cos(degreeToRadians(rayAngle));
   const directionSin = Math.sin(degreeToRadians(rayAngle));
 
-  const start = projection.halfHeight + wallHeight + 1;
+  const start = projection.halfHeight + wallHeight + 1; // + 1 to prevent missing pixels between wall and floor
 
   for (let y = start; y < projection.height; y++) {
     let distance = projection.height / (2 * y - projection.height);
@@ -86,18 +83,14 @@ function drawFloor(x, wallHeight, rayAngle) {
     tileX += player.x; // get position relative to player
     tileY += player.y;
 
-    const tile = map[Math.floor(tileY)][Math.floor(tileX)];
-
-    const texture = floorTextures[tile];
-
-    if (!texture) {
+    if (!floorTexture) {
       continue;
     }
 
-    const textureX = Math.floor(tileX * texture.width) % texture.width;
-    const textureY = Math.floor(tileY * texture.height) % texture.height;
+    const floorTextureX = Math.floor(tileX * floorTexture.width) % floorTexture.width;
+    const floorTextureY = Math.floor(tileY * floorTexture.height) % floorTexture.height;
 
-    const color = texture.data[textureX + textureY * texture.width];
+    const color = floorTexture.data[floorTextureX + floorTextureY * floorTexture.width];
     drawPixel(x, y, color);
   }
 }

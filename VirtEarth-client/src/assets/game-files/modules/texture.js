@@ -5,9 +5,12 @@ function Color(r, g, b, a) {
   this.a = a;
 }
 
+const textureIndices = {
+  mossWall: 0
+}
+
 const textures = [
   {
-    // image file texture
     width: 16,
     height: 16,
     id: "wallTexture",
@@ -15,23 +18,21 @@ const textures = [
   },
 ];
 
-const floorTextures = [
-  {
+const floorTexture = {
     width: 16,
     height: 16,
     id: "floorTexture",
     data: null,
-  },
-];
+}
 
 const ceilColor = new Color(128, 128, 128, 255);
 
 function loadWallTextureData(wallTextureData) {
-  textures[0].data = wallTextureData;
+  textures[0].data = wallTextureData; // TODO: FIX THIS MAGIC NUMBER
 }
 
 function loadFloorTextureData(floorTextureData) {
-  floorTextures[0].data = floorTextureData;
+  floorTexture.data = floorTextureData;
 }
 
-export { Color, textures, floorTextures, loadWallTextureData, loadFloorTextureData, ceilColor };
+export { Color, textureIndices, textures, floorTexture, loadWallTextureData, loadFloorTextureData, ceilColor };
