@@ -6,8 +6,8 @@ function Color(r, g, b, a) {
 }
 
 const textureIndices = {
-  mossWall: 0
-}
+  mossWall: 0,
+};
 
 const textures = [
   {
@@ -19,11 +19,11 @@ const textures = [
 ];
 
 const floorTexture = {
-    width: 16,
-    height: 16,
-    id: "floorTexture",
-    data: null,
-}
+  width: 16,
+  height: 16,
+  id: "floorTexture",
+  data: null,
+};
 
 const ceilColor = new Color(128, 128, 128, 255);
 
@@ -35,4 +35,12 @@ function loadFloorTextureData(floorTextureData) {
   floorTexture.data = floorTextureData;
 }
 
-export { Color, textureIndices, textures, floorTexture, loadWallTextureData, loadFloorTextureData, ceilColor };
+export {
+  Color,
+  textureIndices,
+  textures,
+  floorTexture,
+  loadWallTextureData,
+  loadFloorTextureData,
+  ceilColor,
+};
