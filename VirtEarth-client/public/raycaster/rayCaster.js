@@ -4,23 +4,20 @@ import { fpsCount, drawFps } from "./modules/fpsCounter.js";
 import { clearScreen } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
 import { rayCast, renderBuffer } from "./modules/renderer.js";
-import { screen, projection } from "./modules/screenConfig.js";
+import { screen } from "./modules/screenConfig.js";
 
-let canvas = null;
-let canvasContext = null;
-const fps = 60; // refresh rate of the screen
-const renderDelay = 1000 / fps;
+const FPS = 60; // refresh rate of the screen
+const RENDER_DELAY = 1000 / FPS;
 
-function initCanvas(vueCanvas) {
-  canvas = vueCanvas;
-  canvasContext = canvas.getContext("2d");
-  canvasContext.scale(screen.scale, screen.scale);
-  canvasContext.translate(0.5, 0.5);
-  canvasContext.imageSmoothingEnabled = false;
+const canvas = document.createElement('canvas');
+canvas.width = screen.width;
+canvas.height = screen.height;
+document.body.appendChild(canvas);
 
-  projection.imageData = canvasContext.createImageData(projection.width, projection.height);
-  projection.buffer = projection.imageData.data;
-}
+const canvasContext = canvas.getContext("2d");
+canvasContext.scale(screen.scale, screen.scale);
+canvasContext.translate(0.5, 0.5);
+canvasContext.imageSmoothingEnabled = false;
 
 function loadGame() {
   renderLoop();
@@ -34,7 +31,7 @@ function renderLoop() {
     renderBuffer();
     fpsCount();
     drawFps();
-  }, renderDelay);
+  }, RENDER_DELAY);
 }
 
 document.addEventListener("keydown", (event) => {

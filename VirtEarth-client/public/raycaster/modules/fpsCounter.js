@@ -1,4 +1,4 @@
-import { canvasContext } from "@/assets/game-files/rayCaster.js";
+import { canvasContext } from "@/assets/raycaster/rayCaster.js";
 
 let lastTime = performance.now();
 let fpsCounter = 0;
