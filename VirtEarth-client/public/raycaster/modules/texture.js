@@ -30,7 +30,7 @@ function loadTextures () {
     }
   }
 
-  floorTexture.data = getTextureData(floorTexture)
+  floorTexture.data = getTextureData(floorTexture);
 }
 
 function getTextureData(texture) {
@@ -58,6 +58,7 @@ function parseImageData(imageData) {
 }
 
 export {
+  loadTextures,
   Color,
   textures,
   floorTexture,

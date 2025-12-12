@@ -4,7 +4,8 @@ import { fpsCount, drawFps } from "./modules/fpsCounter.js";
 import { clearScreen } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
 import { rayCast, renderBuffer } from "./modules/renderer.js";
-import { screen } from "./modules/screenConfig.js";
+import { screen, projection } from "./modules/screenConfig.js";
+import { loadTextures } from "./modules/texture.js";
 
 const FPS = 60; // refresh rate of the screen
 const RENDER_DELAY = 1000 / FPS;
@@ -19,7 +20,11 @@ canvasContext.scale(screen.scale, screen.scale);
 canvasContext.translate(0.5, 0.5);
 canvasContext.imageSmoothingEnabled = false;
 
-function loadGame() {
+projection.imageData = canvasContext.createImageData(projection.width, projection.height);
+projection.buffer = projection.imageData.data;
+
+window.onload = function () {
+  loadTextures();
   renderLoop();
 }
 
@@ -75,4 +80,4 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-export { loadGame, initCanvas, canvas, canvasContext };
+export { canvas, canvasContext };

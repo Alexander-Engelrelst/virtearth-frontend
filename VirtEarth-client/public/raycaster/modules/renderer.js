@@ -78,7 +78,7 @@ function drawCeiling(x, rayAngle) {
     distance = distance / Math.cos(degreeToRadians(player.angle) - degreeToRadians(rayAngle)); // fisheye effect fix
 
     const tileX = player.x + distance * directionCos;
-    const tileY = player.x + distance * directionSin;
+    const tileY = player.y + distance * directionSin;
 
     if (!floorTexture) continue;
 
