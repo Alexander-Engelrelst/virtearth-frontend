@@ -1,7 +1,7 @@
 // created following this tutorial: https://github.com/vinibiavatti1/RayCastingTutorial/wiki and partially rewrote to use modules and be more readable
 
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
-import { clearScreen } from "./modules/helper.js";
+import { clearScreen, getTextureIndex } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
 import { rayCast, renderBuffer } from "./modules/renderer.js";
 import { screen, projection } from "./modules/screenConfig.js";
@@ -37,6 +37,12 @@ function renderLoop() {
     fpsCount();
     drawFps();
   }, RENDER_DELAY);
+}
+
+function checkWinCondition(collisionIndex) {
+  if (collisionIndex === 1) { // player touches exit
+    window.location.replace("/win.html");
+  }
 }
 
 document.addEventListener("keydown", (event) => {
@@ -80,4 +86,4 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-export { canvas, canvasContext };
+export { canvas, canvasContext, checkWinCondition };
