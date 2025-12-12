@@ -12,6 +12,12 @@ const textures = [
     id: "wallTexture",
     data: null,
   },
+  {
+    width: 16,
+    height: 16,
+    id: "exitTexture",
+    data: null,
+  }
 ];
 
 const floorTexture = {
@@ -20,6 +26,13 @@ const floorTexture = {
   id: "floorTexture",
   data: null,
 };
+
+const ceilTexture = {
+  width: 16,
+  height: 16,
+  id: "ceilTexture",
+  data: null,
+}
 
 const ceilColor = new Color(128, 128, 128, 255);
 
@@ -31,6 +44,7 @@ function loadTextures () {
   }
 
   floorTexture.data = getTextureData(floorTexture);
+  ceilTexture.data = getTextureData(ceilTexture);
 }
 
 function getTextureData(texture) {
@@ -62,5 +76,6 @@ export {
   Color,
   textures,
   floorTexture,
+  ceilTexture,
   ceilColor,
 };

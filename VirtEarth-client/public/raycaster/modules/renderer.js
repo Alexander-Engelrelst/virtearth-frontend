@@ -3,7 +3,7 @@ import { player } from "./player.js";
 import { rayCastingConfig } from "./rayCastConfig.js";
 import { projection } from "./screenConfig.js";
 import { canvasContext } from "../rayCaster.js";
-import { Color, textures, floorTexture, ceilColor } from "./texture.js";
+import { Color, textures, floorTexture, ceilTexture } from "./texture.js";
 
 function drawLine(x, y1, y2, color) {
   for (let y = y1; y < y2; y++) {
@@ -80,12 +80,12 @@ function drawCeiling(x, rayAngle) {
     const tileX = player.x + distance * directionCos;
     const tileY = player.y + distance * directionSin;
 
-    if (!floorTexture) continue;
+    if (!ceilTexture) continue;
 
-    const floorTextureX = correct(Math.floor(tileX * floorTexture.width), floorTexture.width);
-    const floorTextureY = correct(Math.floor(tileY * floorTexture.height), floorTexture.height);
+    const ceilTextureX = correct(Math.floor(tileX * ceilTexture.width), ceilTexture.width);
+    const ceilTextureY = correct(Math.floor(tileY * ceilTexture.height), ceilTexture.height);
 
-    const color = floorTexture.data[floorTextureX + floorTextureY * floorTexture.width];
+    const color = ceilTexture.data[ceilTextureX + ceilTextureY * floorTexture.width];
     drawPixel(x, y, color);
   }
 }
