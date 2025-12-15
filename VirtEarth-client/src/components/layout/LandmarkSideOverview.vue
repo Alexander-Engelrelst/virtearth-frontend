@@ -1,5 +1,6 @@
 <script setup>
-import { ref, defineExpose } from 'vue'
+import router from '@/router'
+import { ref, defineExpose, watch } from 'vue'
 
 const props = defineProps({
   landmark: {
@@ -7,6 +8,10 @@ const props = defineProps({
     default: null
   }
 })
+
+watch(() => props.landmark, (newVal) => {
+  sessionStorage.setItem("gameId", newVal.gameId)
+}, { deep: true });
 
 const isOpen = ref(false)
 
@@ -16,6 +21,10 @@ const close = () => {
 
 const open = () => {
   isOpen.value = true
+}
+
+function handlePlayGameClick(){
+  router.push({name: "game"})
 }
 
 defineExpose({
@@ -40,7 +49,7 @@ defineExpose({
       </div>
     </div>
     <div v-if="landmark">
-      <button class="px-3 py-2 w-full bg-brand-primary text-white rounded-lg hover:bg-brand-primary cursor-pointer">
+      <button @click="handlePlayGameClick" class="px-3 py-2 w-full bg-brand-primary text-white rounded-lg hover:bg-brand-primary cursor-pointer">
         Play Game
       </button>
     </div>
