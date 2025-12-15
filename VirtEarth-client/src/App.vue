@@ -1,6 +1,6 @@
 <script setup>
-import NotificationPopup from '@/components/base/NotificationPopup.vue';
-import { notificationRef } from '@/services/useNotification';
+import NotificationPopup from "@/components/base/NotificationPopup.vue";
+import { notificationRef } from "@/services/useNotification";
 </script>
 
 <template>

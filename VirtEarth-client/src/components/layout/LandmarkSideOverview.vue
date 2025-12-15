@@ -1,49 +1,53 @@
 <script setup>
-import router from '@/router'
-import { ref, defineExpose, watch } from 'vue'
-import { formatYear } from '@/services/utils'
-import { createMazeGame } from '@/services/api/landmarks';
+import router from "@/router";
+import { ref, defineExpose, watch } from "vue";
+import { formatYear } from "@/services/utils";
+import { createMazeGame } from "@/services/api/landmarks";
 
-import { useNotification } from '@/services/useNotification';
+import { useNotification } from "@/services/useNotification";
 
 const { showNotification } = useNotification();
 
 const props = defineProps({
   landmark: {
     type: Object,
-    default: null
-  }
-})
+    default: null,
+  },
+});
 
-watch(() => props.landmark, (newVal) => {
-  sessionStorage.setItem("gameId", newVal.gameId)
-}, { deep: true });
+watch(
+  () => props.landmark,
+  (newVal) => {
+    sessionStorage.setItem("gameId", newVal.gameId);
+  },
+  { deep: true }
+);
 
-const isOpen = ref(false)
+const isOpen = ref(false);
 
 const close = () => {
-  isOpen.value = false
-}
+  isOpen.value = false;
+};
 
 const open = () => {
-  isOpen.value = true
-}
+  isOpen.value = true;
+};
 
-async function handlePlayGameClick(){
-  if(sessionStorage.getItem("gameId")){
-    try{
+async function handlePlayGameClick() {
+  if (sessionStorage.getItem("gameId")) {
+    try {
       const response = await createMazeGame(sessionStorage.getItem("gameId"));
       sessionStorage.setItem("gameObject", JSON.stringify(response));
-      router.push({name: "game"})
-    }catch(error){
+      router.push({ name: "game" });
+    } catch (error) {
       showNotification("Sorry, this game doesn't have a game to play");
     }
   }
 }
 
 defineExpose({
-  open
-})
+  open,
+});
 </script>
 
 <template>
@@ -51,8 +55,19 @@ defineExpose({
     <div>
       <div class="flex justify-end">
         <button @click="close" class="text-gray-500 hover:text-gray-700">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>
@@ -63,7 +78,10 @@ defineExpose({
       </div>
     </div>
     <div v-if="landmark">
-      <button @click="handlePlayGameClick" class="px-3 py-2 w-full bg-brand-primary text-white rounded-lg hover:bg-brand-primary cursor-pointer">
+      <button
+        @click="handlePlayGameClick"
+        class="px-3 py-2 w-full bg-brand-primary text-white rounded-lg hover:bg-brand-primary cursor-pointer"
+      >
         Play Game
       </button>
     </div>

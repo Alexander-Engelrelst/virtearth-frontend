@@ -7,16 +7,15 @@ import LandmarkSideOverview from "@/components/layout/LandmarkSideOverview.vue";
 import { getUsername } from "@/services/auth.js";
 import { getLandmarks } from "@/services/api/landmarks.js";
 
-
-const landmarkSideOverview = ref(null)
-const selectedLandmark = ref(null)
+const landmarkSideOverview = ref(null);
+const selectedLandmark = ref(null);
 
 const handleMarkerClick = (id) => {
-  selectedLandmark.value = landmarks.value.find(l => l.id === id)
+  selectedLandmark.value = landmarks.value.find((l) => l.id === id);
   if (landmarkSideOverview.value) {
-    landmarkSideOverview.value.open()
+    landmarkSideOverview.value.open();
   }
-}
+};
 
 const username = getUsername();
 const landmarks = ref([]);
@@ -88,7 +87,11 @@ onMounted(async () => {
         :max="maxYear"
         :allContinents="continents"
       />
-      <MapContainer :landmarks="filteredLandmarks" class="flex-1" @marker-click="handleMarkerClick" />
+      <MapContainer
+        :landmarks="filteredLandmarks"
+        class="flex-1"
+        @marker-click="handleMarkerClick"
+      />
       <LandmarkSideOverview ref="landmarkSideOverview" :landmark="selectedLandmark" />
     </div>
   </div>

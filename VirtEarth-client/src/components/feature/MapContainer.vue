@@ -12,7 +12,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['marker-click']);
+const emit = defineEmits(["marker-click"]);
 
 const mapInstance = ref(null);
 const markersGroup = ref(null);
@@ -59,9 +59,8 @@ const updateMarkers = () => {
         iconSize: [60, 60],
         iconAnchor: [30, 60],
       });
-      const marker = L.marker([latitude, longitude], { icon })
-      .on('click', () => {
-        emit('marker-click', id);
+      const marker = L.marker([latitude, longitude], { icon }).on("click", () => {
+        emit("marker-click", id);
         if (document.fullscreenElement) {
           document.exitFullscreen();
         }
