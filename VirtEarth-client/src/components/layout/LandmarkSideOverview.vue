@@ -1,6 +1,7 @@
 <script setup>
 import router from '@/router'
 import { ref, defineExpose, watch } from 'vue'
+import { formatYear } from '@/services/utils'
 
 const props = defineProps({
   landmark: {
@@ -44,7 +45,7 @@ defineExpose({
       </div>
       <div v-if="landmark">
         <h2 class="text-xl font-bold">{{ landmark.gameName }}</h2>
-        <p class="text-gray-600">{{ landmark.year }}</p>
+        <p class="text-gray-600">{{ formatYear(landmark.year) }}</p>
         <p class="mt-4">{{ landmark.description }}</p>
       </div>
     </div>
