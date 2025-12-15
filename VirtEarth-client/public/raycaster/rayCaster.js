@@ -10,9 +10,8 @@ import { loadTextures, textures } from "./modules/texture.js";
 
 //const gameObject = JSON.parse(localStorage.getItem("gameObject"));
 
-const FPS = 90; // refresh rate of the screen
-let lastUpdate = null;
-const frameInterval = 1000 / FPS;
+const FPS = 60; // refresh rate of the screen
+const RENDER_DELAY = 1000 / FPS;
 
 const canvas = document.createElement('canvas');
 canvas.width = screen.width;
@@ -33,23 +32,15 @@ window.onload = function () {
   renderLoop();
 }
 
-function renderLoop() { // code from https://github.com/vinibiavatti1/RayCastingTutorial/issues/6
-  const render = (timestamp) => {
-    if (!lastUpdate || timestamp - lastUpdate > frameInterval) {
-      clearScreen();
-      movePlayer();
-      renderBuffer();
-      rayCast();
-      //drawSprites();
-      fpsCount();
-      drawFps();
-      lastUpdate = timestamp;
-    }
-
-    requestAnimationFrame(render);
-  };
-
-  requestAnimationFrame(render);
+function renderLoop() {
+  setInterval(() => {
+    clearScreen();
+    movePlayer();
+    rayCast();
+    renderBuffer();
+    fpsCount();
+    drawFps();
+  }, RENDER_DELAY);
 }
 
 function checkWinCondition(collisionIndex) {
