@@ -1,9 +1,9 @@
 const screen = {
-  width: document.documentElement.clientWidth,
-  height: document.documentElement.clientHeight,
+  width: 1600,
+  height: 800,
   halfWidth: null,
   halfHeight: null,
-  scale: 4,
+  scale: 2,
 };
 
 screen.halfWidth = screen.width / 2;

@@ -4,6 +4,8 @@ import { drawLine } from "./renderer.js";
 import { projection } from "./screenConfig.js";
 import { getTextureData } from "./texture.js";
 
+const maxAngle = 360;
+
 const sprites = [
   {
     id: "artifact",
@@ -17,31 +19,30 @@ const sprites = [
 ];
 
 function enableSprites(x, y) {
-  for (let i = 0; i < sprites.length; i++) {
-    if (sprites[i].x === Math.floor(x) && sprites[i].y === Math.floor(y)) {
-      sprites[i].active = true;
+  for (const sprite of sprites) {
+    if (sprite.x === Math.floor(x) && sprite.y === Math.floor(y)) {
+      sprite.active = true;
     }
   }
 }
 
 function disableSprites() {
-  for (let i = 0; i < sprites.length; i++) {
-    sprites[i].active = false;
+  for (const sprite of sprites) {
+    sprite.active = false;
   }
 }
 
 function loadSprites() {
-  for (let i = 0; i < sprites.length; i++) {
-    if (sprites[i].id) {
-      sprites[i].data = getTextureData(sprites[i]);
+  for (const sprite of sprites) {
+    if (sprite.id) {
+      sprite.data = getTextureData(sprite);
     }
   }
 }
 
 function drawSprites() {
-  for (let i = 0; i < sprites.length; i++) {
-    if (sprites[i].active) {
-      const sprite = sprites[i];
+  for (const sprite of sprites) {
+    if (sprite.active) {
 
       // Get X and Y coords in relation of the player coords
       const spriteXRelative = sprite.x + 0.5 - player.x;
@@ -53,9 +54,9 @@ function drawSprites() {
         radiansToDegrees(spriteAngleRadians) - Math.floor(player.angle - player.fov / 2);
 
       // Sprite angle checking
-      if (spriteAngle > 360) spriteAngle -= 360;
+      if (spriteAngle > maxAngle) spriteAngle -= maxAngle;
 
-      if (spriteAngle < 0) spriteAngle += 360;
+      if (spriteAngle < 0) spriteAngle += maxAngle;
 
       // Three rule to discover the x position of the script
       let spriteX = Math.floor((spriteAngle * projection.width) / player.fov);
@@ -115,11 +116,9 @@ function drawSprite(xProjection, spriteWidth, spriteHeight, sprite) {
 
 function drawRect(x1, x2, y1, y2, color) {
   for (let x = x1; x < x2; x++) {
-    if (x < 0) continue;
-
-    if (x > projection.width) continue;
-
-    drawLine(x, y1, y2, color);
+    if (x >= 0 && x <= projection.width) {
+      drawLine(x, y1, y2, color);
+    }
   }
 }
 

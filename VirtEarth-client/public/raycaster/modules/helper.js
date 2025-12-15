@@ -2,12 +2,14 @@ import { canvasContext } from "../rayCaster.js";
 import { map } from "./map.js";
 import { projection } from "./screenConfig.js";
 
+const halfCircle = 180;
+
 function degreeToRadians(degree) {
-  return (degree * Math.PI) / 180;
+  return (degree * Math.PI) / halfCircle;
 }
 
 function radiansToDegrees(radians) {
-  return (radians / Math.PI) * 180;
+  return (radians / Math.PI) * halfCircle;
 }
 
 function clearScreen() {

@@ -8,14 +8,16 @@ import { screen, projection } from "./modules/screenConfig.js";
 import { drawSprites, loadSprites } from "./modules/sprites.js";
 import { loadTextures, textures } from "./modules/texture.js";
 
-const FPS = 60; // refresh rate of the screen
+//const gameObject = JSON.parse(localStorage.getItem("gameObject"));
+
+const FPS = 90; // refresh rate of the screen
 let lastUpdate = null;
 const frameInterval = 1000 / FPS;
 
 const canvas = document.createElement('canvas');
 canvas.width = screen.width;
 canvas.height = screen.height;
-document.body.appendChild(canvas);
+document.getElementById("container").appendChild(canvas);
 
 const canvasContext = canvas.getContext("2d");
 canvasContext.scale(screen.scale, screen.scale);
@@ -27,7 +29,7 @@ projection.buffer = projection.imageData.data;
 
 window.onload = function () {
   loadTextures();
-  loadSprites();
+  //loadSprites();
   renderLoop();
 }
 
@@ -38,7 +40,7 @@ function renderLoop() { // code from https://github.com/vinibiavatti1/RayCasting
       movePlayer();
       renderBuffer();
       rayCast();
-      drawSprites();
+      //drawSprites();
       fpsCount();
       drawFps();
       lastUpdate = timestamp;
