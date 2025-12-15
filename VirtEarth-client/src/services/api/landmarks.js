@@ -22,7 +22,7 @@ export async function getLandmarks() {
   return response.json();
 }
 
-export async function postLandmarks(gameId) {
+export async function createMazeGame(gameId) {
   const token = getToken();
 
   const response = await fetch(getApiUrl(`/api/games/${gameId}`), {

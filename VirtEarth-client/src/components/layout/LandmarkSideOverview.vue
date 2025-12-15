@@ -2,7 +2,11 @@
 import router from '@/router'
 import { ref, defineExpose, watch } from 'vue'
 import { formatYear } from '@/services/utils'
-import { postLandmarks } from '@/services/api/landmarks';
+import { createMazeGame } from '@/services/api/landmarks';
+
+import { useNotification } from '@/services/useNotification';
+
+const { showNotification } = useNotification();
 
 const props = defineProps({
   landmark: {
@@ -28,12 +32,12 @@ const open = () => {
 async function handlePlayGameClick(){
   if(sessionStorage.getItem("gameId")){
     try{
-      const response = await postLandmarks(sessionStorage.getItem("gameId"));
-      sessionStorage.setItem("landmarkData", JSON.stringify(response));
+      const response = await createMazeGame(sessionStorage.getItem("gameId"));
+      sessionStorage.setItem("gameObject", JSON.stringify(response));
+      router.push({name: "game"})
     }catch(error){
-      console.error(error);
+      showNotification("Sorry, this game doesn't have a game to play");
     }
-    router.push({name: "game"})
   }
 }
 
