@@ -2,12 +2,14 @@ import { canvasContext } from "../rayCaster.js";
 import { map } from "./map.js";
 import { projection } from "./screenConfig.js";
 
+const halfCircle = 180;
+
 function degreeToRadians(degree) {
-  return (degree * Math.PI) / 180;
+  return (degree * Math.PI) / halfCircle;
 }
 
 function radiansToDegrees(radians) {
-  return (radians / Math.PI) * 180;
+  return (radians / Math.PI) * halfCircle;
 }
 
 function clearScreen() {
@@ -23,7 +25,7 @@ function getTextureIndex(x, y) {
 }
 
 function correct (input, max) {
-  input = input % max;
+  input %= max;
   if (input < 0)  input += max;
 
   return input;

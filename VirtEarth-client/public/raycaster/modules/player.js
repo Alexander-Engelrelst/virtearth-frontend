@@ -1,3 +1,4 @@
+
 const player = {
   fov: 72, // any higher, and you get a fisheye lens effect at the edges of the screen
   x: 1.5,

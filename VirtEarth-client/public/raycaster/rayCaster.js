@@ -5,7 +5,10 @@ import { clearScreen } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
 import { rayCast, renderBuffer } from "./modules/renderer.js";
 import { screen, projection } from "./modules/screenConfig.js";
-import { loadTextures } from "./modules/texture.js";
+import { drawSprites, loadSprites } from "./modules/sprites.js";
+import { loadTextures, textures } from "./modules/texture.js";
+
+//const gameObject = JSON.parse(localStorage.getItem("gameObject"));
 
 const FPS = 60; // refresh rate of the screen
 const RENDER_DELAY = 1000 / FPS;
@@ -13,7 +16,7 @@ const RENDER_DELAY = 1000 / FPS;
 const canvas = document.createElement('canvas');
 canvas.width = screen.width;
 canvas.height = screen.height;
-document.body.appendChild(canvas);
+document.getElementById("container").appendChild(canvas);
 
 const canvasContext = canvas.getContext("2d");
 canvasContext.scale(screen.scale, screen.scale);
@@ -25,6 +28,7 @@ projection.buffer = projection.imageData.data;
 
 window.onload = function () {
   loadTextures();
+  //loadSprites();
   renderLoop();
 }
 
@@ -37,6 +41,12 @@ function renderLoop() {
     fpsCount();
     drawFps();
   }, RENDER_DELAY);
+}
+
+function checkWinCondition(collisionIndex) {
+  if (textures[collisionIndex].id === "exitTexture") { // player touches exit
+    window.location.replace("/win.html"); // TODO: update win screen
+  }
 }
 
 document.addEventListener("keydown", (event) => {
@@ -80,4 +90,4 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-export { canvas, canvasContext };
+export { canvas, canvasContext, checkWinCondition };

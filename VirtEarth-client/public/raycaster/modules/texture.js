@@ -1,9 +1,13 @@
-function Color(r, g, b, a) {
-  this.r = r;
-  this.g = g;
-  this.b = b;
-  this.a = a;
+class Color {
+  constructor(r, g, b, a) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    this.a = a;
+  }
 }
+
+const fullOpacity = 255;
 
 const textures = [
   {
@@ -13,8 +17,8 @@ const textures = [
     data: null,
   },
   {
-    width: 16,
-    height: 16,
+    width: 64,
+    height: 64,
     id: "exitTexture",
     data: null,
   }
@@ -34,12 +38,10 @@ const ceilTexture = {
   data: null,
 }
 
-const ceilColor = new Color(128, 128, 128, 255);
-
 function loadTextures () {
-  for (let i = 0; i < textures.length; i++) { // wall textures
-    if (textures[i].id) {
-      textures[i].data = getTextureData(textures[i]);
+  for (const texture of textures) { // wall textures
+    if (texture.id) {
+      texture.data = getTextureData(texture);
     }
   }
 
@@ -65,17 +67,17 @@ function parseImageData(imageData) {
   const colorArray = [];
 
   for (let i = 0; i < imageData.length; i+=4) {
-    colorArray.push(new Color(imageData[i], imageData[i + 1], imageData[i + 2], 255));
+    colorArray.push(new Color(imageData[i], imageData[i + 1], imageData[i + 2], fullOpacity));
   }
 
   return colorArray;
 }
 
 export {
+  getTextureData,
   loadTextures,
   Color,
   textures,
   floorTexture,
   ceilTexture,
-  ceilColor,
 };

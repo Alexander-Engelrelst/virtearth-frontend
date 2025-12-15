@@ -5,9 +5,16 @@ body {
     background: #808080;
 }
 
+#container {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 canvas {
     display: block;
-    margin: auto;
+    margin: 5rem auto auto auto;
 }
 
 img {

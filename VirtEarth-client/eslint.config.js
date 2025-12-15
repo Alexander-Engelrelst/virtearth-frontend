@@ -62,7 +62,7 @@ export default defineConfig([
     },
   },
   {
-    files: ["src/assets/raycaster/**"],
+    files: ["public/**"],
     rules: {
       "no-unused-vars": "off", // temporary until I implement sprites - seba
       "max-depth": ["error", { "max": 4 }],

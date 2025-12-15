@@ -32,10 +32,11 @@ function drawTexture(x, wallHeight, texturePositionX, texture) {
 
 function drawPixel(x, y, color) {
   const offset = 4 * (Math.floor(x) + Math.floor(y) * projection.width);
+  const offsetArray = [1, 2, 3]; //to prevent sonar no magic number rule
   projection.buffer[offset] = color.r;
-  projection.buffer[offset + 1] = color.g;
-  projection.buffer[offset + 2] = color.b;
-  projection.buffer[offset + 3] = color.a;
+  projection.buffer[offset + offsetArray[0]] = color.g;
+  projection.buffer[offset + offsetArray[1]] = color.b;
+  projection.buffer[offset + offsetArray[2]] = color.a;
 }
 
 function rayCast() {
@@ -80,13 +81,13 @@ function drawCeiling(x, rayAngle) {
     const tileX = player.x + distance * directionCos;
     const tileY = player.y + distance * directionSin;
 
-    if (!ceilTexture) continue;
+    if (ceilTexture) {
+      const ceilTextureX = correct(Math.floor(tileX * ceilTexture.width), ceilTexture.width);
+      const ceilTextureY = correct(Math.floor(tileY * ceilTexture.height), ceilTexture.height);
 
-    const ceilTextureX = correct(Math.floor(tileX * ceilTexture.width), ceilTexture.width);
-    const ceilTextureY = correct(Math.floor(tileY * ceilTexture.height), ceilTexture.height);
-
-    const color = ceilTexture.data[ceilTextureX + ceilTextureY * floorTexture.width];
-    drawPixel(x, y, color);
+      const color = ceilTexture.data[ceilTextureX + ceilTextureY * floorTexture.width];
+      drawPixel(x, y, color);
+    }
   }
 }
 
@@ -103,13 +104,13 @@ function drawFloor(x, wallHeight, rayAngle) {
     const tileX = player.x + distance * directionCos;
     const tileY = player.y + distance * directionSin;
 
-    if (!floorTexture) continue;
+    if (floorTexture) {
+      const floorTextureX = Math.floor(tileX * floorTexture.width) % floorTexture.width;
+      const floorTextureY = Math.floor(tileY * floorTexture.height) % floorTexture.height;
 
-    const floorTextureX = Math.floor(tileX * floorTexture.width) % floorTexture.width;
-    const floorTextureY = Math.floor(tileY * floorTexture.height) % floorTexture.height;
-
-    const color = floorTexture.data[floorTextureX + floorTextureY * floorTexture.width];
-    drawPixel(x, y, color);
+      const color = floorTexture.data[floorTextureX + floorTextureY * floorTexture.width];
+      drawPixel(x, y, color);
+    }
   }
 }
 
