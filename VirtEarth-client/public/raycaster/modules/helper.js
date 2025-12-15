@@ -23,7 +23,7 @@ function getTextureIndex(x, y) {
 }
 
 function correct (input, max) {
-  input = input % max;
+  input %= max;
   if (input < 0)  input += max;
 
   return input;

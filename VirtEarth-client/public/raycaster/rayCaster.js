@@ -1,14 +1,16 @@
 // created following this tutorial: https://github.com/vinibiavatti1/RayCastingTutorial/wiki and partially rewrote to use modules and be more readable
 
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
-import { clearScreen, getTextureIndex } from "./modules/helper.js";
+import { clearScreen } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
 import { rayCast, renderBuffer } from "./modules/renderer.js";
 import { screen, projection } from "./modules/screenConfig.js";
-import { loadTextures } from "./modules/texture.js";
+import { drawSprites, loadSprites } from "./modules/sprites.js";
+import { loadTextures, textures } from "./modules/texture.js";
 
 const FPS = 60; // refresh rate of the screen
-const RENDER_DELAY = 1000 / FPS;
+let lastUpdate = null;
+const frameInterval = 1000 / FPS;
 
 const canvas = document.createElement('canvas');
 canvas.width = screen.width;
@@ -25,23 +27,32 @@ projection.buffer = projection.imageData.data;
 
 window.onload = function () {
   loadTextures();
+  loadSprites();
   renderLoop();
 }
 
-function renderLoop() {
-  setInterval(() => {
-    clearScreen();
-    movePlayer();
-    rayCast();
-    renderBuffer();
-    fpsCount();
-    drawFps();
-  }, RENDER_DELAY);
+function renderLoop() { // code from https://github.com/vinibiavatti1/RayCastingTutorial/issues/6
+  const render = (timestamp) => {
+    if (!lastUpdate || timestamp - lastUpdate > frameInterval) {
+      clearScreen();
+      movePlayer();
+      renderBuffer();
+      rayCast();
+      drawSprites();
+      fpsCount();
+      drawFps();
+      lastUpdate = timestamp;
+    }
+
+    requestAnimationFrame(render);
+  };
+
+  requestAnimationFrame(render);
 }
 
 function checkWinCondition(collisionIndex) {
-  if (collisionIndex === 1) { // player touches exit
-    window.location.replace("/win.html");
+  if (textures[collisionIndex].id === "exitTexture") { // player touches exit
+    window.location.replace("/win.html"); // TODO: update win screen
   }
 }
 

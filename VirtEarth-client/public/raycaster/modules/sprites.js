@@ -7,11 +7,11 @@ import { getTextureData } from "./texture.js";
 const sprites = [
   {
     id: "artifact",
-    x: 7,
-    y: 2,
+    x: 3,
+    y: 4,
     width: 10,
     height: 6,
-    active: false,
+    active: true,
     data: null,
   },
 ];
@@ -85,7 +85,7 @@ function drawSprite(xProjection, spriteWidth, spriteHeight, sprite) {
   // Decrement halfwidth of the sprite to consider the middle of the sprite to draw
   xProjection = xProjection - sprite.width;
 
-  // Define the projection incrementers for draw
+  // Define the projection increments for draw
   const xIncrementer = spriteWidth / sprite.width;
   const yIncrementer = (spriteHeight * 2) / sprite.height;
 
@@ -122,3 +122,5 @@ function drawRect(x1, x2, y1, y2, color) {
     drawLine(x, y1, y2, color);
   }
 }
+
+export { loadSprites, drawSprites };

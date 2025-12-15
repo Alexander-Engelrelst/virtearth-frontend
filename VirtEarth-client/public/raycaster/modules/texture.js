@@ -34,8 +34,6 @@ const ceilTexture = {
   data: null,
 }
 
-const ceilColor = new Color(128, 128, 128, 255);
-
 function loadTextures () {
   for (let i = 0; i < textures.length; i++) { // wall textures
     if (textures[i].id) {
@@ -72,10 +70,10 @@ function parseImageData(imageData) {
 }
 
 export {
+  getTextureData,
   loadTextures,
   Color,
   textures,
   floorTexture,
   ceilTexture,
-  ceilColor,
 };
