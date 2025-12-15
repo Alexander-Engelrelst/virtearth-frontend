@@ -12,6 +12,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["marker-click"]);
+
 const mapInstance = ref(null);
 const markersGroup = ref(null);
 const mapContainerRef = ref(null);
@@ -49,16 +51,21 @@ const updateMarkers = () => {
   }
 
   if (props.landmarks.length > 0) {
-    const markers = props.landmarks.map(({ latitude, longitude, year, gameName, completed }) => {
+    const markers = props.landmarks.map((landmark) => {
+      const { latitude, longitude, year, gameName, completed, id } = landmark;
       const currentIcon = completed ? markerIconPurple : markerIcon;
       const icon = L.icon({
         iconUrl: currentIcon,
         iconSize: [60, 60],
         iconAnchor: [30, 60],
       });
-      return L.marker([latitude, longitude], { icon }).bindPopup(year + " " + gameName, {
-        offset: [0, -40],
+      const marker = L.marker([latitude, longitude], { icon }).on("click", () => {
+        emit("marker-click", id);
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        }
       });
+      return marker;
     });
 
     markersGroup.value = L.featureGroup(markers).addTo(mapInstance.value);

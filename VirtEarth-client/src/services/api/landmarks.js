@@ -21,3 +21,21 @@ export async function getLandmarks() {
 
   return response.json();
 }
+
+export async function createMazeGame(gameId) {
+  const token = getToken();
+
+  const response = await fetch(getApiUrl(`/api/games/${gameId}`), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`post game failed: ${response.statusText}`);
+  }
+
+  return response.json();
+}
