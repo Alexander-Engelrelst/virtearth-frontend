@@ -62,7 +62,7 @@ const updateMarkers = () => {
       const marker = L.marker([latitude, longitude], { icon })
       .on('click', () => {
         emit('marker-click', id);
-        if (document.exitFullscreen) {
+        if (document.fullscreenElement) {
           document.exitFullscreen();
         }
       });

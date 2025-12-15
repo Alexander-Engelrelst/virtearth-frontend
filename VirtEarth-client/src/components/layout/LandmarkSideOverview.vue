@@ -2,6 +2,7 @@
 import router from '@/router'
 import { ref, defineExpose, watch } from 'vue'
 import { formatYear } from '@/services/utils'
+import { postLandmarks } from '@/services/api/landmarks';
 
 const props = defineProps({
   landmark: {
@@ -24,8 +25,16 @@ const open = () => {
   isOpen.value = true
 }
 
-function handlePlayGameClick(){
-  router.push({name: "game"})
+async function handlePlayGameClick(){
+  if(sessionStorage.getItem("gameId")){
+    try{
+      const response = await postLandmarks(sessionStorage.getItem("gameId"));
+      sessionStorage.setItem("landmarkData", JSON.stringify(response));
+    }catch(error){
+      console.error(error);
+    }
+    router.push({name: "game"})
+  }
 }
 
 defineExpose({
