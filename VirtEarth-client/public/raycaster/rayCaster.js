@@ -8,7 +8,7 @@ import { screen, projection } from "./modules/screenConfig.js";
 import { drawSprites, loadSprites } from "./modules/sprites.js";
 import { loadTextures, textures } from "./modules/texture.js";
 
-//const gameObject = JSON.parse(localStorage.getItem("gameObject"));
+const gameObject = JSON.parse(sessionStorage.getItem("gameObject"));
 
 const FPS = 60; // refresh rate of the screen
 const RENDER_DELAY = 1000 / FPS;
@@ -16,7 +16,8 @@ const RENDER_DELAY = 1000 / FPS;
 const canvas = document.createElement('canvas');
 canvas.width = screen.width;
 canvas.height = screen.height;
-document.getElementById("container").appendChild(canvas);
+//canvas.style.margin = "auto";
+document.body.appendChild(canvas);
 
 const canvasContext = canvas.getContext("2d");
 canvasContext.scale(screen.scale, screen.scale);

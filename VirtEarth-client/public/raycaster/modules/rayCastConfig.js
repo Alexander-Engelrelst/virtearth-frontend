@@ -3,7 +3,7 @@ import { projection } from "./screenConfig.js";
 
 const rayCastingConfig = {
   incrementAngle: player.fov / projection.width,
-  precision: 64,
+  precision: 128,
 };
 
 export { rayCastingConfig };

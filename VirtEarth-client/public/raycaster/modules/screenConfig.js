@@ -1,9 +1,11 @@
+const windowSizeFactor = 1.25; // 1 = native, higher = smaller screen
+
 const screen = {
-  width: 1600,
-  height: 800,
+  width: (window.innerWidth / windowSizeFactor),
+  height: (window.innerHeight / windowSizeFactor),
   halfWidth: null,
   halfHeight: null,
-  scale: 2,
+  scale: 4,
 };
 
 screen.halfWidth = screen.width / 2;

@@ -1,5 +1,6 @@
-import { checkCollision, degreeToRadians } from "./helper.js";
+import {checkCollision, degreeToRadians, getTextureIndex} from "./helper.js";
 import { player } from "./player.js";
+import { checkWinCondition } from "../rayCaster.js";
 
 const key = Object.freeze({
   up: { code: "KeyW", active: false },
@@ -51,6 +52,11 @@ function backward() {
 }
 
 function move(checkX, checkY, newX, newY) {
+
+  if (!checkCollision(checkX, checkY)) {
+    checkWinCondition(getTextureIndex(checkX, checkY))
+  }
+
   if (checkCollision(checkX, player.y)) {
     player.x = newX;
   }

@@ -2,19 +2,12 @@ body {
     margin: 0;
     padding: 0;
     overflow: clip;
-    background: #808080;
-}
-
-#container {
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background: black;
 }
 
 canvas {
     display: block;
-    margin: 5rem auto auto auto;
+    margin: 7.5vh auto auto auto;
 }
 
 img {
