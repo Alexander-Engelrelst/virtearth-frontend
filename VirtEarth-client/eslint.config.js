@@ -61,4 +61,11 @@ export default defineConfig([
       "no-unused-vars": "off",
     },
   },
+  {
+    files: ["src/assets/game-files/**"],
+    rules: {
+      "no-unused-vars": "off", // temporary until I implement sprites - seba
+      "max-depth": ["error", { "max": 4 }],
+    }
+  }
 ]);
