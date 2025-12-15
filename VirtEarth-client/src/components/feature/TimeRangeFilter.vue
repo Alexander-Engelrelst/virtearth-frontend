@@ -1,5 +1,6 @@
 <script setup>
 import { computed, watch } from "vue";
+import { formatYear } from "@/services/utils";
 
 const props = defineProps({
   min: {
@@ -58,14 +59,6 @@ const progressWidth = computed(() => {
   if (range === 0) return 0;
   return ((to.value - from.value) / range) * 100;
 });
-
-const formatYear = (year) => {
-  if (year < 0) {
-    return `${Math.abs(year)} BC`;
-  } else {
-    return `${year} AD`;
-  }
-};
 
 const fromDisplay = computed(() => formatYear(from.value));
 const toDisplay = computed(() => formatYear(to.value));
