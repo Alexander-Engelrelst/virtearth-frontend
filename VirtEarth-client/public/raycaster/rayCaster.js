@@ -7,14 +7,26 @@ import { key, movePlayer } from "./modules/input.js";
 import { player } from "./modules/player.js"
 import { rayCast, renderBuffer } from "./modules/renderer.js";
 import { screen, projection } from "./modules/screenConfig.js";
-import { drawSprites, loadSprites, sprites } from "./modules/sprites.js";
+import { drawSprites, loadSprites } from "./modules/sprites.js";
 import { loadTextures, textures } from "./modules/texture.js";
 
 const GAME_OBJECT = JSON.parse(sessionStorage.getItem("gameObject"));
-const map = GAME_OBJECT.maze;
+//const map = GAME_OBJECT.maze;
+const map = [
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+]
 
-player.x = GAME_OBJECT.spawnLocation.x;
-player.y = GAME_OBJECT.spawnLocation.y;
+//player.x = GAME_OBJECT.spawnLocation.x;
+//player.y = GAME_OBJECT.spawnLocation.y;
 
 const FPS = 60; // refresh rate of the screen
 const RENDER_DELAY = 1000 / FPS;
@@ -34,8 +46,9 @@ projection.imageData = canvasContext.createImageData(projection.width, projectio
 projection.buffer = projection.imageData.data;
 
 window.onload = function () {
-  sendHeartBeat(sessionStorage.getItem("gameId")); // doesn't need a .then
+  //sendHeartBeat(sessionStorage.getItem("gameId")); // doesn't need a .then TODO
   loadTextures();
+  loadSprites();
   renderLoop();
 }
 
@@ -45,6 +58,7 @@ function renderLoop() {
     movePlayer();
     rayCast();
     renderBuffer();
+    drawSprites();
     fpsCount();
     drawFps();
   }, RENDER_DELAY);

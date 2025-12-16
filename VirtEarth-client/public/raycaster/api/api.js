@@ -1,5 +1,5 @@
-import {getApiUrl} from "@/services/api/config.js";
-import {getToken} from "@/services/auth.js";
+import {getApiUrl} from "../../../src/services/api/config.js";
+import {getToken} from "../../../src/services/auth.js";
 
 const timeOut = 5000
 
