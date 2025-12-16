@@ -1,11 +1,6 @@
-import { USE_MOCK_API, getApiUrl } from "./config.js";
-import {
-  mockLoginWithUserId,
-  mockCreateUser,
-  mockCheckUserExists,
-  mockGetUserByUsername,
-} from "./mocks/users.js";
 import { apiFetch } from "../utils.js";
+import { getApiUrl, USE_MOCK_API } from "./config.js";
+import { mockCheckUserExists, mockCreateUser, mockGetUserByUsername, mockLoginWithUserId, } from "./mocks/users.js";
 
 export async function loginWithUserId(userId) {
   if (USE_MOCK_API) {
@@ -51,14 +46,12 @@ export async function checkUserExists(username) {
     return mockCheckUserExists(username);
   }
 
-  const response = await apiFetch(getApiUrl(`/api/users/exists?username=${username}`), {
+  return await apiFetch(getApiUrl(`/api/users/exists?username=${username}`), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   });
-
-  return response;
 }
 
 export async function getUserByUsername(username) {

@@ -1,7 +1,7 @@
+import { apiFetch } from "../utils.js";
 import { USE_MOCK_API, getApiUrl } from "./config.js";
 import { getToken } from "../auth.js";
 import { mockGetLandmarks } from "./mocks/landmarks.js";
-import { apiFetch } from "../utils.js";
 
 export async function getLandmarks() {
   if (USE_MOCK_API) return await mockGetLandmarks();
