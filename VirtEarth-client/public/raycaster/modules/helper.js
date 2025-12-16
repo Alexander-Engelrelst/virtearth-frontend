@@ -30,7 +30,7 @@ function getTextureIndex(x, y) {
 }
 /*
 function checkCollision(x, y) {
-  return map[Math.floor(y)][Math.floor(x)] === 0;
+  return map[Math.floor(y)][Math.floor(x)] === 0;   these are for regular, non-doubled rendering
 }
 
 function getTextureIndex(x, y) {

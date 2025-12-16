@@ -1,6 +1,6 @@
 // created following this tutorial: https://github.com/vinibiavatti1/RayCastingTutorial/wiki and partially rewrote to use modules and be more readable
 
-//import { sendHeartBeat } from "./api/api.js";
+import { sendHeartBeat } from "./api/api.js";
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
 import { clearScreen, fixCoords } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
@@ -11,22 +11,11 @@ import { checkSpriteCollision, drawSprites, loadSprites, disableSprites, sprites
 import { loadTextures, textures } from "./modules/texture.js";
 
 const GAME_OBJECT = JSON.parse(sessionStorage.getItem("gameObject"));
-const map = GAME_OBJECT.maze;
+const GAME_ID = sessionStorage.getItem("gameId");
+let map = GAME_OBJECT.maze;
 
 player.x = fixCoords(GAME_OBJECT.spawnLocation.y); // server works as arr[x][y], client works as arr[y][x]
 player.y = fixCoords(GAME_OBJECT.spawnLocation.x);
-
-function loadArtifactSprites() {
-  for (const sprite of sprites) {
-    for (const artifact of GAME_OBJECT.artifacts) {
-      if (sprite.id === artifact.name) {
-        sprite.x = fixCoords(artifact.y); // server works as arr[x][y], client works as arr[y][x]
-        sprite.y = fixCoords(artifact.x);
-        sprite.description = artifact.description;
-      }
-    }
-  }
-}
 
 const FPS = 60; // refresh rate of the screen
 const RENDER_DELAY = 1000 / FPS;
@@ -46,7 +35,7 @@ projection.imageData = canvasContext.createImageData(projection.width, projectio
 projection.buffer = projection.imageData.data;
 
 window.onload = function () {
-  //sendHeartBeat(sessionStorage.getItem("gameId")); // doesn't need a .then TODO
+  sendHeartBeat(GAME_ID); // doesn't need a .then
   loadArtifactSprites();
   loadTextures();
   loadSprites();
@@ -66,7 +55,7 @@ function renderLoop() {
     fpsCount();
     drawFps();
     loopCount++;
-    loopCount %= 10;
+    loopCount %= 60;
     checkSpriteCollision(loopCount);
   }, RENDER_DELAY);
 }
@@ -74,6 +63,19 @@ function renderLoop() {
 function checkWinCondition(collisionIndex) {
   if (textures[collisionIndex].id === "exitTexture") { // player touches exit
     window.location.replace("/win.html"); // TODO: update win screen
+  }
+}
+
+function loadArtifactSprites() {
+  for (const sprite of sprites) {
+    for (const artifact of GAME_OBJECT.artifacts) {
+      if (sprite.id === artifact.name) {
+        sprite.x = fixCoords(artifact.y); // server works as arr[x][y], client works as arr[y][x]
+        sprite.y = fixCoords(artifact.x);
+        sprite.description = artifact.description;
+        sprite.uuid = artifact.id;
+      }
+    }
   }
 }
 
@@ -118,4 +120,4 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-export { canvas, canvasContext, checkWinCondition, GAME_OBJECT, map };
+export { GAME_OBJECT, GAME_ID, map, canvasContext, checkWinCondition };

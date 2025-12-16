@@ -3,6 +3,8 @@ import { player } from "./player.js";
 import { drawLine } from "./renderer.js";
 import { projection } from "./screenConfig.js";
 import { getTextureData } from "./texture.js";
+import { pickupArtifact } from "../api/api.js";
+import { GAME_ID } from "../rayCaster.js"
 
 const maxAngle = 360;
 
@@ -17,6 +19,7 @@ const sprites = [
     wasFound: false,
     data: null,
     description: "",
+    uuid: "",
   },
   {
     id: "artifact2",
@@ -28,6 +31,7 @@ const sprites = [
     wasFound: false,
     data: null,
     description: "",
+    uuid: "",
   }
 ];
 
@@ -138,10 +142,14 @@ function drawRect(x1, x2, y1, y2, color) {
 }
 
 function checkSpriteCollision(loopCount) {
-  if (loopCount === 5) {
+  if (loopCount % 6 === 0) {
     for (const sprite of sprites) {
-      if ((sprite.x - 1) < player.x && player.x < (sprite.x + 1) && (sprite.y - 1) < player.y && player.y < (sprite.y + 1)) {
-        sprite.wasFound = true; // TODO: OVERLAY
+      if (!sprite.wasFound) {
+        if ((sprite.x - 1) < player.x && player.x < (sprite.x + 1) && (sprite.y - 1) < player.y && player.y < (sprite.y + 1)) {
+          sprite.wasFound = true;
+          pickupArtifact(GAME_ID, sprite.uuid, player);
+          break; // to prevent multiple api calls
+        }
       }
     }
   }
