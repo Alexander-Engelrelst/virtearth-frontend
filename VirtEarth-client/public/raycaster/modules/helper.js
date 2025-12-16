@@ -15,7 +15,6 @@ function clearScreen() {
   canvasContext.clearRect(0, 0, projection.width, projection.height);
 }
 
-/*
 function checkCollision(x, y) {
   const mapX = Math.floor(x / 2);
   const mapY = Math.floor(y / 2);
@@ -29,8 +28,8 @@ function getTextureIndex(x, y) {
 
   return map[mapY][mapX] - 1;
 }
-*/
 
+/*
 function checkCollision(x, y) {
   return map[Math.floor(y)][Math.floor(x)] === 0;
 }
@@ -38,6 +37,7 @@ function checkCollision(x, y) {
 function getTextureIndex(x, y) {
   return map[Math.floor(y)][Math.floor(x)] - 1;
 }
+*/
 
 function correct (input, max) {
   input %= max;
@@ -47,7 +47,7 @@ function correct (input, max) {
 }
 
 function fixCoords(coord) {
-  return ((Math.floor(coord)) * 2) + 0.5; // needed to fix coords for double rendering method
+  return ((Math.floor(coord)) * 2) + 1; // needed to fix coords for double rendering method
 }
 
-export { degreeToRadians, radiansToDegrees, clearScreen, checkCollision, getTextureIndex, correct };
+export { degreeToRadians, radiansToDegrees, clearScreen, checkCollision, getTextureIndex, correct, fixCoords };

@@ -2,31 +2,31 @@
 
 //import { sendHeartBeat } from "./api/api.js";
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
-import { clearScreen } from "./modules/helper.js";
+import { clearScreen, fixCoords } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
-//import { player } from "./modules/player.js"
+import { player } from "./modules/player.js"
 import { rayCast, renderBuffer } from "./modules/renderer.js";
 import { screen, projection } from "./modules/screenConfig.js";
-import { checkSpriteCollision, drawSprites, loadSprites, disableSprites } from "./modules/sprites.js";
+import { checkSpriteCollision, drawSprites, loadSprites, disableSprites, sprites} from "./modules/sprites.js";
 import { loadTextures, textures } from "./modules/texture.js";
 
 const GAME_OBJECT = JSON.parse(sessionStorage.getItem("gameObject"));
-//const map = GAME_OBJECT.maze;
-const map = [
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-]
+const map = GAME_OBJECT.maze;
 
-//player.x = GAME_OBJECT.spawnLocation.x;
-//player.y = GAME_OBJECT.spawnLocation.y;
+player.x = fixCoords(GAME_OBJECT.spawnLocation.x);
+player.y = fixCoords(GAME_OBJECT.spawnLocation.y);
+
+function loadArtifactSprites() {
+  for (const sprite of sprites) {
+    for (const artifact of GAME_OBJECT.artifacts) {
+      if (sprite.id === artifact.name) {
+        sprite.x = fixCoords(artifact.x);
+        sprite.y = fixCoords(artifact.y);
+        sprite.description = artifact.description;
+      }
+    }
+  }
+}
 
 const FPS = 60; // refresh rate of the screen
 const RENDER_DELAY = 1000 / FPS;
@@ -47,6 +47,7 @@ projection.buffer = projection.imageData.data;
 
 window.onload = function () {
   //sendHeartBeat(sessionStorage.getItem("gameId")); // doesn't need a .then TODO
+  loadArtifactSprites();
   loadTextures();
   loadSprites();
   renderLoop();

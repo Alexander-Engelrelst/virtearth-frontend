@@ -8,15 +8,27 @@ const maxAngle = 360;
 
 const sprites = [
   {
-    id: "artifact",
-    x: 5,
-    y: 6,
+    id: "artifact1",
+    x: 0,
+    y: 0,
     width: 10,
     height: 6,
-    active: true,
+    active: false,
+    wasFound: false,
     data: null,
-    wasFound: false
+    description: "",
   },
+  {
+    id: "artifact2",
+    x: 0,
+    y: 0,
+    width: 10,
+    height: 6,
+    active: false,
+    wasFound: false,
+    data: null,
+    description: "",
+  }
 ];
 
 function enableSprites(x, y) {
