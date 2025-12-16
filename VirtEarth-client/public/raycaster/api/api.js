@@ -1,7 +1,7 @@
 import { getApiUrl } from "../../../src/services/api/config.js";
 import { getToken } from "../../../src/services/auth.js";
 import { apiFetch } from "../../../src/services/utils.js";
-import { map } from "../rayCaster.js";
+import { revertCoord } from "../modules/helper.js"
 
 const timeOut = 5000;
 
@@ -24,9 +24,10 @@ async function sendHeartBeat(gameId) {
     }
 }
 
-async function pickupArtifact(gameId, artifact, player) {
+async function pickupArtifact(gameId, artifactId, player) {
   const token = getToken();
-  const response = await fetch(getApiUrl(`/api/games/${gameId}/artifacts/${artifact}`),
+  console.log(revertCoord(player.x), revertCoord(player.y));
+  const response = await fetch(getApiUrl(`/api/games/${gameId}/artifacts/${artifactId}`),
     {
     method: "PATCH",
     headers: {
@@ -34,18 +35,19 @@ async function pickupArtifact(gameId, artifact, player) {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      xCord: player.y, // same issue as before
-      yCord: player.x,
+      xCord: revertCoord(player.y), // same issue as before
+      yCord: revertCoord(player.x),
       angle: player.angle,
     }),
   });
 
-  console.log(response);
-
   if (response.status === 200) {
-    // eslint-disable-next-line no-import-assign
-    map = JSON.parse(response.body.maze);
+    const data = await response.json();
+
+    return data.maze;
   }
+
+  return null;
 }
 
 export { sendHeartBeat, pickupArtifact };

@@ -45,8 +45,12 @@ function correct (input, max) {
   return input;
 }
 
-function fixCoords(coord) {
+function fixCoord(coord) {
   return ((Math.floor(coord)) * 2) + 1; // needed to fix coords for double rendering method
 }
 
-export { degreeToRadians, radiansToDegrees, clearScreen, checkCollision, getTextureIndex, correct, fixCoords };
+function revertCoord(coord) {
+  return (Math.floor(coord) - 1) / 2;
+}
+
+export { degreeToRadians, radiansToDegrees, clearScreen, checkCollision, getTextureIndex, correct, fixCoord, revertCoord };

@@ -2,7 +2,7 @@
 
 import { sendHeartBeat } from "./api/api.js";
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
-import { clearScreen, fixCoords } from "./modules/helper.js";
+import { clearScreen, fixCoord } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
 import { player } from "./modules/player.js"
 import { rayCast, renderBuffer } from "./modules/renderer.js";
@@ -14,8 +14,8 @@ const GAME_OBJECT = JSON.parse(sessionStorage.getItem("gameObject"));
 const GAME_ID = sessionStorage.getItem("gameId");
 let map = GAME_OBJECT.maze;
 
-player.x = fixCoords(GAME_OBJECT.spawnLocation.y); // server works as arr[x][y], client works as arr[y][x]
-player.y = fixCoords(GAME_OBJECT.spawnLocation.x);
+player.x = fixCoord(GAME_OBJECT.spawnLocation.y); // server works as arr[x][y], client works as arr[y][x]
+player.y = fixCoord(GAME_OBJECT.spawnLocation.x);
 
 const FPS = 60; // refresh rate of the screen
 const RENDER_DELAY = 1000 / FPS;
@@ -55,8 +55,7 @@ function renderLoop() {
     fpsCount();
     drawFps();
     loopCount++;
-    loopCount %= 60;
-    checkSpriteCollision(loopCount);
+    if (loopCount % 10 === 0) checkSpriteCollision();
   }, RENDER_DELAY);
 }
 
@@ -70,13 +69,17 @@ function loadArtifactSprites() {
   for (const sprite of sprites) {
     for (const artifact of GAME_OBJECT.artifacts) {
       if (sprite.id === artifact.name) {
-        sprite.x = fixCoords(artifact.y); // server works as arr[x][y], client works as arr[y][x]
-        sprite.y = fixCoords(artifact.x);
+        sprite.x = fixCoord(artifact.y); // server works as arr[x][y], client works as arr[y][x]
+        sprite.y = fixCoord(artifact.x);
         sprite.description = artifact.description;
         sprite.uuid = artifact.id;
       }
     }
   }
+}
+
+function replaceMapReference(newMap) {
+  map = newMap;
 }
 
 document.addEventListener("keydown", (event) => {
@@ -120,4 +123,4 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-export { GAME_OBJECT, GAME_ID, map, canvasContext, checkWinCondition };
+export { GAME_OBJECT, GAME_ID, map, canvasContext, checkWinCondition, replaceMapReference };
