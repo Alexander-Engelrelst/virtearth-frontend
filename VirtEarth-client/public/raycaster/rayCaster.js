@@ -12,6 +12,11 @@ import { loadTextures, textures } from "./modules/texture.js";
 
 const GAME_OBJECT = JSON.parse(sessionStorage.getItem("gameObject"));
 const GAME_ID = sessionStorage.getItem("gameId");
+
+//I am aware this fix is absolutely horrendous but with all these global variables there is not other way
+// this will always take you back to the root origin, this works independently of the port to ensure it won't break in the test env
+if (!(GAME_OBJECT && GAME_ID)) window.location.replace("/");
+
 let map = GAME_OBJECT.maze;
 
 player.x = fixCoord(GAME_OBJECT.spawnLocation.y); // server works as arr[x][y], client works as arr[y][x]

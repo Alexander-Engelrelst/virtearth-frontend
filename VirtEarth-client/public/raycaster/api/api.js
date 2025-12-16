@@ -13,10 +13,12 @@ async function sendHeartBeat(gameId) {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             }
-        });
+        }).catch(() => location.replace("/"));
 
         if (!response.ok) {
-            location.href = "http://localhost/dashboard";
+            // TODO (ab)use the added overlay for the artifacts to display an appropriate error
+            // saying that something has failed
+            location.replace("/");
         }
 
         await new Promise(resolve => setTimeout(resolve, timeOut));
