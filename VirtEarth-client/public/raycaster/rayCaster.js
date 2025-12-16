@@ -13,15 +13,15 @@ import { loadTextures, textures } from "./modules/texture.js";
 const GAME_OBJECT = JSON.parse(sessionStorage.getItem("gameObject"));
 const map = GAME_OBJECT.maze;
 
-player.x = fixCoords(GAME_OBJECT.spawnLocation.x);
-player.y = fixCoords(GAME_OBJECT.spawnLocation.y);
+player.x = fixCoords(GAME_OBJECT.spawnLocation.y); // server works as arr[x][y], client works as arr[y][x]
+player.y = fixCoords(GAME_OBJECT.spawnLocation.x);
 
 function loadArtifactSprites() {
   for (const sprite of sprites) {
     for (const artifact of GAME_OBJECT.artifacts) {
       if (sprite.id === artifact.name) {
-        sprite.x = fixCoords(artifact.x);
-        sprite.y = fixCoords(artifact.y);
+        sprite.x = fixCoords(artifact.y); // server works as arr[x][y], client works as arr[y][x]
+        sprite.y = fixCoords(artifact.x);
         sprite.description = artifact.description;
       }
     }

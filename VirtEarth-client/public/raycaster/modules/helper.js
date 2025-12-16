@@ -28,7 +28,6 @@ function getTextureIndex(x, y) {
 
   return map[mapY][mapX] - 1;
 }
-
 /*
 function checkCollision(x, y) {
   return map[Math.floor(y)][Math.floor(x)] === 0;
