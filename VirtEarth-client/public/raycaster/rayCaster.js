@@ -1,5 +1,6 @@
 // created following this tutorial: https://github.com/vinibiavatti1/RayCastingTutorial/wiki and partially rewrote to use modules and be more readable
 
+import { sendHeartBeat } from "./api/api.js";
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
 import { clearScreen } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
@@ -33,6 +34,7 @@ projection.imageData = canvasContext.createImageData(projection.width, projectio
 projection.buffer = projection.imageData.data;
 
 window.onload = function () {
+  sendHeartBeat(sessionStorage.getItem("gameId")); // doesn't need a .then
   loadTextures();
   renderLoop();
 }
