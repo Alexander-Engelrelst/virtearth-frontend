@@ -42,9 +42,9 @@ defineExpose({ reset });
       :key="continent"
       @click="toggleContinent(continent)"
       :class="[
-        'px-4 py-2 rounded-lg font-medium transition-colors',
+        'px-4 py-2 rounded-lg font-medium transition-colors cursor-pointer',
         isSelected(continent)
-          ? 'bg-brand-primary text-white hover:bg-brand-primary-dark'
+          ? 'bg-brand-primary text-white hover:bg-brand-primary-dark cursor-pointer'
           : 'bg-gray-200 text-gray-700 hover:bg-gray-300',
       ]"
     >
