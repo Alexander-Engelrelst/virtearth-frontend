@@ -1,10 +1,10 @@
 // created following this tutorial: https://github.com/vinibiavatti1/RayCastingTutorial/wiki and partially rewrote to use modules and be more readable
 
-import { sendHeartBeat } from "./api/api.js";
+//import { sendHeartBeat } from "./api/api.js";
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
 import { clearScreen } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
-import { player } from "./modules/player.js"
+//import { player } from "./modules/player.js"
 import { rayCast, renderBuffer } from "./modules/renderer.js";
 import { screen, projection } from "./modules/screenConfig.js";
 import { drawSprites, loadSprites } from "./modules/sprites.js";
@@ -57,8 +57,8 @@ function renderLoop() {
     clearScreen();
     movePlayer();
     rayCast();
-    renderBuffer();
     drawSprites();
+    renderBuffer();
     fpsCount();
     drawFps();
   }, RENDER_DELAY);

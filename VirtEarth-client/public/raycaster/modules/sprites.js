@@ -9,8 +9,8 @@ const maxAngle = 360;
 const sprites = [
   {
     id: "artifact",
-    x: 1.5,
-    y: 3.5,
+    x: 5,
+    y: 6,
     width: 10,
     height: 6,
     active: true,
@@ -34,7 +34,7 @@ function disableSprites() {
 
 function loadSprites() {
   for (const sprite of sprites) {
-    if (sprite.active) {
+    if (sprite.id) {
       sprite.data = getTextureData(sprite);
     }
   }
@@ -43,6 +43,7 @@ function loadSprites() {
 function drawSprites() {
   for (const sprite of sprites) {
     if (sprite.active) {
+      const sprite1 = sprite;
 
       // Get X and Y coords in relation of the player coords
       const spriteXRelative = sprite.x + 0.5 - player.x;
@@ -51,12 +52,12 @@ function drawSprites() {
       // Get angle of the sprite in relation of the player angle
       const spriteAngleRadians = Math.atan2(spriteYRelative, spriteXRelative);
       let spriteAngle =
-        radiansToDegrees(spriteAngleRadians) - Math.floor(player.angle - player.fov / 2);
+        radiansToDegrees(spriteAngleRadians) - Math.floor(player.angle - (player.fov / 2));
 
       // Sprite angle checking
-      if (spriteAngle > maxAngle) spriteAngle -= maxAngle;
+      if (spriteAngle > 360) spriteAngle -= 360;
 
-      if (spriteAngle < 0) spriteAngle += maxAngle;
+      if (spriteAngle < 0) spriteAngle += 360;
 
       // Three rule to discover the x position of the script
       let spriteX = Math.floor((spriteAngle * projection.width) / player.fov);
@@ -77,7 +78,7 @@ function drawSprites() {
       const spriteWidth = Math.floor(projection.halfWidth / distance);
 
       // Draw the sprite
-      drawSprite(spriteX, spriteWidth, spriteHeight, sprite);
+      drawSprite(spriteX, spriteWidth, spriteHeight, sprite1);
     }
   }
 }
@@ -116,9 +117,11 @@ function drawSprite(xProjection, spriteWidth, spriteHeight, sprite) {
 
 function drawRect(x1, x2, y1, y2, color) {
   for (let x = x1; x < x2; x++) {
-    if (x >= 0 && x <= projection.width) {
-      drawLine(x, y1, y2, color);
-    }
+    if (x < 0) continue;
+
+    if (x > projection.width) continue;
+
+    drawLine(x, y1, y2, color);
   }
 }
 
