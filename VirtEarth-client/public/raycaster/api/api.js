@@ -26,7 +26,6 @@ async function sendHeartBeat(gameId) {
 
 async function pickupArtifact(gameId, artifactId, player) {
   const token = getToken();
-  console.log(revertCoord(player.x), revertCoord(player.y));
   const response = await fetch(getApiUrl(`/api/games/${gameId}/artifacts/${artifactId}`),
     {
     method: "PATCH",
