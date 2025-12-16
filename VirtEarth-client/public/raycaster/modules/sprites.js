@@ -141,7 +141,7 @@ function drawRect(x1, x2, y1, y2, color) {
   }
 }
 
-async function checkSpriteCollision(loopCount) {
+async function checkSpriteCollision() {
   for (const sprite of sprites) {
     if (!sprite.wasFound) {
       if ((sprite.x - 1) < player.x && player.x < (sprite.x + 1) && (sprite.y - 1) < player.y && player.y < (sprite.y + 1)) {

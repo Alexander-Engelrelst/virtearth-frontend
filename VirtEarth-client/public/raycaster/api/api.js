@@ -1,6 +1,5 @@
 import { getApiUrl } from "../../../src/services/api/config.js";
 import { getToken } from "../../../src/services/auth.js";
-import { apiFetch } from "../../../src/services/utils.js";
 import { revertCoord } from "../modules/helper.js"
 
 const timeOut = 5000;
