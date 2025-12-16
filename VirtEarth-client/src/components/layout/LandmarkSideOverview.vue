@@ -54,7 +54,7 @@ defineExpose({
   <div v-if="isOpen" class="w-64 bg-white p-4 flex flex-col justify-between">
     <div>
       <div class="flex justify-end">
-        <button @click="close" class="text-gray-500 hover:text-gray-700">
+        <button @click="close" class="text-gray-500 hover:text-gray-700 cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6"

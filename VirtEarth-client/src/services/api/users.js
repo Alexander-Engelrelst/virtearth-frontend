@@ -5,13 +5,14 @@ import {
   mockCheckUserExists,
   mockGetUserByUsername,
 } from "./mocks/users.js";
+import { apiFetch } from "../utils.js";
 
 export async function loginWithUserId(userId) {
   if (USE_MOCK_API) {
     return mockLoginWithUserId(userId);
   }
 
-  const response = await fetch(getApiUrl(`/api/users/login/${userId}`), {
+  const response = await apiFetch(getApiUrl(`/api/users/login/${userId}`), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -30,7 +31,7 @@ export async function createUser(username) {
     return mockCreateUser(username);
   }
 
-  const response = await fetch(getApiUrl("/api/users/"), {
+  const response = await apiFetch(getApiUrl("/api/users/"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -50,7 +51,7 @@ export async function checkUserExists(username) {
     return mockCheckUserExists(username);
   }
 
-  const response = await fetch(getApiUrl(`/api/users/exists?username=${username}`), {
+  const response = await apiFetch(getApiUrl(`/api/users/exists?username=${username}`), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -65,7 +66,7 @@ export async function getUserByUsername(username) {
     return mockGetUserByUsername(username);
   }
 
-  const response = await fetch(getApiUrl(`/api/users?newUsername=${username}`), {
+  const response = await apiFetch(getApiUrl(`/api/users?newUsername=${username}`), {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
