@@ -7,7 +7,7 @@ import { key, movePlayer } from "./modules/input.js";
 //import { player } from "./modules/player.js"
 import { rayCast, renderBuffer } from "./modules/renderer.js";
 import { screen, projection } from "./modules/screenConfig.js";
-import { drawSprites, loadSprites } from "./modules/sprites.js";
+import { checkSpriteCollision, drawSprites, loadSprites, disableSprites } from "./modules/sprites.js";
 import { loadTextures, textures } from "./modules/texture.js";
 
 const GAME_OBJECT = JSON.parse(sessionStorage.getItem("gameObject"));
@@ -15,12 +15,12 @@ const GAME_OBJECT = JSON.parse(sessionStorage.getItem("gameObject"));
 const map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+  [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
   [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ]
@@ -52,15 +52,21 @@ window.onload = function () {
   renderLoop();
 }
 
+let loopCount = 0;
+
 function renderLoop() {
   setInterval(() => {
     clearScreen();
+    disableSprites()
     movePlayer();
     rayCast();
     drawSprites();
     renderBuffer();
     fpsCount();
     drawFps();
+    loopCount++;
+    loopCount %= 10;
+    checkSpriteCollision(loopCount);
   }, RENDER_DELAY);
 }
 

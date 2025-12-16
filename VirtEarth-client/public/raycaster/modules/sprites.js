@@ -15,6 +15,7 @@ const sprites = [
     height: 6,
     active: true,
     data: null,
+    wasFound: false
   },
 ];
 
@@ -42,8 +43,7 @@ function loadSprites() {
 
 function drawSprites() {
   for (const sprite of sprites) {
-    if (sprite.active) {
-      const sprite1 = sprite;
+    if (sprite.active && !sprite.wasFound) {
 
       // Get X and Y coords in relation of the player coords
       const spriteXRelative = sprite.x + 0.5 - player.x;
@@ -55,9 +55,9 @@ function drawSprites() {
         radiansToDegrees(spriteAngleRadians) - Math.floor(player.angle - (player.fov / 2));
 
       // Sprite angle checking
-      if (spriteAngle > 360) spriteAngle -= 360;
+      if (spriteAngle > maxAngle) spriteAngle -= maxAngle;
 
-      if (spriteAngle < 0) spriteAngle += 360;
+      if (spriteAngle < 0) spriteAngle += maxAngle;
 
       // Three rule to discover the x position of the script
       let spriteX = Math.floor((spriteAngle * projection.width) / player.fov);
@@ -78,7 +78,7 @@ function drawSprites() {
       const spriteWidth = Math.floor(projection.halfWidth / distance);
 
       // Draw the sprite
-      drawSprite(spriteX, spriteWidth, spriteHeight, sprite1);
+      drawSprite(spriteX, spriteWidth, spriteHeight, sprite);
     }
   }
 }
@@ -125,4 +125,14 @@ function drawRect(x1, x2, y1, y2, color) {
   }
 }
 
-export { sprites, loadSprites, drawSprites };
+function checkSpriteCollision(loopCount) {
+  if (loopCount === 5) {
+    for (const sprite of sprites) {
+      if ((sprite.x - 1) < player.x && player.x < (sprite.x + 1) && (sprite.y - 1) < player.y && player.y < (sprite.y + 1)) {
+        sprite.wasFound = true; // TODO: OVERLAY
+      }
+    }
+  }
+}
+
+export { sprites, loadSprites, drawSprites, checkSpriteCollision, disableSprites, enableSprites };

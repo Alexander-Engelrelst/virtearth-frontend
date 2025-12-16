@@ -3,6 +3,7 @@ import { player } from "./player.js";
 import { rayCastingConfig } from "./rayCastConfig.js";
 import { projection } from "./screenConfig.js";
 import { canvasContext } from "../rayCaster.js";
+import { enableSprites } from "./sprites.js";
 import { Color, textures, floorTexture, ceilTexture } from "./texture.js";
 
 function drawLine(x, y1, y2, color) {
@@ -54,6 +55,7 @@ function rayCast() {
       ray.x += rayCos;
       ray.y += raySin;
       collided = !checkCollision(ray.x, ray.y); // if ray is not on a 0 -> collision is true
+      enableSprites(ray.x, ray.y);
     }
 
     let distance = Math.sqrt(Math.pow(player.x - ray.x, 2) + Math.pow(player.y - ray.y, 2)); // Pythagoras baby

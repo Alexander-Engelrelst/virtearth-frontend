@@ -29,8 +29,7 @@ function getTextureIndex(x, y) {
 
   return map[mapY][mapX] - 1;
 }
-
- */
+*/
 
 function checkCollision(x, y) {
   return map[Math.floor(y)][Math.floor(x)] === 0;
@@ -45,6 +44,10 @@ function correct (input, max) {
   if (input < 0)  input += max;
 
   return input;
+}
+
+function fixCoords(coord) {
+  return ((Math.floor(coord)) * 2) + 0.5; // needed to fix coords for double rendering method
 }
 
 export { degreeToRadians, radiansToDegrees, clearScreen, checkCollision, getTextureIndex, correct };
