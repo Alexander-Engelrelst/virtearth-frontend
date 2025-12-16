@@ -1,6 +1,11 @@
 import { apiFetch } from "../utils.js";
 import { getApiUrl, USE_MOCK_API } from "./config.js";
-import { mockCheckUserExists, mockCreateUser, mockGetUserByUsername, mockLoginWithUserId, } from "./mocks/users.js";
+import {
+  mockCheckUserExists,
+  mockCreateUser,
+  mockGetUserByUsername,
+  mockLoginWithUserId,
+} from "./mocks/users.js";
 
 export async function loginWithUserId(userId) {
   if (USE_MOCK_API) {
