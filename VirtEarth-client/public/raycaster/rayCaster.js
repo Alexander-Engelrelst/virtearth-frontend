@@ -3,12 +3,17 @@
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
 import { clearScreen } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
+import { player } from "./modules/player.js"
 import { rayCast, renderBuffer } from "./modules/renderer.js";
 import { screen, projection } from "./modules/screenConfig.js";
-import { drawSprites, loadSprites } from "./modules/sprites.js";
+import { drawSprites, loadSprites, sprites } from "./modules/sprites.js";
 import { loadTextures, textures } from "./modules/texture.js";
 
-const gameObject = JSON.parse(sessionStorage.getItem("gameObject"));
+const GAME_OBJECT = JSON.parse(sessionStorage.getItem("gameObject"));
+const map = GAME_OBJECT.maze;
+
+player.x = GAME_OBJECT.spawnLocation.x;
+player.y = GAME_OBJECT.spawnLocation.y;
 
 const FPS = 60; // refresh rate of the screen
 const RENDER_DELAY = 1000 / FPS;
@@ -16,7 +21,7 @@ const RENDER_DELAY = 1000 / FPS;
 const canvas = document.createElement('canvas');
 canvas.width = screen.width;
 canvas.height = screen.height;
-//canvas.style.margin = "auto";
+canvas.style.margin = "auto";
 document.body.appendChild(canvas);
 
 const canvasContext = canvas.getContext("2d");
@@ -29,7 +34,6 @@ projection.buffer = projection.imageData.data;
 
 window.onload = function () {
   loadTextures();
-  //loadSprites();
   renderLoop();
 }
 
@@ -91,4 +95,4 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-export { canvas, canvasContext, checkWinCondition };
+export { canvas, canvasContext, checkWinCondition, GAME_OBJECT, map };

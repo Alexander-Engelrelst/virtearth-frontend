@@ -9,8 +9,8 @@ const maxAngle = 360;
 const sprites = [
   {
     id: "artifact",
-    x: 3,
-    y: 4,
+    x: 1.5,
+    y: 3.5,
     width: 10,
     height: 6,
     active: true,
@@ -34,7 +34,7 @@ function disableSprites() {
 
 function loadSprites() {
   for (const sprite of sprites) {
-    if (sprite.id) {
+    if (sprite.active) {
       sprite.data = getTextureData(sprite);
     }
   }
@@ -122,4 +122,4 @@ function drawRect(x1, x2, y1, y2, color) {
   }
 }
 
-export { loadSprites, drawSprites };
+export { sprites, loadSprites, drawSprites };

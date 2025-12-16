@@ -1,4 +1,4 @@
-const windowSizeFactor = 1.25; // 1 = native, higher = smaller screen
+const windowSizeFactor = 1; // 1 = native, higher = smaller screen
 
 const screen = {
   width: (window.innerWidth / windowSizeFactor),

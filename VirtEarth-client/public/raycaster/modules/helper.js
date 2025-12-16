@@ -1,5 +1,4 @@
-import { canvasContext } from "../rayCaster.js";
-import { map } from "./map.js";
+import { canvasContext, map } from "../rayCaster.js";
 import { projection } from "./screenConfig.js";
 
 const halfCircle = 180;
@@ -16,8 +15,25 @@ function clearScreen() {
   canvasContext.clearRect(0, 0, projection.width, projection.height);
 }
 
+/*
 function checkCollision(x, y) {
-  return map[Math.floor(y)][Math.floor(x)] === 0; // y = main array (vertical), x = subarray (horizontal)
+  const mapX = Math.floor(x / 2);
+  const mapY = Math.floor(y / 2);
+
+  return map[mapY][mapX] === 0; // y = main array (vertical), x = subarray (horizontal)
+}
+
+function getTextureIndex(x, y) {
+  const mapX = Math.floor(x / 2);
+  const mapY = Math.floor(y / 2);
+
+  return map[mapY][mapX] - 1;
+}
+
+ */
+
+function checkCollision(x, y) {
+  return map[Math.floor(y)][Math.floor(x)] === 0;
 }
 
 function getTextureIndex(x, y) {
