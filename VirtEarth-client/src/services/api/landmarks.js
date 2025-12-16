@@ -1,3 +1,4 @@
+import { apiFetch } from "../utils.js";
 import { USE_MOCK_API, getApiUrl } from "./config.js";
 import { getToken } from "../auth.js";
 import { mockGetLandmarks } from "./mocks/landmarks.js";
@@ -7,7 +8,7 @@ export async function getLandmarks() {
 
   const token = getToken();
 
-  const response = await fetch(getApiUrl(`/api/games`), {
+  const response = await apiFetch(getApiUrl(`/api/games`), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -25,7 +26,7 @@ export async function getLandmarks() {
 export async function createMazeGame(gameId) {
   const token = getToken();
 
-  const response = await fetch(getApiUrl(`/api/games/${gameId}`), {
+  const response = await apiFetch(getApiUrl(`/api/games/${gameId}`), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
