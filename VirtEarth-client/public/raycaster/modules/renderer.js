@@ -5,6 +5,7 @@ import { projection } from "./screenConfig.js";
 import { canvasContext } from "../rayCaster.js";
 import { enableSprites } from "./sprites.js";
 import { Color, textures, floorTexture, ceilTexture } from "./texture.js";
+import {key} from "./input.js";
 
 function drawLine(x, y1, y2, color) {
   for (let y = y1; y < y2; y++) {
@@ -131,12 +132,19 @@ async function renderSpriteInformationOverlay(sprite, exitGenerated){
   $overlay.querySelector(".artifact-name").innerText = sprite.name;
   $overlay.querySelector(".artifact-description").innerText = sprite.description;
   $overlay.querySelector(".continue-text").innerText =
-    `press any key to continue ${exitGenerated ? "\nThe exit has been revealed around you" : ""}`;
+    `press enter to continue ${exitGenerated ? "\nThe exit has been revealed around you" : ""}`;
 
   setTimeout(() => {
+    document.addEventListener("keydown", hideOverlay);
+  }, 5000);
+}
+
+function hideOverlay(e) {
+  if (e.key === "Enter") {
+    document.removeEventListener("keydown", hideOverlay);
     player.movingEnabled = true;
-    $overlay.classList.add("none");
-  }, 10000);
+    document.querySelector(".artifact-information-overlay").classList.add("none");
+  }
 }
 
 export { rayCast, Color, renderBuffer, drawLine, renderSpriteInformationOverlay };
