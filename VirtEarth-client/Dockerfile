@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-
+#the reason that this works is because npm run build copies everything from /public into /dist
 RUN npm run build
 
 FROM nginx:alpine
