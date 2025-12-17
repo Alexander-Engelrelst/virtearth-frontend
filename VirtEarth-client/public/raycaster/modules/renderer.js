@@ -124,4 +124,11 @@ function renderBuffer() {
   canvasContext.drawImage(canvas, 0, 0);
 }
 
-export { rayCast, Color, renderBuffer, drawLine };
+async function renderSpriteInformationOverlay(){
+  player.movingEnabled = false;
+  console.log('jippie')
+
+  setTimeout(() => player.movingEnabled = true, 10000);
+}
+
+export { rayCast, Color, renderBuffer, drawLine, renderSpriteInformationOverlay };

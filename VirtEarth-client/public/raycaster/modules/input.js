@@ -10,6 +10,8 @@ const key = Object.freeze({
 });
 
 function movePlayer() {
+  if (!player.movingEnabled) return;
+
   if (key.up.active) {
     forward();
   }
