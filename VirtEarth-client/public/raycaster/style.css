@@ -22,4 +22,30 @@ img, .none {
     left: 25%;
     background-color: black;
     color: white;
+    display: none;
+}
+
+.artifact-information-overlay.displayed {
+    display: block;
+}
+
+.artifact-information-overlay.displayed .continue-text{
+    display: inline-block;
+    opacity: 0; /* start invisible */
+    width: fit-content;
+    scale: 0;
+    transform-origin: center;
+    animation: fadeInDelayed 2s ease forwards;
+    animation-delay: 5s; /* wait 5 seconds before starting */
+}
+
+@keyframes fadeInDelayed {
+    from {
+        opacity: 0;
+        scale: 0;
+    }
+    to {
+        opacity: 1;
+        scale: 1;
+    }
 }

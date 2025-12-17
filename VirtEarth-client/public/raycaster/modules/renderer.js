@@ -127,12 +127,12 @@ function renderBuffer() {
 
 async function renderSpriteInformationOverlay(sprite, exitGenerated){
   const $overlay = document.querySelector(".artifact-information-overlay");
-  $overlay.classList.remove("none");
+  $overlay.classList.add("displayed");
 
   $overlay.querySelector(".artifact-name").innerText = sprite.name;
   $overlay.querySelector(".artifact-description").innerText = sprite.description;
   $overlay.querySelector(".continue-text").innerText =
-    `press enter to continue ${exitGenerated ? "\nThe exit has been revealed around you" : ""}`;
+    `${exitGenerated ? "You found all artifacts! The exit has been revealed around you.\n" : ""}Press enter to continue ${exitGenerated ? "\nThe exit has been revealed around you" : ""}`;
 
   setTimeout(() => {
     document.addEventListener("keydown", hideOverlay);
@@ -143,7 +143,7 @@ function hideOverlay(e) {
   if (e.key === "Enter") {
     document.removeEventListener("keydown", hideOverlay);
     player.movingEnabled = true;
-    document.querySelector(".artifact-information-overlay").classList.add("none");
+    document.querySelector(".artifact-information-overlay").classList.remove("displayed");
   }
 }
 
