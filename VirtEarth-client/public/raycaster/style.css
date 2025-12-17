@@ -10,8 +10,16 @@ canvas {
     margin: 7.5vh auto auto auto;
 }
 
-img {
+img, .none {
     display: none;
 }
 
-
+.artifact-information-overlay {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    top: 25%;
+    left: 25%;
+    background-color: black;
+    color: white;
+}

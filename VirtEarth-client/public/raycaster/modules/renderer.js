@@ -124,11 +124,19 @@ function renderBuffer() {
   canvasContext.drawImage(canvas, 0, 0);
 }
 
-async function renderSpriteInformationOverlay(){
-  player.movingEnabled = false;
-  console.log('jippie')
+async function renderSpriteInformationOverlay(sprite, exitGenerated){
+  const $overlay = document.querySelector(".artifact-information-overlay");
+  $overlay.classList.remove("none");
 
-  setTimeout(() => player.movingEnabled = true, 10000);
+  $overlay.querySelector(".artifact-name").innerText = sprite.name;
+  $overlay.querySelector(".artifact-description").innerText = sprite.description;
+  $overlay.querySelector(".continue-text").innerText =
+    `press any key to continue ${exitGenerated ? "\nThe exit has been revealed around you" : ""}`;
+
+  setTimeout(() => {
+    player.movingEnabled = true;
+    $overlay.classList.add("none");
+  }, 10000);
 }
 
 export { rayCast, Color, renderBuffer, drawLine, renderSpriteInformationOverlay };

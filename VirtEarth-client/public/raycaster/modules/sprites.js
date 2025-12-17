@@ -144,8 +144,9 @@ async function checkSpriteCollision() {
     if (!sprite.wasFound) {
       if ((sprite.x - 1) < player.x && player.x < (sprite.x + 1) && (sprite.y - 1) < player.y && player.y < (sprite.y + 1)) {
         sprite.wasFound = true;
-        renderSpriteInformationOverlay();
+        player.movingEnabled = false;
         const newMap = await pickupArtifact(GAME_ID, sprite.id, player);
+        renderSpriteInformationOverlay(sprite, newMap !== null);
 
         if (newMap) replaceMapReference(newMap);
 
