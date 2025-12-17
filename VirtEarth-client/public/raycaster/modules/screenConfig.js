@@ -5,7 +5,7 @@ const screen = {
   height: (window.innerHeight / windowSizeFactor),
   halfWidth: null,
   halfHeight: null,
-  scale: 4, //TODO change this back to 2
+  scale: 2,
 };
 
 screen.halfWidth = screen.width / 2;
