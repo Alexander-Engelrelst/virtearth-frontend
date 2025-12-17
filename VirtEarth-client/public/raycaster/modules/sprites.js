@@ -13,8 +13,8 @@ const sprites = [
     id: "550e8400-e29b-41d4-a716-446655440000",
     x: 0,
     y: 0,
-    width: 10,
-    height: 6,
+    width: 32,
+    height: 44,
     active: false,
     wasFound: false,
     data: null,
@@ -90,8 +90,18 @@ function drawSprites() {
       );
 
       // Calc sprite width and height
-      const spriteHeight = Math.floor(projection.halfHeight / distance);
-      const spriteWidth = Math.floor(projection.halfWidth / distance);
+      let spriteHeight = 0;
+      let spriteWidth = 0
+
+      if (sprite.name === "Thread of Ariadne") {
+        spriteHeight = (Math.floor(projection.halfHeight / distance) / 2);
+        spriteWidth = (Math.floor(projection.halfWidth / distance) / 3);
+      }
+
+      if (sprite.name === "Torch of Daedalus") {
+        spriteHeight = (Math.floor(projection.halfHeight / distance) / 2);
+        spriteWidth = (Math.floor(projection.halfWidth / distance) / 5);
+      }
 
       // Draw the sprite
       drawSprite(spriteX, spriteWidth, spriteHeight, sprite);
