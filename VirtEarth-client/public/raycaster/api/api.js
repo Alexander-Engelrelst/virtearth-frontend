@@ -1,6 +1,9 @@
-import { getApiUrl } from "../../../src/services/api/config.js";
-import { getToken } from "../../../src/services/auth.js";
+import { getApiUrl } from "./config.js";
 import { revertCoord } from "../modules/helper.js"
+
+function getToken() {
+    return localStorage.getItem("jwtToken");
+}
 
 const timeOut = 5000;
 
