@@ -11,8 +11,8 @@ const fullOpacity = 255;
 
 const textures = [
   {
-    width: 256,
-    height: 256,
+    width: 128,
+    height: 128,
     id: "wallTexture",
     data: null,
   },
@@ -25,15 +25,15 @@ const textures = [
 ];
 
 const floorTexture = {
-  width: 256,
-  height: 256,
+  width: 128,
+  height: 128,
   id: "floorTexture",
   data: null,
 };
 
 const ceilTexture = {
-  width: 16,
-  height: 16,
+  width: 128,
+  height: 128,
   id: "ceilTexture",
   data: null,
 }
