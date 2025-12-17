@@ -26,7 +26,7 @@ function getTextureIndex(x, y) {
   const mapX = Math.floor(x / 2);
   const mapY = Math.floor(y / 2);
 
-  return map[mapY][mapX] - 1;
+  return map[mapY][mapX] - 1; // - 1 because wall textures start at 1 on the map (0 is floor/air)
 }
 /*
 function checkCollision(x, y) {

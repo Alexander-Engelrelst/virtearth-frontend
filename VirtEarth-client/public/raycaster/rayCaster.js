@@ -18,6 +18,7 @@ const GAME_ID = sessionStorage.getItem("gameId");
 if (!(GAME_OBJECT && GAME_ID)) window.location.replace("/");
 
 let map = GAME_OBJECT.maze;
+console.log(GAME_OBJECT.artifacts)
 
 player.x = fixCoord(GAME_OBJECT.spawnLocation.y); // server works as arr[x][y], client works as arr[y][x]
 player.y = fixCoord(GAME_OBJECT.spawnLocation.x);
@@ -73,11 +74,10 @@ function checkWinCondition(collisionIndex) {
 function loadArtifactSprites() {
   for (const sprite of sprites) {
     for (const artifact of GAME_OBJECT.artifacts) {
-      if (sprite.id === artifact.name) {
+      if (sprite.id === artifact.id) {
         sprite.x = fixCoord(artifact.y); // server works as arr[x][y], client works as arr[y][x]
         sprite.y = fixCoord(artifact.x);
         sprite.description = artifact.description;
-        sprite.uuid = artifact.id;
       }
     }
   }

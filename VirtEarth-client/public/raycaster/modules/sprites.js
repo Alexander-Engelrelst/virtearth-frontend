@@ -10,7 +10,7 @@ const maxAngle = 360;
 
 const sprites = [
   {
-    id: "artifact1",
+    id: "550e8400-e29b-41d4-a716-446655440000",
     x: 0,
     y: 0,
     width: 10,
@@ -19,10 +19,10 @@ const sprites = [
     wasFound: false,
     data: null,
     description: "",
-    uuid: "",
+    name: "Thread of Ariadne",
   },
   {
-    id: "artifact2",
+    id: "550e8400-e29b-41d4-a716-446655440001",
     x: 0,
     y: 0,
     width: 10,
@@ -31,7 +31,7 @@ const sprites = [
     wasFound: false,
     data: null,
     description: "",
-    uuid: "",
+    name: "Torch of Daedalus",
   }
 ];
 
@@ -133,11 +133,9 @@ function drawSprite(xProjection, spriteWidth, spriteHeight, sprite) {
 
 function drawRect(x1, x2, y1, y2, color) {
   for (let x = x1; x < x2; x++) {
-    if (x < 0) continue;
-
-    if (x > projection.width) continue;
-
-    drawLine(x, y1, y2, color);
+    if (x >= 0 && x <= projection.width) {
+      drawLine(x, y1, y2, color);
+    }
   }
 }
 
@@ -146,7 +144,7 @@ async function checkSpriteCollision() {
     if (!sprite.wasFound) {
       if ((sprite.x - 1) < player.x && player.x < (sprite.x + 1) && (sprite.y - 1) < player.y && player.y < (sprite.y + 1)) {
         sprite.wasFound = true;
-        const newMap = await pickupArtifact(GAME_ID, sprite.uuid, player);
+        const newMap = await pickupArtifact(GAME_ID, sprite.id, player);
 
         if (newMap) replaceMapReference(newMap);
 
