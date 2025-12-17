@@ -5,6 +5,15 @@ body {
     background: black;
 }
 
+.bold {
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+
+.gold {
+    color: gold;
+}
+
 canvas {
     display: block;
     margin: 7.5vh auto auto auto;
@@ -17,26 +26,42 @@ img, .none {
 .artifact-information-overlay {
     position: absolute;
     width: 50%;
-    height: 50%;
-    top: 25%;
-    left: 25%;
-    background-color: black;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
     display: none;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    font-size: 1.1rem;
 }
 
 .artifact-information-overlay.displayed {
-    display: block;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.artifact-information-overlay p {
+    width: fit-content;
+    text-align: center;
 }
 
 .artifact-information-overlay.displayed .continue-text{
     display: inline-block;
-    opacity: 0; /* start invisible */
+    opacity: 0;
     width: fit-content;
     scale: 0;
     transform-origin: center;
-    animation: fadeInDelayed 2s ease forwards;
-    animation-delay: 5s; /* wait 5 seconds before starting */
+    animation: fadeInDelayed 2s ease forwards, pulse 2s ease-in-out infinite;
+    animation-delay: 5s, 7s;
+}
+
+.artifact-name {
+    font-size: 2.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 @keyframes fadeInDelayed {
@@ -47,5 +72,17 @@ img, .none {
     to {
         opacity: 1;
         scale: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
     }
 }
