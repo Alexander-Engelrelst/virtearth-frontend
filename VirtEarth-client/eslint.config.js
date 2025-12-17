@@ -2,6 +2,7 @@ import js from '@eslint/js'
 import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 import { defineConfig } from 'eslint/config'
 import ImportPlugin from 'eslint-plugin-import'
+import unusedImports from "eslint-plugin-unused-imports";
 import pluginVue from 'eslint-plugin-vue'
 import globals from 'globals'
 
@@ -17,7 +18,8 @@ export default defineConfig([
   plugins: {
     js,
     vue: pluginVue,
-    import: ImportPlugin
+    import: ImportPlugin,
+    "unused-imports": unusedImports,
   },
   extends: ["js/recommended", skipFormatting],
   rules: {
@@ -39,7 +41,8 @@ export default defineConfig([
     ],
     "max-depth": ["error", { "max": 2 }],
     "no-lonely-if": "error",
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^e$" }],
+    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+    "unused-imports/no-unused-imports": "error",
     "import/order": [
       "error",
       {
@@ -62,9 +65,8 @@ export default defineConfig([
     },
   },
   {
-    files: ["src/assets/game-files/**"],
+    files: ["public/**"],
     rules: {
-      "no-unused-vars": "off", // temporary until I implement sprites - seba
       "max-depth": ["error", { "max": 4 }],
     }
   }

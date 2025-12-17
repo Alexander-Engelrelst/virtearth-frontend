@@ -38,7 +38,7 @@ async function handlePlayGameClick() {
     try {
       const response = await createMazeGame(sessionStorage.getItem("gameId"));
       sessionStorage.setItem("gameObject", JSON.stringify(response));
-      router.push({ name: "game" });
+      window.location.replace("/game.html");
     } catch (error) {
       showNotification("Sorry, this game doesn't have a game to play");
     }

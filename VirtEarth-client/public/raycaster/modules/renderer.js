@@ -1,9 +1,10 @@
-import { checkCollision, degreeToRadians, getTextureIndex } from "./helper.js";
+import { checkCollision, degreeToRadians, getTextureIndex, correct } from "./helper.js";
 import { player } from "./player.js";
 import { rayCastingConfig } from "./rayCastConfig.js";
 import { projection } from "./screenConfig.js";
 import { canvasContext } from "../rayCaster.js";
-import { Color, textures, floorTexture, ceilColor } from "./texture.js";
+import { enableSprites } from "./sprites.js";
+import { Color, textures, floorTexture, ceilTexture } from "./texture.js";
 
 function drawLine(x, y1, y2, color) {
   for (let y = y1; y < y2; y++) {
@@ -32,10 +33,11 @@ function drawTexture(x, wallHeight, texturePositionX, texture) {
 
 function drawPixel(x, y, color) {
   const offset = 4 * (Math.floor(x) + Math.floor(y) * projection.width);
+  const offsetArray = [1, 2, 3]; //to prevent sonar no magic number rule
   projection.buffer[offset] = color.r;
-  projection.buffer[offset + 1] = color.g;
-  projection.buffer[offset + 2] = color.b;
-  projection.buffer[offset + 3] = color.a;
+  projection.buffer[offset + offsetArray[0]] = color.g;
+  projection.buffer[offset + offsetArray[1]] = color.b;
+  projection.buffer[offset + offsetArray[2]] = color.a;
 }
 
 function rayCast() {
@@ -53,6 +55,7 @@ function rayCast() {
       ray.x += rayCos;
       ray.y += raySin;
       collided = !checkCollision(ray.x, ray.y); // if ray is not on a 0 -> collision is true
+      enableSprites(ray.x, ray.y);
     }
 
     let distance = Math.sqrt(Math.pow(player.x - ray.x, 2) + Math.pow(player.y - ray.y, 2)); // Pythagoras baby
@@ -61,11 +64,32 @@ function rayCast() {
     const texture = textures[getTextureIndex(ray.x, ray.y)];
     const texturePositionX = Math.floor((texture.width * (ray.x + ray.y)) % texture.width);
 
-    drawLine(rayCount, 0, projection.halfHeight - wallHeight, ceilColor); // draw ceiling/sky
+    drawCeiling(rayCount, rayAngle);
     drawTexture(rayCount, wallHeight, texturePositionX, texture); // draw walls
     drawFloor(rayCount, wallHeight, rayAngle);
 
     rayAngle += rayCastingConfig.incrementAngle;
+  }
+}
+
+function drawCeiling(x, rayAngle) {
+  const directionCos = Math.cos(degreeToRadians(rayAngle));
+  const directionSin = Math.sin(degreeToRadians(rayAngle));
+
+  for (let y = 0; y < projection.halfHeight; y++) {
+    let distance = projection.height / (projection.height - 2 * y);
+    distance = distance / Math.cos(degreeToRadians(player.angle) - degreeToRadians(rayAngle)); // fisheye effect fix
+
+    const tileX = player.x + distance * directionCos;
+    const tileY = player.y + distance * directionSin;
+
+    if (ceilTexture) {
+      const ceilTextureX = correct(Math.floor(tileX * ceilTexture.width), ceilTexture.width);
+      const ceilTextureY = correct(Math.floor(tileY * ceilTexture.height), ceilTexture.height);
+
+      const color = ceilTexture.data[ceilTextureX + ceilTextureY * floorTexture.width];
+      drawPixel(x, y, color);
+    }
   }
 }
 
@@ -79,20 +103,16 @@ function drawFloor(x, wallHeight, rayAngle) {
     let distance = projection.height / (2 * y - projection.height);
     distance = distance / Math.cos(degreeToRadians(player.angle) - degreeToRadians(rayAngle)); // fisheye effect fix
 
-    let tileX = distance * directionCos;
-    let tileY = distance * directionSin;
-    tileX += player.x; // get position relative to player
-    tileY += player.y;
+    const tileX = player.x + distance * directionCos;
+    const tileY = player.y + distance * directionSin;
 
-    if (!floorTexture) {
-      continue;
+    if (floorTexture) {
+      const floorTextureX = Math.floor(tileX * floorTexture.width) % floorTexture.width;
+      const floorTextureY = Math.floor(tileY * floorTexture.height) % floorTexture.height;
+
+      const color = floorTexture.data[floorTextureX + floorTextureY * floorTexture.width];
+      drawPixel(x, y, color);
     }
-
-    const floorTextureX = Math.floor(tileX * floorTexture.width) % floorTexture.width;
-    const floorTextureY = Math.floor(tileY * floorTexture.height) % floorTexture.height;
-
-    const color = floorTexture.data[floorTextureX + floorTextureY * floorTexture.width];
-    drawPixel(x, y, color);
   }
 }
 

@@ -1,14 +1,13 @@
 body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    background: #808080;
+    overflow: clip;
+    background: black;
 }
 
 canvas {
     display: block;
-    margin: auto;
-    border: 1px solid black;
+    margin: 7.5vh auto auto auto;
 }
 
 img {
