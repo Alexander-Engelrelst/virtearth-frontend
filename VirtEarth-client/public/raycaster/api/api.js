@@ -50,4 +50,16 @@ async function pickupArtifact(gameId, artifactId, player) {
   return null;
 }
 
-export { sendHeartBeat, pickupArtifact };
+async function saveGame() {
+    const token = getToken();
+
+    return fetch(getApiUrl(`/api/games/${sessionStorage.getItem("gameId")}/save`), {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        }
+    })
+}
+
+export { sendHeartBeat, pickupArtifact, saveGame };
