@@ -87,11 +87,8 @@ function rayCast() {
     distance = distance * Math.cos(degreeToRadians(rayAngle - player.angle)); // fix fisheye lens effect
 
     const prevX = ray.x - rayCos;
-    const prevY = ray.y - raySin;
     const wallX = Math.floor(ray.x);
-    const wallY = Math.floor(ray.y);
     const prevWallX = Math.floor(prevX);
-    const prevWallY = Math.floor(prevY);
 
     let side = 0; // horizontal
 
