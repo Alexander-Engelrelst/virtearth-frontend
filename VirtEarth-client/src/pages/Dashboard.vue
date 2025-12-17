@@ -10,8 +10,8 @@ import { getLandmarks } from "@/services/api/landmarks.js";
 const landmarkSideOverview = ref(null);
 const selectedLandmark = ref(null);
 
-const handleMarkerClick = (id) => {
-  selectedLandmark.value = landmarks.value.find((l) => l.id === id);
+const handleMarkerClick = (gameId) => {
+  selectedLandmark.value = landmarks.value.find((l) => l.gameId === gameId);
   if (landmarkSideOverview.value) {
     landmarkSideOverview.value.open();
   }
