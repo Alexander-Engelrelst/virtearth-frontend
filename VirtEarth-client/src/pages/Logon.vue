@@ -11,11 +11,7 @@ import {
   isAuthenticated,
   hasPartialAuth,
 } from "@/services/auth.js";
-import {
-  loginWithUserId,
-  createUser,
-  checkUserExists,
-} from "@/services/api/users.js";
+import { loginWithUserId, createUser, checkUserExists } from "@/services/api/users.js";
 
 const isLoading = ref(false);
 const error = ref(null);
@@ -45,7 +41,7 @@ onMounted(async () => {
     } catch (err) {
       clearAuthData();
       error.value = "Auto-login failed. Please login again.";
-      console.error(err)
+      console.error(err);
     } finally {
       isLoading.value = false;
     }

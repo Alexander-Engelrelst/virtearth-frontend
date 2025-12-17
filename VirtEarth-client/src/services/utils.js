@@ -2,7 +2,7 @@ import { clearAuthData } from "./auth";
 
 import router from "@/router";
 
-const HTTP_UNAUTHORIZED = 401
+const HTTP_UNAUTHORIZED = 401;
 
 export const formatYear = (year) => {
   if (year < 0) {

@@ -1,4 +1,4 @@
-const TIMEOUT_MS = 500
+const TIMEOUT_MS = 500;
 
 export async function mockLoginWithUserId(userId) {
   await new Promise((resolve) => setTimeout(resolve, TIMEOUT_MS));

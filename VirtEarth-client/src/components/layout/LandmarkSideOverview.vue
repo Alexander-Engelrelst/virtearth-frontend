@@ -6,7 +6,6 @@ import { createMazeGame } from "@/services/api/landmarks";
 
 import { useNotification } from "@/services/useNotification";
 
-
 const props = defineProps({
   landmark: {
     type: Object,

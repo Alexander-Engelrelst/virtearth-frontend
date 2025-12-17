@@ -23,7 +23,7 @@ const isFullscreen = ref(false);
 
 const onFullscreenChange = () => {
   isFullscreen.value = !!document.fullscreenElement;
-  const WAIT_TIME = 50
+  const WAIT_TIME = 50;
   if (mapInstance.value) {
     setTimeout(() => {
       mapInstance.value.invalidateSize();
@@ -33,11 +33,11 @@ const onFullscreenChange = () => {
 
 // Initialize map
 onMounted(() => {
-  const INIT_ZOOM_LEVEL = 3
+  const INIT_ZOOM_LEVEL = 3;
   mapInstance.value = L.map(mapRef.value).setView([0, 0], INIT_ZOOM_LEVEL);
   L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg", {
     minZoom: 1,
-    maxZoom: 16,  
+    maxZoom: 16,
     noWrap: true,
   }).addTo(mapInstance.value);
 
@@ -84,7 +84,7 @@ watch(
 const toggleFullscreen = () => {
   if (!document.fullscreenElement) {
     mapContainerRef.value.requestFullscreen();
-  } else if (document.exitFullscreen)  {
+  } else if (document.exitFullscreen) {
     document.exitFullscreen();
   }
 };
@@ -101,10 +101,7 @@ const getDistance = (lat1, lon1, lat2, lon2) => {
   const lat2Rad = lat2 * DEG_TO_RAD;
 
   const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1Rad) *
-      Math.cos(lat2Rad) *
-      Math.sin(dLon / 2) ** 2;
+    Math.sin(dLat / 2) ** 2 + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(dLon / 2) ** 2;
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return EARTH_RADIUS_KM * c;
@@ -135,11 +132,14 @@ const centerOnUser = () => {
       (position) => {
         const userLat = position.coords.latitude;
         const userLon = position.coords.longitude;
-        const ZOOM_LEVEL = 7
+        const ZOOM_LEVEL = 7;
         const nearestLandmark = findNearestLandmark(userLat, userLon, props.landmarks);
 
         if (mapInstance.value && nearestLandmark) {
-          mapInstance.value.setView([nearestLandmark.latitude, nearestLandmark.longitude], ZOOM_LEVEL);
+          mapInstance.value.setView(
+            [nearestLandmark.latitude, nearestLandmark.longitude],
+            ZOOM_LEVEL
+          );
         } else if (mapInstance.value) {
           mapInstance.value.setView([userLat, userLon], ZOOM_LEVEL);
         } else {
