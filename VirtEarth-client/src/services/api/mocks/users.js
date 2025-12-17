@@ -1,5 +1,7 @@
+const TIMEOUT_MS = 500;
+
 export async function mockLoginWithUserId(userId) {
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, TIMEOUT_MS));
 
   return {
     jwtToken: `mock-jwt-token-${userId}-${Date.now()}`,
@@ -7,7 +9,7 @@ export async function mockLoginWithUserId(userId) {
 }
 
 export async function mockCreateUser(username) {
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, TIMEOUT_MS));
 
   const userId = `user-${Date.now()}`;
   const jwtToken = `mock-jwt-token-${userId}`;
@@ -20,7 +22,7 @@ export async function mockCreateUser(username) {
 }
 
 export async function mockCheckUserExists(username) {
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, TIMEOUT_MS));
 
   if (username === "existinguser") {
     return new Response(null, { status: 409 });
@@ -30,7 +32,7 @@ export async function mockCheckUserExists(username) {
 }
 
 export async function mockGetUserByUsername(username) {
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, TIMEOUT_MS));
 
   if (username === "existinguser") {
     return [

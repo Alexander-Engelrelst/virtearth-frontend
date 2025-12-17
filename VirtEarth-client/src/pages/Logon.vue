@@ -7,20 +7,18 @@ import router from "@/router";
 import {
   clearAuthData,
   getUserId,
-  getUsername,
   saveAuthData,
   isAuthenticated,
   hasPartialAuth,
 } from "@/services/auth.js";
-import {
-  loginWithUserId,
-  createUser,
-  checkUserExists,
-  getUserByUsername,
-} from "@/services/api/users.js";
+import { loginWithUserId, createUser, checkUserExists } from "@/services/api/users.js";
 
 const isLoading = ref(false);
 const error = ref(null);
+
+const HTTP_STATUS_NO_CONTENT = 204;
+const HTTP_STATUS_CONFLICT = 409;
+const HTTP_STATUS_BAD_REQUEST = 400;
 
 // Check for existing auth data on mount and handle auto-login
 onMounted(async () => {
@@ -43,6 +41,7 @@ onMounted(async () => {
     } catch (err) {
       clearAuthData();
       error.value = "Auto-login failed. Please login again.";
+      console.error(err);
     } finally {
       isLoading.value = false;
     }
@@ -55,32 +54,48 @@ async function handleLogin(username) {
 
   try {
     const response = await checkUserExists(username);
-
-    if (response.status === 204) {
-      //user doesn't exist yet
-
-      const newUser = await createUser(username);
-      saveAuthData(newUser.id, newUser.username, newUser.jwtToken);
-    } else if (response.status === 409) {
-      // User exists, display an error
-
-      error.value = "User already exists.";
-      isLoading.value = false;
-      return;
-    } else if (response.status === 400) {
-      error.value = "Invalid username";
-      isLoading.value = false;
-      return;
-    } else {
-      throw new Error(`Unexpected response status: ${response.status} ${response.statusText}`);
-    }
-    router.push({ name: "dashboard" });
+    await processLoginResponse(response, username);
   } catch (err) {
     error.value = "Login failed. Please try again.";
     console.error(err);
   } finally {
     isLoading.value = false;
   }
+}
+
+async function processLoginResponse(response, username) {
+  switch (response.status) {
+    case HTTP_STATUS_NO_CONTENT:
+      await handleUserNotFound(username);
+      break;
+    case HTTP_STATUS_CONFLICT:
+      handleUserConflict();
+      break;
+    case HTTP_STATUS_BAD_REQUEST:
+      handleBadRequest();
+      break;
+    default:
+      handleUnexpectedResponse(response);
+  }
+}
+
+async function handleUserNotFound(username) {
+  const newUser = await createUser(username);
+  saveAuthData(newUser.id, newUser.username, newUser.jwtToken);
+  router.push({ name: "dashboard" });
+}
+
+function handleUserConflict() {
+  error.value = "User already exists.";
+}
+
+function handleBadRequest() {
+  error.value = "Invalid username";
+}
+
+function handleUnexpectedResponse(response) {
+  error.value = `An unexpected error occurred: ${response.status}`;
+  console.error(`Unexpected response status: ${response.status} ${response.statusText}`);
 }
 </script>
 

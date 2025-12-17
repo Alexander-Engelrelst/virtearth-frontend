@@ -6,8 +6,6 @@ import { createMazeGame } from "@/services/api/landmarks";
 
 import { useNotification } from "@/services/useNotification";
 
-const { showNotification } = useNotification();
-
 const props = defineProps({
   landmark: {
     type: Object,
@@ -40,7 +38,8 @@ async function handlePlayGameClick() {
       sessionStorage.setItem("gameObject", JSON.stringify(response));
       window.location.replace("/game.html");
     } catch (error) {
-      showNotification("Sorry, this game doesn't have a game to play");
+      useNotification("Sorry, this game doesn't have a game to play");
+      console.error(error);
     }
   }
 }

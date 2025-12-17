@@ -4,6 +4,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIconPurple from "@/assets/images/adria_landmark_marker_purple.png";
 import markerIcon from "@/assets/images/adria_landmark_marker.png";
+import { useNotification } from "@/services/useNotification";
 
 const props = defineProps({
   landmarks: {
@@ -22,17 +23,18 @@ const isFullscreen = ref(false);
 
 const onFullscreenChange = () => {
   isFullscreen.value = !!document.fullscreenElement;
-
+  const WAIT_TIME = 50;
   if (mapInstance.value) {
     setTimeout(() => {
       mapInstance.value.invalidateSize();
-    }, 50);
+    }, WAIT_TIME);
   }
 };
 
 // Initialize map
 onMounted(() => {
-  mapInstance.value = L.map(mapRef.value).setView([0, 0], 3);
+  const INIT_ZOOM_LEVEL = 3;
+  mapInstance.value = L.map(mapRef.value).setView([0, 0], INIT_ZOOM_LEVEL);
   L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.jpg", {
     minZoom: 1,
     maxZoom: 16,
@@ -51,21 +53,21 @@ const updateMarkers = () => {
   }
 
   if (props.landmarks.length > 0) {
+    const MARKER_SIZE = 60;
     const markers = props.landmarks.map((landmark) => {
-      const { latitude, longitude, year, gameName, completed, id } = landmark;
+      const { latitude, longitude, completed, id } = landmark;
       const currentIcon = completed ? markerIconPurple : markerIcon;
       const icon = L.icon({
         iconUrl: currentIcon,
-        iconSize: [60, 60],
-        iconAnchor: [30, 60],
+        iconSize: [MARKER_SIZE, MARKER_SIZE],
+        iconAnchor: [MARKER_SIZE / 2, MARKER_SIZE],
       });
-      const marker = L.marker([latitude, longitude], { icon }).on("click", () => {
+      return L.marker([latitude, longitude], { icon }).on("click", () => {
         emit("marker-click", id);
         if (document.fullscreenElement) {
           document.exitFullscreen();
         }
       });
-      return marker;
     });
 
     markersGroup.value = L.featureGroup(markers).addTo(mapInstance.value);
@@ -82,26 +84,27 @@ watch(
 const toggleFullscreen = () => {
   if (!document.fullscreenElement) {
     mapContainerRef.value.requestFullscreen();
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    }
+  } else if (document.exitFullscreen) {
+    document.exitFullscreen();
   }
 };
 
 //AI function to get distance between two landmarks
 const getDistance = (lat1, lon1, lat2, lon2) => {
-  const R = 6371; // Radius of Earth in kilometers
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const EARTH_RADIUS_KM = 6371;
+  const DEG_TO_RAD = Math.PI / 180;
+
+  const dLat = (lat2 - lat1) * DEG_TO_RAD;
+  const dLon = (lon2 - lon1) * DEG_TO_RAD;
+
+  const lat1Rad = lat1 * DEG_TO_RAD;
+  const lat2Rad = lat2 * DEG_TO_RAD;
+
   const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+    Math.sin(dLat / 2) ** 2 + Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(dLon / 2) ** 2;
+
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
+  return EARTH_RADIUS_KM * c;
 };
 
 const findNearestLandmark = (userLat, userLon, landmarks) => {
@@ -129,13 +132,18 @@ const centerOnUser = () => {
       (position) => {
         const userLat = position.coords.latitude;
         const userLon = position.coords.longitude;
-
+        const ZOOM_LEVEL = 7;
         const nearestLandmark = findNearestLandmark(userLat, userLon, props.landmarks);
 
         if (mapInstance.value && nearestLandmark) {
-          mapInstance.value.setView([nearestLandmark.latitude, nearestLandmark.longitude], 7);
+          mapInstance.value.setView(
+            [nearestLandmark.latitude, nearestLandmark.longitude],
+            ZOOM_LEVEL
+          );
         } else if (mapInstance.value) {
-          mapInstance.value.setView([userLat, userLon], 7);
+          mapInstance.value.setView([userLat, userLon], ZOOM_LEVEL);
+        } else {
+          useNotification("something went wrong");
         }
       },
       (error) => {
