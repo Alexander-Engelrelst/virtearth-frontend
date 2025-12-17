@@ -55,7 +55,7 @@ const updateMarkers = () => {
   if (props.landmarks.length > 0) {
     const MARKER_SIZE = 60;
     const markers = props.landmarks.map((landmark) => {
-      const { latitude, longitude, completed, id } = landmark;
+      const { latitude, longitude, completed, gameId } = landmark;
       const currentIcon = completed ? markerIconPurple : markerIcon;
       const icon = L.icon({
         iconUrl: currentIcon,
@@ -63,7 +63,7 @@ const updateMarkers = () => {
         iconAnchor: [MARKER_SIZE / 2, MARKER_SIZE],
       });
       return L.marker([latitude, longitude], { icon }).on("click", () => {
-        emit("marker-click", id);
+        emit("marker-click", gameId);
         if (document.fullscreenElement) {
           document.exitFullscreen();
         }
