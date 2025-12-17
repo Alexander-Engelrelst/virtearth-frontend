@@ -38,14 +38,13 @@ const SearchString = computed({
     </div>
 
     <div class="navbar-center w-full max-w-lg">
-      <!-- v-model is shorthand for :modelValue="SearchString" & @update:modelValue=-->
       <SearchBar v-model="SearchString" />
     </div>
 
     <div class="navbar-end flex items-center gap-3">
       <div class="avatar">
         <div class="w-14 rounded-full">
-          <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" />
+          <img src="https://img.daisyui.com/images/profile/demo/yellingcat@192.webp" alt="profile picture" />
         </div>
       </div>
       <span class="font-semibold text-gray-700">{{ username }}</span>
