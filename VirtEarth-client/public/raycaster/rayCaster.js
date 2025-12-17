@@ -1,6 +1,6 @@
 // created following this tutorial: https://github.com/vinibiavatti1/RayCastingTutorial/wiki and partially rewrote to use modules and be more readable
 
-import { sendHeartBeat } from "./api/api.js";
+import {saveGame, sendHeartBeat} from "./api/api.js";
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
 import { clearScreen, fixCoord } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
@@ -60,12 +60,14 @@ function renderLoop() {
     fpsCount();
     drawFps();
     loopCount++;
+    // we do not await this because this function will send us to a new page if needed anyway, this way we can't get issues with awaiting blocking rendering cycles
     if (loopCount % 10 === 0) checkSpriteCollision();
   }, RENDER_DELAY);
 }
 
-function checkWinCondition(collisionIndex) {
+async function checkWinCondition(collisionIndex) {
   if (textures[collisionIndex].id === "exitTexture") { // player touches exit
+    await saveGame();
     window.location.replace("/win.html"); // TODO: update win screen
   }
 }

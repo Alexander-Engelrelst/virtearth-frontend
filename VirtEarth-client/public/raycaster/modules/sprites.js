@@ -1,6 +1,6 @@
 import { radiansToDegrees } from "./helper.js";
 import { player } from "./player.js";
-import { drawLine } from "./renderer.js";
+import {drawLine, renderSpriteInformationOverlay} from "./renderer.js";
 import { projection } from "./screenConfig.js";
 import { getTextureData } from "./texture.js";
 import { pickupArtifact } from "../api/api.js";
@@ -154,7 +154,9 @@ async function checkSpriteCollision() {
     if (!sprite.wasFound) {
       if ((sprite.x - 1) < player.x && player.x < (sprite.x + 1) && (sprite.y - 1) < player.y && player.y < (sprite.y + 1)) {
         sprite.wasFound = true;
+        player.movingEnabled = false;
         const newMap = await pickupArtifact(GAME_ID, sprite.id, player);
+        renderSpriteInformationOverlay(sprite, newMap !== null);
 
         if (newMap) replaceMapReference(newMap);
 

@@ -11,9 +11,11 @@ const X_WALL_DARKEN_FACTOR = 0.70;
 
 function darkenColor(color, factor) {
   if (!color) return { r: 0, g: 0, b: 0, a: 255 };
+
   const r = Math.max(0, color.r * factor);
   const g = Math.max(0, color.g * factor);
   const b = Math.max(0, color.b * factor);
+
   return { r: r, g: g, b: b, a: color.a };
 }
 
@@ -38,10 +40,12 @@ function drawTexture(x, wallHeight, texturePositionX, texture, distance, side) {
     }
 
     let finalColor = color;
+
     // Shade one side of the walls to give a better sense of depth
     if (side === 1) {
       finalColor = darkenColor(finalColor, X_WALL_DARKEN_FACTOR);
     }
+
     // Add fog effect, walls get darker in the distance
     const fogAmount = Math.min(1, (distance/1.5) / FOG_DISTANCE);
     const fogFactor = 1 - fogAmount;
@@ -83,13 +87,11 @@ function rayCast() {
     distance = distance * Math.cos(degreeToRadians(rayAngle - player.angle)); // fix fisheye lens effect
 
     const prevX = ray.x - rayCos;
-    const prevY = ray.y - raySin;
     const wallX = Math.floor(ray.x);
-    const wallY = Math.floor(ray.y);
     const prevWallX = Math.floor(prevX);
-    const prevWallY = Math.floor(prevY);
 
     let side = 0; // horizontal
+
     if (wallX !== prevWallX) {
         side = 1; // vertical
     }
@@ -122,6 +124,7 @@ function drawCeiling(x, rayAngle) {
       const ceilTextureY = correct(Math.floor(tileY * ceilTexture.height), ceilTexture.height);
 
       let color = ceilTexture.data[ceilTextureX + ceilTextureY * ceilTexture.width];
+
       if (color) {
         // Add fog effect to the ceiling
         const fogAmount = Math.min(1, distance / FOG_DISTANCE);
@@ -140,7 +143,6 @@ function drawFloor(x, wallHeight, rayAngle) {
 
   const start = projection.halfHeight + wallHeight + 1; // + 1 to prevent missing pixels between wall and floor
   const cosFishEyeFix = Math.cos(degreeToRadians(player.angle - rayAngle));
-
 
   for (let y = start; y < projection.height; y++) {
     let distance = projection.height / (2 * y - projection.height);
@@ -184,4 +186,26 @@ function renderBuffer() {
   canvasContext.drawImage(canvas, 0, 0);
 }
 
-export { rayCast, Color, renderBuffer, drawLine };
+async function renderSpriteInformationOverlay(sprite, exitGenerated){
+  const $overlay = document.querySelector(".artifact-information-overlay");
+  $overlay.classList.add("displayed");
+
+  $overlay.querySelector(".artifact-name").innerText = sprite.name;
+  $overlay.querySelector(".artifact-description").innerText = sprite.description;
+  $overlay.querySelector(".continue-text").innerHTML =
+    `${exitGenerated ? "<span class='gold'>You found all artifacts! The exit has been revealed around you.</span><br>" : ""}Press <span class="bold">enter</span> to continue`;
+
+  setTimeout(() => {
+    document.addEventListener("keydown", hideOverlay);
+  }, 5000);
+}
+
+function hideOverlay(e) {
+  if (e.key === "Enter") {
+    document.removeEventListener("keydown", hideOverlay);
+    player.movingEnabled = true;
+    document.querySelector(".artifact-information-overlay").classList.remove("displayed");
+  }
+}
+
+export { rayCast, Color, renderBuffer, drawLine, renderSpriteInformationOverlay };
