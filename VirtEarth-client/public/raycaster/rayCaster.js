@@ -18,7 +18,6 @@ const GAME_ID = sessionStorage.getItem("gameId");
 if (!(GAME_OBJECT && GAME_ID)) window.location.replace("/");
 
 let map = GAME_OBJECT.maze;
-console.log(GAME_OBJECT.artifacts)
 
 player.x = fixCoord(GAME_OBJECT.spawnLocation.y); // server works as arr[x][y], client works as arr[y][x]
 player.y = fixCoord(GAME_OBJECT.spawnLocation.x);
