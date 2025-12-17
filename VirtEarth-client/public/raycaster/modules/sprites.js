@@ -49,10 +49,10 @@ function disableSprites() {
   }
 }
 
-function loadSprites() {
+async function loadSprites() {
   for (const sprite of sprites) {
     if (sprite.id) {
-      sprite.data = getTextureData(sprite);
+      sprite.data = await getTextureData(sprite);
     }
   }
 }
