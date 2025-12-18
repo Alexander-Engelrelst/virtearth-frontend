@@ -164,7 +164,8 @@ const landmarks = [
 ];
 
 export async function mockGetLandmarks() {
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  const TIME_OUT = 500;
+  await new Promise((resolve) => setTimeout(resolve, TIME_OUT));
 
   return {
     landmarks,
