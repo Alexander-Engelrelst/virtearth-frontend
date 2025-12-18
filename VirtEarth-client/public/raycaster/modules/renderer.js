@@ -8,6 +8,7 @@ import { Color, textures, floorTexture, ceilTexture } from "./texture.js";
 
 const FOG_DISTANCE = 15; // Distance at which fog is at its maximum
 const X_WALL_DARKEN_FACTOR = 0.70;
+const SPRITE_OVERLAY_REMOVAL_TIMEOUT = 2000;
 
 function darkenColor(color, factor) {
   if (!color) return { r: 0, g: 0, b: 0, a: 255 };
@@ -197,7 +198,7 @@ async function renderSpriteInformationOverlay(sprite, exitGenerated){
 
   setTimeout(() => {
     document.addEventListener("keydown", hideOverlay);
-  }, 5000);
+  }, SPRITE_OVERLAY_REMOVAL_TIMEOUT);
 }
 
 function hideOverlay(e) {

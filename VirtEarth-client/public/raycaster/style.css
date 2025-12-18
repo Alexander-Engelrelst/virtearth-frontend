@@ -55,7 +55,7 @@ img, .none {
     scale: 0;
     transform-origin: center;
     animation: fadeInDelayed 2s ease forwards, pulse 2s ease-in-out infinite;
-    animation-delay: 5s, 7s;
+    animation-delay: 2s, 4s;
 }
 
 .artifact-name {

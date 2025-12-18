@@ -67,8 +67,7 @@ function renderLoop() {
 
 async function checkWinCondition(collisionIndex) {
   if (textures[collisionIndex].id === "exitTexture") { // player touches exit
-    await saveGame();
-    window.location.replace("/win.html"); // TODO: update win screen
+    window.location.replace(`/dashboard?gameSaved=${await saveGame()}`);
   }
 }
 
