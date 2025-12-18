@@ -3,7 +3,7 @@ import { ref, defineExpose, watch } from "vue";
 import { formatYear } from "@/services/utils";
 import { createMazeGame } from "@/services/api/landmarks";
 
-import { useNotification } from "@/services/useNotification";
+import { showNotification } from "@/services/showNotification.js";
 
 const props = defineProps({
   landmark: {
@@ -37,7 +37,9 @@ async function handlePlayGameClick() {
       sessionStorage.setItem("gameObject", JSON.stringify(response));
       window.location.replace("/game.html"); // TODO change this back to /game
     } catch (error) {
-      useNotification("Sorry, this game doesn't have a game to play");
+      showNotification(
+          "An unexpected error occurred when starting the game",
+          "Try again later or contact support if this issue persists");
       console.error(error);
     }
   }

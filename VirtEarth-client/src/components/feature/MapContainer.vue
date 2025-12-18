@@ -4,7 +4,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIconPurple from "@/assets/images/adria_landmark_marker_purple.png";
 import markerIcon from "@/assets/images/adria_landmark_marker.png";
-import { useNotification } from "@/services/useNotification";
+import { showNotification } from "@/services/showNotification.js";
 
 const props = defineProps({
   landmarks: {
@@ -138,7 +138,7 @@ const handleGeolocationSuccess = (position) => {
   } else if (mapInstance.value) {
     mapInstance.value.setView([userLat, userLon], ZOOM_LEVEL);
   } else {
-    useNotification("something went wrong");
+    showNotification("something went wrong");
   }
 };
 
