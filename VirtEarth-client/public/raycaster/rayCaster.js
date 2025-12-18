@@ -1,6 +1,6 @@
 // created following this tutorial: https://github.com/vinibiavatti1/RayCastingTutorial/wiki and partially rewrote to use modules and be more readable
 
-import {saveGame, sendHeartBeat} from "./api/api.js";
+import {GAME_SAVED_SUCCESSFULLY_STATUSCODE, saveGame, sendHeartBeat} from "./api/api.js";
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
 import { clearScreen, fixCoord } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
@@ -10,7 +10,7 @@ import { screen, projection } from "./modules/screenConfig.js";
 import { checkSpriteCollision, drawSprites, loadSprites, disableSprites, sprites} from "./modules/sprites.js";
 import { loadTextures, textures } from "./modules/texture.js";
 
-const GAME_OBJECT = JSON.parse(sessionStorage.getItem("gameObject"));
+const GAME_OBJECT = {...JSON.parse(sessionStorage.getItem("gameObject")), saving: false};
 const GAME_ID = sessionStorage.getItem("gameId");
 
 //I am aware this fix is absolutely horrendous but with all these global variables there is not other way
@@ -66,8 +66,11 @@ function renderLoop() {
 }
 
 async function checkWinCondition(collisionIndex) {
+  if (GAME_OBJECT.saving) return;
+
   if (textures[collisionIndex].id === "exitTexture") { // player touches exit
-    window.location.replace(`/dashboard?gameSaved=${await saveGame()}`);
+    GAME_OBJECT.saving = true;
+    window.location.replace(`/dashboard?gameSaved=${(await saveGame()).status === GAME_SAVED_SUCCESSFULLY_STATUSCODE}`);
   }
 }
 

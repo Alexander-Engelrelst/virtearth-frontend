@@ -5,7 +5,7 @@ function getToken() {
     return localStorage.getItem("jwtToken");
 }
 
-const GAME_SAVED_SUCCESFULLY_STATUSCODE = 204;
+const GAME_SAVED_SUCCESSFULLY_STATUSCODE = 204;
 const HEARTBEAT_TIMEOUT = 5000;
 
 async function sendHeartBeat(gameId) {
@@ -57,13 +57,13 @@ async function pickupArtifact(gameId, artifactId, player) {
 async function saveGame() {
     const token = getToken();
 
-    return (await fetch(getApiUrl(`/api/games/${sessionStorage.getItem("gameId")}/save`), {
+    return fetch(getApiUrl(`/api/games/${sessionStorage.getItem("gameId")}/save`), {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         }
-    })).status === GAME_SAVED_SUCCESFULLY_STATUSCODE;
+    });
 }
 
-export { sendHeartBeat, pickupArtifact, saveGame };
+export { sendHeartBeat, pickupArtifact, saveGame, GAME_SAVED_SUCCESSFULLY_STATUSCODE };
