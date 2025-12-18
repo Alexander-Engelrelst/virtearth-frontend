@@ -9,13 +9,15 @@ const key = Object.freeze({
   right: { code: "KeyD", active: false },
 });
 
-function movePlayer() {
+async function movePlayer() {
+  if (!player.movingEnabled) return;
+
   if (key.up.active) {
-    forward();
+    await forward();
   }
 
   if (key.down.active) {
-    backward();
+    await backward();
   }
 
   if (key.left.active) {
@@ -29,7 +31,7 @@ function movePlayer() {
   }
 }
 
-function forward() {
+async function forward() {
   const cos = Math.cos(degreeToRadians(player.angle)) * player.moveSpeed;
   const sin = Math.sin(degreeToRadians(player.angle)) * player.moveSpeed;
   const newX = player.x + cos;
@@ -37,10 +39,10 @@ function forward() {
   const checkX = Math.floor(newX + cos * player.radius);
   const checkY = Math.floor(newY + sin * player.radius);
 
-  move(checkX, checkY, newX, newY);
+  await move(checkX, checkY, newX, newY);
 }
 
-function backward() {
+async function backward() {
   const cos = Math.cos(degreeToRadians(player.angle)) * player.moveSpeed;
   const sin = Math.sin(degreeToRadians(player.angle)) * player.moveSpeed;
   const newX = player.x - cos;
@@ -48,13 +50,13 @@ function backward() {
   const checkX = Math.floor(newX - cos * player.radius);
   const checkY = Math.floor(newY - sin * player.radius);
 
-  move(checkX, checkY, newX, newY);
+  await move(checkX, checkY, newX, newY);
 }
 
-function move(checkX, checkY, newX, newY) {
+async function move(checkX, checkY, newX, newY) {
 
   if (!checkCollision(checkX, checkY)) {
-    checkWinCondition(getTextureIndex(checkX, checkY))
+    await checkWinCondition(getTextureIndex(checkX, checkY))
   }
 
   if (checkCollision(checkX, player.y)) {
