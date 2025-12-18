@@ -91,8 +91,9 @@ const toggleFullscreen = () => {
 
 //AI function to get distance between two landmarks
 const getDistance = (lat1, lon1, lat2, lon2) => {
+  const HALF_CIRCLE = 180;
   const EARTH_RADIUS_KM = 6371;
-  const DEG_TO_RAD = Math.PI / 180;
+  const DEG_TO_RAD = Math.PI / HALF_CIRCLE;
 
   const dLat = (lat2 - lat1) * DEG_TO_RAD;
   const dLon = (lon2 - lon1) * DEG_TO_RAD;
@@ -126,30 +127,28 @@ const findNearestLandmark = (userLat, userLon, landmarks) => {
   return nearest;
 };
 
+const handleGeolocationSuccess = (position) => {
+  const userLat = position.coords.latitude;
+  const userLon = position.coords.longitude;
+  const ZOOM_LEVEL = 7;
+  const nearestLandmark = findNearestLandmark(userLat, userLon, props.landmarks);
+
+  if (mapInstance.value && nearestLandmark) {
+    mapInstance.value.setView([nearestLandmark.latitude, nearestLandmark.longitude], ZOOM_LEVEL);
+  } else if (mapInstance.value) {
+    mapInstance.value.setView([userLat, userLon], ZOOM_LEVEL);
+  } else {
+    useNotification("something went wrong");
+  }
+};
+
+const handleGeolocationError = (error) => {
+  alert("Error: Unable to retrieve location. " + error.message);
+};
+
 const centerOnUser = () => {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const userLat = position.coords.latitude;
-        const userLon = position.coords.longitude;
-        const ZOOM_LEVEL = 7;
-        const nearestLandmark = findNearestLandmark(userLat, userLon, props.landmarks);
-
-        if (mapInstance.value && nearestLandmark) {
-          mapInstance.value.setView(
-            [nearestLandmark.latitude, nearestLandmark.longitude],
-            ZOOM_LEVEL
-          );
-        } else if (mapInstance.value) {
-          mapInstance.value.setView([userLat, userLon], ZOOM_LEVEL);
-        } else {
-          useNotification("something went wrong");
-        }
-      },
-      (error) => {
-        alert("Error: Unable to retrieve location. " + error.message);
-      }
-    );
+    navigator.geolocation.getCurrentPosition(handleGeolocationSuccess, handleGeolocationError);
   } else {
     alert("Error: Geolocation is not working");
   }

@@ -1,5 +1,4 @@
 <script setup>
-import router from "@/router";
 import { ref, defineExpose, watch } from "vue";
 import { formatYear } from "@/services/utils";
 import { createMazeGame } from "@/services/api/landmarks";
