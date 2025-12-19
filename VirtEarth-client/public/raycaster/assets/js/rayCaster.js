@@ -2,7 +2,7 @@
 
 import {GAME_SAVED_SUCCESSFULLY_STATUSCODE, saveGame, sendHeartBeat} from "./api/api.js";
 import {allArtifactsFound, clearScreen, fixCoord} from "./modules/helper.js";
-import { key, movePlayer } from "./modules/input.js";
+import { keys, movePlayer } from "./modules/input.js";
 import { player } from "./modules/player.js"
 import {rayCast, renderBuffer, updateCurrentObjective} from "./modules/renderer.js";
 import { screen, projection } from "./modules/screenConfig.js";
@@ -98,42 +98,21 @@ function replaceMapReference(newMap) {
 document.addEventListener("keydown", (event) => {
   const keyCode = event.code;
 
-  if (keyCode === key.up.code) {
-    key.up.active = true;
-  }
-
-  if (keyCode === key.down.code) {
-    key.down.active = true;
-  }
-
-  if (keyCode === key.left.code) {
-    key.left.active = true;
-  }
-
-  if (keyCode === key.right.code) {
-    key.right.active = true;
-  }
+  for (const key of Object.values(keys))
+    if (key.codes.includes(keyCode)) {
+      key.active = true;
+    }
 });
 
 document.addEventListener("keyup", (event) => {
   // turn off movement if key is lifted
   const keyCode = event.code;
 
-  if (keyCode === key.up.code) {
-    key.up.active = false;
+  for (const key of Object.values(keys))
+  if (key.codes.includes(keyCode)) {
+    key.active = false;
   }
 
-  if (keyCode === key.down.code) {
-    key.down.active = false;
-  }
-
-  if (keyCode === key.left.code) {
-    key.left.active = false;
-  }
-
-  if (keyCode === key.right.code) {
-    key.right.active = false;
-  }
 });
 
 export { GAME_OBJECT, GAME_ID, canvasContext, checkWinCondition, replaceMapReference };

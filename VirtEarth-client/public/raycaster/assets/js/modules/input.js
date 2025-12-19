@@ -2,30 +2,30 @@ import {checkCollision, degreeToRadians, getTextureIndex} from "./helper.js";
 import { player } from "./player.js";
 import { checkWinCondition } from "../rayCaster.js";
 
-const key = Object.freeze({
-  up: { code: "KeyW", active: false },
-  down: { code: "KeyS", active: false },
-  left: { code: "KeyA", active: false },
-  right: { code: "KeyD", active: false },
+const keys = Object.freeze({
+  up: { codes: ["KeyW", "ArrowUp"], active: false },
+  down: { codes: ["KeyS", "ArrowDown"], active: false },
+  left: { codes: ["KeyA", "ArrowLeft"], active: false },
+  right: { codes: ["KeyD", "ArrowRight"], active: false },
 });
 
 async function movePlayer() {
   if (!player.movingEnabled) return;
 
-  if (key.up.active) {
+  if (keys.up.active) {
     await forward();
   }
 
-  if (key.down.active) {
+  if (keys.down.active) {
     await backward();
   }
 
-  if (key.left.active) {
+  if (keys.left.active) {
     player.angle -= player.turnSpeed;
     player.angle %= 360;
   }
 
-  if (key.right.active) {
+  if (keys.right.active) {
     player.angle += player.turnSpeed;
     player.angle %= 360;
   }
@@ -68,4 +68,4 @@ async function move(checkX, checkY, newX, newY) {
   }
 }
 
-export { key, movePlayer };
+export { keys, movePlayer };
