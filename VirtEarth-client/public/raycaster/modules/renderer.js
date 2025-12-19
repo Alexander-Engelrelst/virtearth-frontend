@@ -199,13 +199,14 @@ async function renderSpriteInformationOverlay(sprite, exitGenerated){
   setTimeout(() => {
     document.addEventListener("keydown", hideOverlay);
   }, SPRITE_OVERLAY_REMOVAL_TIMEOUT);
-}
 
-function hideOverlay(e) {
-  if (e.key === "Enter") {
-    document.removeEventListener("keydown", hideOverlay);
-    player.movingEnabled = true;
-    document.querySelector(".artifact-information-overlay").classList.remove("displayed");
+  function hideOverlay(e) {
+    if (e.key === "Enter") {
+      document.removeEventListener("keydown", hideOverlay);
+      player.movingEnabled = true;
+      document.querySelector(".artifact-information-overlay").classList.remove("displayed");
+      if (exitGenerated) updateCurrentObjective("Find the exit");
+    }
   }
 }
 

@@ -150,7 +150,6 @@ async function checkSpriteCollision() {
 
         if (newMap) {
           replaceMapReference(newMap);
-          updateCurrentObjective("Find the exit"); // TODO check whether it would be cleaner to update upon closing the overlay
         }
 
         break; // to prevent multiple api calls
