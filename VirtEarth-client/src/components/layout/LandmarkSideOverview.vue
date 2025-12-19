@@ -35,7 +35,7 @@ async function handlePlayGameClick() {
     try {
       const response = await createMazeGame(sessionStorage.getItem("gameId"));
       sessionStorage.setItem("gameObject", JSON.stringify(response));
-      window.location.replace("/game.html"); // TODO change this back to /game
+      window.location.replace("/game");
     } catch (error) {
       showNotification(
         "An unexpected error occurred when starting the game",
