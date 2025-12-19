@@ -20,10 +20,10 @@ const GAME_ID = sessionStorage.getItem("gameId");
 // this will always take you back to the root origin, this works independently of the port to ensure it won't break in the test env
 if (!(GAME_OBJECT && GAME_ID)) window.location.replace("/");
 
-let map = GAME_OBJECT.maze;
-
 player.x = fixCoord(GAME_OBJECT.spawnLocation.y); // server works as arr[x][y], client works as arr[y][x]
 player.y = fixCoord(GAME_OBJECT.spawnLocation.x);
+
+player.angle = GAME_OBJECT.spawnLocation.angle ?? 0;
 
 const FPS = 60; // refresh rate of the screen
 const RENDER_DELAY = 1000 / FPS;
@@ -94,7 +94,7 @@ function loadArtifactSprites() {
 }
 
 function replaceMapReference(newMap) {
-  map = newMap;
+  GAME_OBJECT["maze"] = newMap;
 }
 
 document.addEventListener("keydown", (event) => {
@@ -138,4 +138,4 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-export { GAME_OBJECT, GAME_ID, map, canvasContext, checkWinCondition, replaceMapReference };
+export { GAME_OBJECT, GAME_ID, canvasContext, checkWinCondition, replaceMapReference };

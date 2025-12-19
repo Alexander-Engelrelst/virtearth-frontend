@@ -1,5 +1,7 @@
 import { getApiUrl } from "./config.js";
 import { revertCoord } from "../modules/helper.js"
+import {saveGameState} from "../modules/gameState.js";
+import {player} from "../modules/player.js";
 
 function getToken() {
     return localStorage.getItem("jwtToken");
@@ -22,12 +24,13 @@ async function sendHeartBeat(gameId) {
         if (!response.ok) {
             location.replace("/dashboard?message=unexpected-error");
         }
-
+        console.log(player.x, player.y)
+        saveGameState();
         await new Promise(resolve => setTimeout(resolve, HEARTBEAT_TIMEOUT));
     }
 }
 
-async function pickupArtifact(gameId, artifactId, player) {
+async function pickupArtifact(gameId, artifactId) {
   const token = getToken();
   const response = await fetch(getApiUrl(`/api/games/${gameId}/artifacts/${artifactId}`),
     {
@@ -36,11 +39,6 @@ async function pickupArtifact(gameId, artifactId, player) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({
-      xCord: revertCoord(player.y), // same issue as before
-      yCord: revertCoord(player.x),
-      angle: player.angle,
-    }),
   });
 
   if (response.status === 200) {
