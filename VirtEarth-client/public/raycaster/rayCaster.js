@@ -70,7 +70,10 @@ async function checkWinCondition(collisionIndex) {
 
   if (textures[collisionIndex].id === "exitTexture") { // player touches exit
     GAME_OBJECT.saving = true;
-    window.location.replace(`/dashboard?gameSaved=${(await saveGame()).status === GAME_SAVED_SUCCESSFULLY_STATUSCODE}`);
+    const savedSuccessfully = (await saveGame()).status === GAME_SAVED_SUCCESSFULLY_STATUSCODE;
+    window.location.replace(
+    `/dashboard?message=${savedSuccessfully ? "game-saved" : "save-error"}`
+    );
   }
 }
 

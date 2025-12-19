@@ -4,7 +4,7 @@
     class="fixed inset-0 bg-transparent flex items-center justify-center z-[9999]"
   >
     <div class="bg-white p-6 rounded-lg shadow-xl min-w-[300px]">
-      <p class="text-gray-800">
+      <p class="text-gray-800 text-center">
         <template v-for="(line, index) in message.split('\n')" :key="index">
           {{ line }}<br/>
         </template>

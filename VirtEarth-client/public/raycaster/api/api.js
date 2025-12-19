@@ -20,9 +20,7 @@ async function sendHeartBeat(gameId) {
         }).catch(() => location.replace("/"));
 
         if (!response.ok) {
-            // TODO (ab)use the added overlay for the artifacts to display an appropriate error
-            // saying that something has failed
-            location.replace("/");
+            location.replace("/dashboard?message=unexpected-error");
         }
 
         await new Promise(resolve => setTimeout(resolve, HEARTBEAT_TIMEOUT));
