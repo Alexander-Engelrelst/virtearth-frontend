@@ -1,5 +1,4 @@
 <script setup>
-import router from "@/router";
 import { ref, defineExpose, watch } from "vue";
 import { formatYear } from "@/services/utils";
 import { createMazeGame } from "@/services/api/landmarks";
@@ -36,7 +35,7 @@ async function handlePlayGameClick() {
     try {
       const response = await createMazeGame(sessionStorage.getItem("gameId"));
       sessionStorage.setItem("gameObject", JSON.stringify(response));
-      window.location.replace("/game.html");
+      window.location.replace("/game");
     } catch (error) {
       useNotification("Sorry, this game doesn't have a game to play");
       console.error(error);
