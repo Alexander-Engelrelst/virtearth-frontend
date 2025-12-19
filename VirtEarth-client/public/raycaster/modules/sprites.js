@@ -31,7 +31,7 @@ const sprites = [
     wasFound: false,
     data: null,
     description: "",
-    name: "Torch of Daedalus",
+    name: "Sword of Theseus",
   }
 ];
 
