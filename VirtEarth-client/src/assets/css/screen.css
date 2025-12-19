@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
 /* no I can't remove this sonar :) */
-@plugin "daisyui"; /*NOSONAR*/
+@plugin "daisyui"; /* sonar-ignore */
 
 @import "./theme.css";
