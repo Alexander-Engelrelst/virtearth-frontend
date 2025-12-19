@@ -93,15 +93,8 @@ function drawSprites() {
       let spriteHeight = 0;
       let spriteWidth = 0
 
-      if (sprite.name === "Thread of Ariadne") {
-        spriteHeight = (Math.floor(projection.halfHeight / distance));
-        spriteWidth = (Math.floor(projection.halfWidth / distance) / 2);
-      }
-
-      if (sprite.name === "Torch of Daedalus") {
-        spriteHeight = (Math.floor(projection.halfHeight / distance) / 2);
-        spriteWidth = (Math.floor(projection.halfWidth / distance) / 5);
-      }
+      spriteHeight = (Math.floor(projection.halfHeight / distance));
+      spriteWidth = (Math.floor(projection.halfWidth / distance) / 1.684); // aspect ratio of sprite images
 
       // Draw the sprite
       drawSprite(spriteX, spriteWidth, spriteHeight, sprite);
