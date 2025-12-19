@@ -1,7 +1,6 @@
 // created following this tutorial: https://github.com/vinibiavatti1/RayCastingTutorial/wiki and partially rewrote to use modules and be more readable
 
 import {GAME_SAVED_SUCCESSFULLY_STATUSCODE, saveGame, sendHeartBeat} from "./api/api.js";
-import { fpsCount, drawFps } from "./modules/fpsCounter.js";
 import {allArtifactsFound, clearScreen, fixCoord} from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
 import { player } from "./modules/player.js"
@@ -61,8 +60,6 @@ function renderLoop() {
     rayCast();
     drawSprites();
     renderBuffer();
-    fpsCount();
-    drawFps();
     loopCount++;
     // we do not await this because this function will send us to a new page if needed anyway, this way we can't get issues with awaiting blocking rendering cycles
     if (loopCount % 10 === 0) checkSpriteCollision();

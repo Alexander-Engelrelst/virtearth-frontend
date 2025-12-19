@@ -3,7 +3,6 @@ body {
     padding: 0;
     overflow: clip;
     background: black;
-    font-size: 1.1rem;
 }
 
 .bold {
@@ -35,6 +34,7 @@ img, .none {
     display: none;
     padding: 1rem 2rem;
     border-radius: 1rem;
+    font-size: 1.1rem;
 }
 
 .artifact-information-overlay.displayed {
@@ -75,6 +75,7 @@ img, .none {
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 1rem;
     padding: 0.5rem 1rem;
+    font-size: 2rem;
 }
 
 @keyframes fadeInDelayed {

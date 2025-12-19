@@ -95,8 +95,6 @@ function drawSprites() {
 
       const correctedDistance = distance * Math.cos(angleDiff);
 
-
-
       const spriteHeight = Math.floor(projection.halfHeight / correctedDistance);
       const spriteWidth = Math.floor(projection.halfWidth / correctedDistance);
 
