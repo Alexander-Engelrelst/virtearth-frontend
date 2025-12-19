@@ -1,14 +1,35 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, render } from "vue";
 import Navbar from "@/components/layout/Navbar.vue";
 import Sidebar from "@/components/layout/Sidebar.vue";
 import MapContainer from "@/components/feature/MapContainer.vue";
 import LandmarkSideOverview from "@/components/layout/LandmarkSideOverview.vue";
 import { getUsername } from "@/services/auth.js";
 import { getLandmarks } from "@/services/api/landmarks.js";
+import { showNotification } from "@/services/showNotification.js";
+
+// we use an array since the function used to render these messages takes a rest parameter to enable multiline messages easily
+const GET_PARAMETER_MESSAGES_MAP = {
+  "game-saved": ["Game saved successfully"],
+  "save-error": [
+    "Something went wrong while saving",
+    "Try again later or contact support if this issue persists",
+  ],
+  "unexpected-error": [
+    "An unexpected error has occurred",
+    "Please contact support if this issue persists",
+  ],
+};
 
 const landmarkSideOverview = ref(null);
 const selectedLandmark = ref(null);
+
+function renderGetParameterMessages() {
+  const messageToDisplay = new URLSearchParams(window.location.search).get("message");
+  if (messageToDisplay && GET_PARAMETER_MESSAGES_MAP.hasOwnProperty(messageToDisplay)) {
+    showNotification(...GET_PARAMETER_MESSAGES_MAP[messageToDisplay]);
+  }
+}
 
 const handleMarkerClick = (gameId) => {
   selectedLandmark.value = landmarks.value.find((l) => l.gameId === gameId);
@@ -67,6 +88,8 @@ const filteredLandmarks = computed(() => {
 
 // Fetch landmarks on component mount
 onMounted(async () => {
+  renderGetParameterMessages();
+
   try {
     const response = await getLandmarks();
     landmarks.value = response.landmarks || response;

@@ -1,26 +1,29 @@
 // created following this tutorial: https://github.com/vinibiavatti1/RayCastingTutorial/wiki and partially rewrote to use modules and be more readable
 
-import {saveGame, sendHeartBeat} from "./api/api.js";
+import {GAME_SAVED_SUCCESSFULLY_STATUSCODE, saveGame, sendHeartBeat} from "./api/api.js";
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
-import { clearScreen, fixCoord } from "./modules/helper.js";
+import {allArtifactsFound, clearScreen, fixCoord} from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
 import { player } from "./modules/player.js"
-import { rayCast, renderBuffer } from "./modules/renderer.js";
+import {rayCast, renderBuffer, updateCurrentObjective} from "./modules/renderer.js";
 import { screen, projection } from "./modules/screenConfig.js";
 import { checkSpriteCollision, drawSprites, loadSprites, disableSprites, sprites} from "./modules/sprites.js";
 import { loadTextures, textures } from "./modules/texture.js";
 
-const GAME_OBJECT = JSON.parse(sessionStorage.getItem("gameObject"));
+const GAME_OBJECT = {
+  ...JSON.parse(sessionStorage.getItem("gameObject")),
+  saving: false,
+};
 const GAME_ID = sessionStorage.getItem("gameId");
 
 //I am aware this fix is absolutely horrendous but with all these global variables there is not other way
 // this will always take you back to the root origin, this works independently of the port to ensure it won't break in the test env
 if (!(GAME_OBJECT && GAME_ID)) window.location.replace("/");
 
-let map = GAME_OBJECT.maze;
-
 player.x = fixCoord(GAME_OBJECT.spawnLocation.y); // server works as arr[x][y], client works as arr[y][x]
 player.y = fixCoord(GAME_OBJECT.spawnLocation.x);
+
+player.angle = GAME_OBJECT.spawnLocation.angle ?? 0;
 
 const FPS = 60; // refresh rate of the screen
 const RENDER_DELAY = 1000 / FPS;
@@ -40,6 +43,7 @@ projection.imageData = canvasContext.createImageData(projection.width, projectio
 projection.buffer = projection.imageData.data;
 
 window.onload = function () {
+  updateCurrentObjective(allArtifactsFound() ? "Find the exit" : "Find all artifacts")
   sendHeartBeat(GAME_ID); // doesn't need a .then
   loadArtifactSprites();
   loadTextures();
@@ -66,9 +70,14 @@ function renderLoop() {
 }
 
 async function checkWinCondition(collisionIndex) {
+  if (GAME_OBJECT.saving) return;
+
   if (textures[collisionIndex].id === "exitTexture") { // player touches exit
-    await saveGame();
-    window.location.replace("/win.html"); // TODO: update win screen
+    GAME_OBJECT.saving = true;
+    const savedSuccessfully = (await saveGame()).status === GAME_SAVED_SUCCESSFULLY_STATUSCODE;
+    window.location.replace(
+    `/dashboard?message=${savedSuccessfully ? "game-saved" : "save-error"}`
+    );
   }
 }
 
@@ -79,13 +88,14 @@ function loadArtifactSprites() {
         sprite.x = fixCoord(artifact.y); // server works as arr[x][y], client works as arr[y][x]
         sprite.y = fixCoord(artifact.x);
         sprite.description = artifact.description;
+        sprite.wasFound = artifact.wasFound ?? false;
       }
     }
   }
 }
 
 function replaceMapReference(newMap) {
-  map = newMap;
+  GAME_OBJECT["maze"] = newMap;
 }
 
 document.addEventListener("keydown", (event) => {
@@ -129,4 +139,4 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-export { GAME_OBJECT, GAME_ID, map, canvasContext, checkWinCondition, replaceMapReference };
+export { GAME_OBJECT, GAME_ID, canvasContext, checkWinCondition, replaceMapReference };

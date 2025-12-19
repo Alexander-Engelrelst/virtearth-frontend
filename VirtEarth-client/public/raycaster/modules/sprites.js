@@ -5,6 +5,7 @@ import { projection } from "./screenConfig.js";
 import { getTextureData } from "./texture.js";
 import { pickupArtifact } from "../api/api.js";
 import { GAME_ID, replaceMapReference } from "../rayCaster.js"
+import { savePickedUpArtifact} from "./gameState.js";
 
 const maxAngle = 360;
 
@@ -151,11 +152,17 @@ async function checkSpriteCollision() {
       if ((sprite.x - 1) < player.x && player.x < (sprite.x + 1) && (sprite.y - 1) < player.y && player.y < (sprite.y + 1)) {
         sprite.wasFound = true;
         player.movingEnabled = false;
-        const newMap = await pickupArtifact(GAME_ID, sprite.id, player);
+        const newMap = await pickupArtifact(GAME_ID, sprite.id);
+
+        if (newMap) {
+          replaceMapReference(newMap);
+        }
+
+        // this is needed to know which artifacts have been found when refreshing the page
+        savePickedUpArtifact(sprite.id);
+
         renderSpriteInformationOverlay(sprite, newMap !== null);
-
-        if (newMap) replaceMapReference(newMap);
-
+        // this is needed to know which artifacts have been found when refreshing the page
         break; // to prevent multiple api calls
       }
     }

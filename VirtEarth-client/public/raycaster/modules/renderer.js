@@ -2,12 +2,13 @@ import { checkCollision, degreeToRadians, getTextureIndex, correct } from "./hel
 import { player } from "./player.js";
 import { rayCastingConfig } from "./rayCastConfig.js";
 import { projection } from "./screenConfig.js";
-import { canvasContext } from "../rayCaster.js";
+import {canvasContext, GAME_OBJECT} from "../rayCaster.js";
 import { enableSprites } from "./sprites.js";
 import { Color, textures, floorTexture, ceilTexture } from "./texture.js";
 
 const FOG_DISTANCE = 15; // Distance at which fog is at its maximum
 const X_WALL_DARKEN_FACTOR = 0.70;
+const SPRITE_OVERLAY_REMOVAL_TIMEOUT = 2000;
 
 function darkenColor(color, factor) {
   if (!color) return { r: 0, g: 0, b: 0, a: 255 };
@@ -193,19 +194,25 @@ async function renderSpriteInformationOverlay(sprite, exitGenerated){
   $overlay.querySelector(".artifact-name").innerText = sprite.name;
   $overlay.querySelector(".artifact-description").innerText = sprite.description;
   $overlay.querySelector(".continue-text").innerHTML =
-    `${exitGenerated ? "<span class='gold'>You found all artifacts! The exit has been revealed around you.</span><br>" : ""}Press <span class="bold">enter</span> to continue`;
+    `${exitGenerated ? "<span class='gold'>You found all artifacts! The exit has been revealed.</span><br>" : ""}Press <span class="bold">enter</span> to continue`;
 
   setTimeout(() => {
     document.addEventListener("keydown", hideOverlay);
-  }, 5000);
-}
+  }, SPRITE_OVERLAY_REMOVAL_TIMEOUT);
 
-function hideOverlay(e) {
-  if (e.key === "Enter") {
-    document.removeEventListener("keydown", hideOverlay);
-    player.movingEnabled = true;
-    document.querySelector(".artifact-information-overlay").classList.remove("displayed");
+  function hideOverlay(e) {
+    if (e.key === "Enter") {
+      document.removeEventListener("keydown", hideOverlay);
+      player.movingEnabled = true;
+      document.querySelector(".artifact-information-overlay").classList.remove("displayed");
+      if (exitGenerated) updateCurrentObjective("Find the exit");
+    }
   }
 }
 
-export { rayCast, Color, renderBuffer, drawLine, renderSpriteInformationOverlay };
+function updateCurrentObjective(currentObjective) {
+  GAME_OBJECT.currentObjective = currentObjective;
+  document.querySelector(".objective span").innerText = currentObjective;
+}
+
+export { rayCast, Color, renderBuffer, drawLine, renderSpriteInformationOverlay, updateCurrentObjective };
