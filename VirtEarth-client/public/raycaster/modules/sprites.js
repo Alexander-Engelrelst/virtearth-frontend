@@ -1,11 +1,11 @@
 import { radiansToDegrees } from "./helper.js";
 import { player } from "./player.js";
-import {drawLine, renderSpriteInformationOverlay, updateCurrentObjective} from "./renderer.js";
+import {drawLine, renderSpriteInformationOverlay} from "./renderer.js";
 import { projection } from "./screenConfig.js";
 import { getTextureData } from "./texture.js";
 import { pickupArtifact } from "../api/api.js";
 import { GAME_ID, replaceMapReference } from "../rayCaster.js"
-import {saveGameState, savePickedUpArtifact} from "./gameState.js";
+import { savePickedUpArtifact} from "./gameState.js";
 
 const maxAngle = 360;
 

@@ -1,7 +1,5 @@
 import { getApiUrl } from "./config.js";
-import { revertCoord } from "../modules/helper.js"
 import {saveGameState} from "../modules/gameState.js";
-import {player} from "../modules/player.js";
 
 function getToken() {
     return sessionStorage.getItem("jwtToken");

@@ -38,8 +38,9 @@ async function handlePlayGameClick() {
       window.location.replace("/game.html"); // TODO change this back to /game
     } catch (error) {
       showNotification(
-          "An unexpected error occurred when starting the game",
-          "Try again later or contact support if this issue persists");
+        "An unexpected error occurred when starting the game",
+        "Try again later or contact support if this issue persists"
+      );
       console.error(error);
     }
   }
