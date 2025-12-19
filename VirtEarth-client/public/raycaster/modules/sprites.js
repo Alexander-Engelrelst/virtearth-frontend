@@ -1,6 +1,6 @@
 import { radiansToDegrees } from "./helper.js";
 import { player } from "./player.js";
-import {drawLine, renderSpriteInformationOverlay} from "./renderer.js";
+import {drawLine, renderSpriteInformationOverlay, updateCurrentObjective} from "./renderer.js";
 import { projection } from "./screenConfig.js";
 import { getTextureData } from "./texture.js";
 import { pickupArtifact } from "../api/api.js";
@@ -148,7 +148,10 @@ async function checkSpriteCollision() {
         const newMap = await pickupArtifact(GAME_ID, sprite.id, player);
         renderSpriteInformationOverlay(sprite, newMap !== null);
 
-        if (newMap) replaceMapReference(newMap);
+        if (newMap) {
+          replaceMapReference(newMap);
+          updateCurrentObjective("Find the exit"); // TODO check whether it would be cleaner to update upon closing the overlay
+        }
 
         break; // to prevent multiple api calls
       }

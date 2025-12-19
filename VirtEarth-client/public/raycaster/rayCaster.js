@@ -5,12 +5,15 @@ import { fpsCount, drawFps } from "./modules/fpsCounter.js";
 import { clearScreen, fixCoord } from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
 import { player } from "./modules/player.js"
-import { rayCast, renderBuffer } from "./modules/renderer.js";
+import {rayCast, renderBuffer, updateCurrentObjective} from "./modules/renderer.js";
 import { screen, projection } from "./modules/screenConfig.js";
 import { checkSpriteCollision, drawSprites, loadSprites, disableSprites, sprites} from "./modules/sprites.js";
 import { loadTextures, textures } from "./modules/texture.js";
 
-const GAME_OBJECT = {...JSON.parse(sessionStorage.getItem("gameObject")), saving: false};
+const GAME_OBJECT = {
+  ...JSON.parse(sessionStorage.getItem("gameObject")),
+  saving: false,
+};
 const GAME_ID = sessionStorage.getItem("gameId");
 
 //I am aware this fix is absolutely horrendous but with all these global variables there is not other way
@@ -40,6 +43,7 @@ projection.imageData = canvasContext.createImageData(projection.width, projectio
 projection.buffer = projection.imageData.data;
 
 window.onload = function () {
+  updateCurrentObjective("Find all artifacts")
   sendHeartBeat(GAME_ID); // doesn't need a .then
   loadArtifactSprites();
   loadTextures();

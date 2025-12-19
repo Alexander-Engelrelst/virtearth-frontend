@@ -2,7 +2,7 @@ import { checkCollision, degreeToRadians, getTextureIndex, correct } from "./hel
 import { player } from "./player.js";
 import { rayCastingConfig } from "./rayCastConfig.js";
 import { projection } from "./screenConfig.js";
-import { canvasContext } from "../rayCaster.js";
+import {canvasContext, GAME_OBJECT} from "../rayCaster.js";
 import { enableSprites } from "./sprites.js";
 import { Color, textures, floorTexture, ceilTexture } from "./texture.js";
 
@@ -194,7 +194,7 @@ async function renderSpriteInformationOverlay(sprite, exitGenerated){
   $overlay.querySelector(".artifact-name").innerText = sprite.name;
   $overlay.querySelector(".artifact-description").innerText = sprite.description;
   $overlay.querySelector(".continue-text").innerHTML =
-    `${exitGenerated ? "<span class='gold'>You found all artifacts! The exit has been revealed around you.</span><br>" : ""}Press <span class="bold">enter</span> to continue`;
+    `${exitGenerated ? "<span class='gold'>You found all artifacts! The exit has been revealed.</span><br>" : ""}Press <span class="bold">enter</span> to continue`;
 
   setTimeout(() => {
     document.addEventListener("keydown", hideOverlay);
@@ -209,4 +209,9 @@ function hideOverlay(e) {
   }
 }
 
-export { rayCast, Color, renderBuffer, drawLine, renderSpriteInformationOverlay };
+function updateCurrentObjective(currentObjective) {
+  GAME_OBJECT.currentObjective = currentObjective;
+  document.querySelector(".objective span").innerText = currentObjective;
+}
+
+export { rayCast, Color, renderBuffer, drawLine, renderSpriteInformationOverlay, updateCurrentObjective };
