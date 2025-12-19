@@ -14,8 +14,8 @@ const sprites = [
     id: "550e8400-e29b-41d4-a716-446655440000",
     x: 0,
     y: 0,
-    width: 76,
-    height: 128,
+    width: 128,
+    height: 76,
     active: false,
     wasFound: false,
     data: null,
@@ -26,13 +26,13 @@ const sprites = [
     id: "550e8400-e29b-41d4-a716-446655440001",
     x: 0,
     y: 0,
-    width: 76,
+    width: 128,
     height: 128,
     active: false,
     wasFound: false,
     data: null,
     description: "",
-    name: "Torch of Daedalus",
+    name: "Sword of Theseus",
   }
 ];
 
@@ -69,7 +69,7 @@ function drawSprites() {
       // Get angle of the sprite in relation of the player angle
       const spriteAngleRadians = Math.atan2(spriteYRelative, spriteXRelative);
       let spriteAngle =
-        radiansToDegrees(spriteAngleRadians) - Math.floor(player.angle - (player.fov / 2));
+        radiansToDegrees(spriteAngleRadians) - (player.angle - (player.fov / 2));
 
       // Sprite angle checking
       if (spriteAngle > maxAngle) spriteAngle -= maxAngle;
@@ -90,12 +90,15 @@ function drawSprites() {
         Math.pow(player.x - sprite.x, 2) + Math.pow(player.y - sprite.y, 2)
       );
 
-      // Calc sprite width and height
-      let spriteHeight = 0;
-      let spriteWidth = 0
+      const angleDiff =
+        spriteAngleRadians - (player.angle * Math.PI / 180);
 
-      spriteHeight = (Math.floor(projection.halfHeight / distance));
-      spriteWidth = (Math.floor(projection.halfWidth / distance) / 1.684); // aspect ratio of sprite images
+      const correctedDistance = distance * Math.cos(angleDiff);
+
+
+
+      const spriteHeight = Math.floor(projection.halfHeight / correctedDistance);
+      const spriteWidth = Math.floor(projection.halfWidth / correctedDistance);
 
       // Draw the sprite
       drawSprite(spriteX, spriteWidth, spriteHeight, sprite);
@@ -105,7 +108,7 @@ function drawSprites() {
 
 function drawSprite(xProjection, spriteWidth, spriteHeight, sprite) {
   // Decrement halfwidth of the sprite to consider the middle of the sprite to draw
-  xProjection = xProjection - sprite.width;
+  xProjection -= spriteWidth / 2;
 
   // Define the projection increments for draw
   const xIncrementer = spriteWidth / sprite.width;
