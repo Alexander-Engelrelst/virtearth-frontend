@@ -2,7 +2,7 @@
 
 import {GAME_SAVED_SUCCESSFULLY_STATUSCODE, saveGame, sendHeartBeat} from "./api/api.js";
 import { fpsCount, drawFps } from "./modules/fpsCounter.js";
-import { clearScreen, fixCoord } from "./modules/helper.js";
+import {allArtifactsFound, clearScreen, fixCoord} from "./modules/helper.js";
 import { key, movePlayer } from "./modules/input.js";
 import { player } from "./modules/player.js"
 import {rayCast, renderBuffer, updateCurrentObjective} from "./modules/renderer.js";
@@ -43,7 +43,7 @@ projection.imageData = canvasContext.createImageData(projection.width, projectio
 projection.buffer = projection.imageData.data;
 
 window.onload = function () {
-  updateCurrentObjective("Find all artifacts")
+  updateCurrentObjective(allArtifactsFound() ? "Find the exit" : "Find all artifacts")
   sendHeartBeat(GAME_ID); // doesn't need a .then
   loadArtifactSprites();
   loadTextures();
@@ -88,6 +88,7 @@ function loadArtifactSprites() {
         sprite.x = fixCoord(artifact.y); // server works as arr[x][y], client works as arr[y][x]
         sprite.y = fixCoord(artifact.x);
         sprite.description = artifact.description;
+        sprite.wasFound = artifact.wasFound ?? false;
       }
     }
   }

@@ -53,4 +53,8 @@ function revertCoord(coord) {
   return (coord / 2) - 0.5;
 }
 
-export { degreeToRadians, radiansToDegrees, clearScreen, checkCollision, getTextureIndex, correct, fixCoord, revertCoord };
+function allArtifactsFound() {
+  return Object.values(GAME_OBJECT.artifacts).every(artifact => artifact.wasFound)
+}
+
+export { degreeToRadians, radiansToDegrees, clearScreen, checkCollision, getTextureIndex, correct, fixCoord, revertCoord, allArtifactsFound };

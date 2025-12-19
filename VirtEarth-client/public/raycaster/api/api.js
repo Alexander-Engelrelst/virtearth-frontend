@@ -24,7 +24,7 @@ async function sendHeartBeat(gameId) {
         if (!response.ok) {
             location.replace("/dashboard?message=unexpected-error");
         }
-        console.log(player.x, player.y)
+
         saveGameState();
         await new Promise(resolve => setTimeout(resolve, HEARTBEAT_TIMEOUT));
     }
