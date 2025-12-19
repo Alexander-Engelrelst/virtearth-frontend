@@ -4,7 +4,7 @@ import {saveGameState} from "../modules/gameState.js";
 import {player} from "../modules/player.js";
 
 function getToken() {
-    return localStorage.getItem("jwtToken");
+    return sessionStorage.getItem("jwtToken");
 }
 
 const GAME_SAVED_SUCCESSFULLY_STATUSCODE = 204;
