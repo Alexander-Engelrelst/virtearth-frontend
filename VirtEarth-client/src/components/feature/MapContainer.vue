@@ -82,10 +82,10 @@ watch(
 );
 
 const toggleFullscreen = () => {
-  if (!document.fullscreenElement) {
-    mapContainerRef.value.requestFullscreen();
-  } else if (document.exitFullscreen) {
+  if (document.fullscreenElement) {
     document.exitFullscreen();
+  } else {
+    mapContainerRef.value.requestFullscreen();
   }
 };
 

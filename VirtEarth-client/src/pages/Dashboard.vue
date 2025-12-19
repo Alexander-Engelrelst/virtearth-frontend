@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, render } from "vue";
+import { ref, computed, onMounted } from "vue";
 import Navbar from "@/components/layout/Navbar.vue";
 import Sidebar from "@/components/layout/Sidebar.vue";
 import MapContainer from "@/components/feature/MapContainer.vue";
