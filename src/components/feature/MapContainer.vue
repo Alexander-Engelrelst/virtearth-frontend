@@ -2,9 +2,9 @@
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import markerIconPurple from "@/assets/images/adria_landmark_marker_purple.png";
-import markerIcon from "@/assets/images/adria_landmark_marker.png";
-import { showNotification } from "@/services/showNotification.js";
+import markerIconPurple from "../../assets/images/adria_landmark_marker_purple.png";
+import markerIcon from "../../assets/images/adria_landmark_marker.png";
+import { showNotification } from "../../services/showNotification.js";
 
 const props = defineProps({
   landmarks: {

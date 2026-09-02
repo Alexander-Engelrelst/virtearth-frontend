@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { isAuthenticated } from "@/services/auth.js";
+import { isAuthenticated } from "../services/auth.js";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -8,13 +8,13 @@ const router = createRouter({
     {
       path: "/",
       name: "logon",
-      component: () => import("@/pages/Logon.vue"),
+      component: () => import("../pages/Logon.vue"),
       meta: { requiresGuest: true },
     },
     {
       path: "/dashboard",
       name: "dashboard",
-      component: () => import("@/pages/Dashboard.vue"),
+      component: () => import("../pages/Dashboard.vue"),
       meta: { requiresAuth: true },
     },
   ],

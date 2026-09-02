@@ -1,6 +1,6 @@
 <script setup>
 import { computed, watch } from "vue";
-import { formatYear } from "@/services/utils";
+import { formatYear } from "../../services/utils.js";
 
 const props = defineProps({
   min: {

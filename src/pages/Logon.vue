@@ -1,17 +1,17 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import LogoImage from "@/components/base/LogoImage.vue";
-import BrandTitle from "@/components/base/BrandTitle.vue";
-import LoginForm from "@/components/feature/auth/LoginForm.vue";
-import router from "@/router";
+import LogoImage from "../components/base/LogoImage.vue";
+import BrandTitle from "../components/base/BrandTitle.vue";
+import LoginForm from "../components/feature/auth/LoginForm.vue";
+import router from "../router/index.js";
 import {
   clearAuthData,
   getUserId,
   saveAuthData,
   isAuthenticated,
   hasPartialAuth,
-} from "@/services/auth.js";
-import { loginWithUserId, createUser, checkUserExists } from "@/services/api/users.js";
+} from "../services/auth.js";
+import { loginWithUserId, createUser, checkUserExists } from "../services/api/users.js";
 
 const isLoading = ref(false);
 const error = ref(null);

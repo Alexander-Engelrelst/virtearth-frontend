@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import AdrianIdBadge from "@/components/base/AdrianIdBadge.vue";
+import AdrianIdBadge from "../../base/AdrianIdBadge.vue";
 
 const emit = defineEmits(["login"]);
 

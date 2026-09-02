@@ -1,6 +1,6 @@
-import { clearAuthData } from "./auth";
+import { clearAuthData } from "./auth.js";
 
-import router from "@/router";
+import router from "../router/index.js";
 
 const HTTP_UNAUTHORIZED = 401;
 

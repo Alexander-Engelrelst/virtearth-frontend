@@ -1,8 +1,8 @@
 <script setup>
 import { computed } from "vue";
-import LogoImage from "@/components/base/LogoImage.vue";
-import BrandTitle from "@/components/base/BrandTitle.vue";
-import SearchBar from "@/components/feature/SearchBar.vue";
+import LogoImage from "../base/LogoImage.vue";
+import BrandTitle from "../base/BrandTitle.vue";
+import SearchBar from "../feature/SearchBar.vue";
 
 const props = defineProps({
   username: {

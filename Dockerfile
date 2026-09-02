@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN npm ci
 
-COPY . .
+COPY VirtEarth-client .
 #the reason that this works is because npm run build copies everything from /public into /dist
 RUN npm run build
 

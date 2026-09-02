@@ -1,6 +1,6 @@
 <script setup>
-import NotificationPopup from "@/components/base/NotificationPopup.vue";
-import { notificationRef } from "@/services/showNotification.js"; //NOSONAR
+import NotificationPopup from "./components/base/NotificationPopup.vue";
+import { notificationRef } from "./services/showNotification.js"; //NOSONAR
 </script>
 
 <template>

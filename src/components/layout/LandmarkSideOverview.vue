@@ -1,9 +1,9 @@
 <script setup>
 import { ref, defineExpose, watch } from "vue";
-import { formatYear } from "@/services/utils";
-import { createMazeGame } from "@/services/api/landmarks";
+import { formatYear } from "../../services/utils.js";
+import { createMazeGame } from "../../services/api/landmarks.js";
 
-import { showNotification } from "@/services/showNotification.js";
+import { showNotification } from "../../services/showNotification.js";
 
 const props = defineProps({
   landmark: {

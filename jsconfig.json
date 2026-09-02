@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./VirtEarth-client",
     "paths": {
       "@/*": ["./src/*"]
     },
@@ -12,6 +12,8 @@
     "target": 3,
     "globalTypesPath": "./node_modules/.vue-global-types"
   },
-  "include": ["src/**/*"],
+  "include": [
+    "src/**/*"
+  ],
   "exclude": ["node_modules", "dist"]
 }
