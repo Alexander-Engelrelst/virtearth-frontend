@@ -1,44 +1,26 @@
-# VirtEarth-client
+# VirtEarth frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+## Overview
+This repository contains the vue.js frontend for the VirtEarth POC
 
-## Recommended IDE Setup
+* **Backend repository**: [VirtEarth backend](https://github.com/Alexander-Engelrelst/virtearth-backend)
+* **Live Demo**: [Watch a demo of the game](https://youtu.be/sPvokRURzJg)
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Credits
+I only aided in integrating the backend and fixing some bugs. This project was merely added to complete the provided backend repository.
 
-## Recommended Browser Setup
+### Team
+* **Alexander Engelrelst**
+* **Kobe Vandenberghe**
+* **Rune Mortier**
+* **Sebastien George**
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Usage
+Before starting this docker and the related backend as linked above must be running.
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+```bash
+docker build -t virt-earth-client .
+docker run -d -p 8080:80 --name virt-earth-container virt-earth-client
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+After doing this the client will be accessible at [http://localhost:8080](http://localhost:8080)

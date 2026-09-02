@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./VirtEarth-client",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },

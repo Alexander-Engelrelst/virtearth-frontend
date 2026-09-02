@@ -2,4 +2,4 @@
 
 @plugin "daisyui";
 
-@import "theme.css";
+@import "./theme.css";
